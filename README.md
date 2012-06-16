@@ -8,11 +8,17 @@ Requirements
 
 * org-mode, git://repo.or.cz/org-mode.git
 * evil-mode, git://gitorious.org/evil/evil.git
+* evil-leader, git://github.com/cofi/evil-leader.git
 
 Installation
 ============
 
-        mkdir -p ~/.emacs.d/plugins; git clone git://github.com/edwtjo/evil-org-mode.git ~/.emacs.d/plugins/evil-org-mode
+    mkdir -p ~/.emacs.d/plugins; git clone git://github.com/edwtjo/evil-org-mode.git ~/.emacs.d/plugins/evil-org-mode
+
+emacs.el
+--------
+
+    (require 'evil-org-mode)
 
 License
 =======
