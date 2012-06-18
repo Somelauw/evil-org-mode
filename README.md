@@ -18,7 +18,8 @@ Installation
 emacs.el
 --------
 
-    (require 'evil-org-mode)
+    (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
+    (require 'evil-org)
 
 License
 =======
