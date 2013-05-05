@@ -1,11 +1,12 @@
 ;;; evil-org-mode.el --- evil keybindings for org-mode
 
-;; Copyright: See respective authors
-;; Author: See respective commits
+;; Copyright (C) 2012-2013 by Edward Tjörnhammar
+;; Author: Edward Tjörnhammar
 ;; URL: https://github.com/edwtjo/evil-org-mode.git
 ;; Git-Repository; git://github.com/edwtjo/evil-org-mode.git
 ;; Created: 2012-06-14
-;; Version: 9999
+;; Version: 0.1.0
+;; Package-Requires: ((evil "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
 ;; This file is not part of GNU Emacs
@@ -27,7 +28,7 @@
 ;; See, https://github.com/edwtjo/evil-org-mode/issues
 
 (require 'evil)
-(require 'evil-leader)
+;; (require 'evil-leader)
 (require 'org)
 
 (define-minor-mode evil-org-mode
@@ -75,3 +76,5 @@
             (kbd "M-K") 'org-shiftmetaup
             (kbd "M-J") 'org-shiftmetadown)) '(normal insert))
 (provide 'evil-org)
+
+;;; evil-org-mode.el ends here
