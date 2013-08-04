@@ -40,12 +40,14 @@
 (add-hook 'org-mode-hook 'evil-org-mode) ;; only load with org-mode
 
 (defun always-insert-item ()
+  "Force insertion of org item"
   (if (not (org-in-item-p))
       (insert "\n- ")
     (org-insert-item))
   )
 
 (defun evil-org-eol-call (fun)
+  "Go to end of line and call provided function"
   (end-of-line)
   (funcall fun)
   (evil-append nil)
