@@ -1,0 +1,60 @@
+#+TITLE: evil-org-mode
+
+# What will be evil org without an org Readme?
+
+Supplemental evil-mode key-bindings to Emacs org-mode. This is a work in progress, expect improvements and don't be afraid to contribute patches.
+
+* Requirements
+
+- org-mode, git://repo.or.cz/org-mode.git
+- evil-mode, git://gitorious.org/evil/evil.git
+- evil-leader, git://github.com/cofi/evil-leader.git
+
+* Installation
+
+#+BEGIN_SRC sh
+  mkdir -p ~/.emacs.d/plugins; git clone git://github.com/edwtjo/evil-org-mode.git ~/.emacs.d/plugins/evil-org-mode
+#+END_SRC
+
+** emacs.el
+
+#+begin_src emacs-lisp
+    (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
+    (require 'evil-org)
+#+end_src
+
+* Keys
+Here are the keys introduced by evil-org
+
+  | gh  | outline-up-heading                         |
+  | gj  | org-forward-heading-same-level             |
+  | gk  | org-backward-heading-same-level            |
+  | gl  | outline-next-visible-heading               |
+  | t   | org-todo                                   |
+  | T   | org-insert-todo-heading nil                |
+  | H   | org-beginning-of-line                      |
+  | L   | org-end-of-line                            |
+  | ;t  | org-show-todo-tree                         |
+  | o   | always-insert-item                         |
+  | O   | org-insert-heading                         |
+  | '$' | org-end-of-line                            |
+  | '^' | org-beginning-of-line                      |
+  | <   | org-metaleft                               |
+  | >   | org-metaright                              |
+  | ;a  | org-agenda                                 |
+  |-----+--------------------------------------------|
+  | TAB | org-cycle                                  |
+  | M-l | org-metaright                              |
+  | M-h | org-metaleft                               |
+  | M-k | org-metaup                                 |
+  | M-j | org-metadown                               |
+  | M-L | org-shiftmetaright                         |
+  | M-H | org-shiftmetaleft                          |
+  | M-K | org-shiftmetaup                            |
+  | M-J | org-shiftmetadown                          |
+  | M-o | org-insert-heading+org-metaright           |
+  | M-t | org-insert-todo-heading nil+ org-metaright |
+
+* License
+
+Gnu General Public License v3.0, http://www.gnu.org/copyleft/gpl.html
