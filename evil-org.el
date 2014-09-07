@@ -1,4 +1,4 @@
-;;; evil-org-mode.el --- evil keybindings for org-mode
+;;; evil-org.el --- evil keybindings for org-mode
 
 ;; Copyright (C) 2012-2013 by Edward Tjörnhammar
 ;; Author: Edward Tjörnhammar
