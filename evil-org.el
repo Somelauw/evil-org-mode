@@ -5,8 +5,8 @@
 ;; URL: https://github.com/edwtjo/evil-org-mode.git
 ;; Git-Repository; git://github.com/edwtjo/evil-org-mode.git
 ;; Created: 2012-06-14
-;; Version: 0.1.0
-;; Package-Requires: ((evil "0"))
+;; Version: 0.1.1
+;; Package-Requires: ((evil "0") (org "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
 ;; This file is not part of GNU Emacs
