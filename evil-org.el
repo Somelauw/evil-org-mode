@@ -39,10 +39,10 @@
 
 (add-hook 'org-mode-hook 'evil-org-mode) ;; only load with org-mode
 
-(defun always-insert-item ()
-  "Force insertion of org item"
+(defun clever-insert-item ()
+  "Clever insertion of org item"
   (if (not (org-in-item-p))
-      (insert "\n- ")
+      (insert "\n")
     (org-insert-item))
   )
 
@@ -67,7 +67,7 @@
   "T" '(lambda () (interactive) (evil-org-eol-call (lambda() (org-insert-todo-heading nil))))
   "H" 'org-beginning-of-line
   "L" 'org-end-of-line
-  "o" '(lambda () (interactive) (evil-org-eol-call 'always-insert-item))
+  "o" '(lambda () (interactive) (evil-org-eol-call 'clever-insert-item))
   "O" '(lambda () (interactive) (evil-org-eol-call 'org-insert-heading))
   "$" 'org-end-of-line
   "^" 'org-beginning-of-line
