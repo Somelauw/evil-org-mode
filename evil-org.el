@@ -79,7 +79,8 @@
 ;; leader maps
 (evil-leader/set-key
   "t"  'org-show-todo-tree
-  "a" 'org-agenda
+  "a"  'org-agenda
+  "x"  'org-archive-subtree
 )
 
 ;; normal & insert state shortcuts.
