@@ -53,6 +53,38 @@
   (evil-append nil)
   )
 
+;; recompute clocks in visual selection
+(evil-define-operator evil-org-recompute-clocks (beg end type register yank-handler)
+  :keep-visual t
+  :move-point nil
+  (interactive "<r>")
+  (progn
+        (message "start!" )
+        (save-excursion
+        (while (< (point) end)
+            (org-evaluate-time-range)
+            (next-line)
+            (message "at position %S" (point))
+        ))))
+
+;; open org-mode links in visual selection
+(evil-define-operator evil-org-open-links (beg end type register yank-handler)
+  :keep-visual t
+  :move-point nil
+  (interactive "<r>")
+  (progn
+        (message "start of evil-org-open-links 2" )
+        (save-excursion
+          (goto-char beg)
+          (beginning-of-line)
+          (catch 'break
+          (while (< (point) end)
+            (message "at position %S" (point))
+            (org-next-link)
+            (when (not(< (point) end)) (throw 'break 0))
+            (org-open-at-point)
+            )))))
+
 ;; normal state shortcuts
 (evil-define-key 'normal evil-org-mode-map
   "gh" 'outline-up-heading
