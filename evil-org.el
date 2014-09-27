@@ -24,9 +24,12 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+;;
 ;; Known Bugs:
 ;; See, https://github.com/edwtjo/evil-org-mode/issues
-
+;;
+;;; Code:
 (require 'evil)
 (require 'org)
 
@@ -40,14 +43,15 @@
 (add-hook 'org-mode-hook 'evil-org-mode) ;; only load with org-mode
 
 (defun clever-insert-item ()
-  "Clever insertion of org item"
+  "Clever insertion of org item."
   (if (not (org-in-item-p))
       (insert "\n")
     (org-insert-item))
   )
 
 (defun evil-org-eol-call (fun)
-  "Go to end of line and call provided function"
+  "Go to end of line and call provided function.
+FUN function callback"
   (end-of-line)
   (funcall fun)
   (evil-append nil)
