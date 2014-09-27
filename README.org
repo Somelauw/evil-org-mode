@@ -26,34 +26,37 @@ Supplemental evil-mode key-bindings to Emacs org-mode. This is a work in progres
 * Keys
 Here are the keys introduced by evil-org
 
-  | gh  | outline-up-heading                         |
-  | gj  | org-forward-heading-same-level             |
-  | gk  | org-backward-heading-same-level            |
-  | gl  | outline-next-visible-heading               |
-  | t   | org-todo                                   |
-  | T   | org-insert-todo-heading nil                |
-  | H   | org-beginning-of-line                      |
-  | L   | org-end-of-line                            |
-  | ;t  | org-show-todo-tree                         |
-  | o   | always-insert-item                         |
-  | O   | org-insert-heading                         |
-  | '$' | org-end-of-line                            |
-  | '^' | org-beginning-of-line                      |
-  | <   | org-metaleft                               |
-  | >   | org-metaright                              |
-  | ;a  | org-agenda                                 |
-  |-----+--------------------------------------------|
-  | TAB | org-cycle                                  |
-  | M-l | org-metaright                              |
-  | M-h | org-metaleft                               |
-  | M-k | org-metaup                                 |
-  | M-j | org-metadown                               |
-  | M-L | org-shiftmetaright                         |
-  | M-H | org-shiftmetaleft                          |
-  | M-K | org-shiftmetaup                            |
-  | M-J | org-shiftmetadown                          |
-  | M-o | org-insert-heading+org-metaright           |
-  | M-t | org-insert-todo-heading nil+ org-metaright |
+  | gh        | outline-up-heading                         |
+  | gj        | org-forward-heading-same-level             |
+  | gk        | org-backward-heading-same-level            |
+  | gl        | outline-next-visible-heading               |
+  | t         | org-todo                                   |
+  | T         | org-insert-todo-heading nil                |
+  | H         | org-beginning-of-line                      |
+  | L         | org-end-of-line                            |
+  | o         | always-insert-item                         |
+  | O         | org-insert-heading                         |
+  | '$'       | org-end-of-line                            |
+  | '^'       | org-beginning-of-line                      |
+  | <         | org-metaleft                               |
+  | >         | org-metaright                              |
+  | <leader>a | org-agenda                                 |
+  | <leader>t | org-show-todo-tree                         |
+  | <leader>c | org-archive-subtree                        |
+  | <leader>l | evil-org-open-links                        |
+  | <leader>o | evil-org-recompute-clocks                  |
+  |-----------+--------------------------------------------|
+  | TAB       | org-cycle                                  |
+  | M-l       | org-metaright                              |
+  | M-h       | org-metaleft                               |
+  | M-k       | org-metaup                                 |
+  | M-j       | org-metadown                               |
+  | M-L       | org-shiftmetaright                         |
+  | M-H       | org-shiftmetaleft                          |
+  | M-K       | org-shiftmetaup                            |
+  | M-J       | org-shiftmetadown                          |
+  | M-o       | org-insert-heading+org-metaright           |
+  | M-t       | org-insert-todo-heading nil+ org-metaright |
 
 * License
 
