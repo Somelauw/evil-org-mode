@@ -113,7 +113,7 @@ FUN function callback"
   (kbd "TAB") 'org-cycle)
 
 ;; leader maps
-(evil-leader/set-key
+(evil-leader/set-key-for-mode 'org-mode
   "t"  'org-show-todo-tree
   "a"  'org-agenda
   "x"  'org-archive-subtree
