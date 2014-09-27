@@ -116,7 +116,9 @@ FUN function callback"
 (evil-leader/set-key-for-mode 'org-mode
   "t"  'org-show-todo-tree
   "a"  'org-agenda
-  "x"  'org-archive-subtree
+  "c"  'org-archive-subtree
+  "l"  'evil-org-open-links
+  "o"  'evil-org-recompute-clocks
 )
 
 ;; normal & insert state shortcuts.
