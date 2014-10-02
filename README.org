@@ -1,7 +1,5 @@
 #+TITLE: evil-org-mode
 
-# What will be evil org without an org Readme?
-
 Supplemental evil-mode key-bindings to Emacs org-mode. This is a work in progress, expect improvements and don't be afraid to contribute patches.
 
 * Requirements

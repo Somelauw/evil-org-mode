@@ -1,6 +1,6 @@
 ;;; evil-org.el --- evil keybindings for org-mode
 
-;; Copyright (C) 2012-2013 by Edward Tjörnhammar
+;; Copyright (C) 2012-2014 by Edward Tjörnhammar
 ;; Author: Edward Tjörnhammar
 ;; URL: https://github.com/edwtjo/evil-org-mode.git
 ;; Git-Repository; git://github.com/edwtjo/evil-org-mode.git
