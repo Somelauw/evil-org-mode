@@ -72,22 +72,52 @@ FUN function callback"
         ))))
 
 ;; open org-mode links in visual selection
+(defun evil-org-generic-open-links (beg end type register yank-handler incog)
+  (progn
+    (save-excursion 
+      (goto-char beg)
+      (catch 'break
+        (while t
+          (org-next-link)
+          ;;; break from outer loop when there are no more
+          ;;; org links
+          (when (or 
+                 (not (< (point) end)) 
+                 (not (null org-link-search-failed)))
+            (throw 'break 0))
+
+          (if (not (null incog))
+              (let* ((new-arg
+                      ;;; if incog is true, decide which incognito settings to
+                      ;;; use dependening on the browser
+                      (cond ((not (null (string-match "^.*\\(iceweasel\\|firefox\\).*$" browse-url-generic-program)))  "--private-window")
+                            ((not (null (string-match "^.*\\(chrome\\|chromium\\).*$"  browse-url-generic-program)))   "--incognito"     )
+                            (t "")
+                            ))
+                     (old-b (list browse-url-generic-args " " ))
+                     (browse-url-generic-args (add-to-ordered-list 'old-b new-arg 0)))
+                (progn
+                  (org-open-at-point)))
+            (let ((browse-url-generic-args '("")))
+              (org-open-at-point)))
+          )))))
+
+
+;;; open links in visual selection
 (evil-define-operator evil-org-open-links (beg end type register yank-handler)
   :keep-visual t
   :move-point nil
   (interactive "<r>")
-  (progn
-        (message "start of evil-org-open-links 2" )
-        (save-excursion
-          (goto-char beg)
-          (beginning-of-line)
-          (catch 'break
-          (while (< (point) end)
-            (message "at position %S" (point))
-            (org-next-link)
-            (when (not(< (point) end)) (throw 'break 0))
-            (org-open-at-point)
-            )))))
+  (evil-org-generic-open-links beg end type register yank-handler nil)
+)
+
+;;; open links in visual selection in incognito mode
+(evil-define-operator evil-org-open-links-incognito (beg end type register yank-handler)
+  :keep-visual t
+  :move-point nil
+  (interactive "<r>")
+  (evil-org-generic-open-links beg end type register yank-handler t)
+)
 
 ;; normal state shortcuts
 (evil-define-key 'normal evil-org-mode-map
