@@ -4,9 +4,9 @@ Supplemental evil-mode key-bindings to Emacs org-mode. This is a work in progres
 
 * Requirements
 
-- org-mode, git://repo.or.cz/org-mode.git
-- evil-mode, git://gitorious.org/evil/evil.git
-- evil-leader, git://github.com/cofi/evil-leader.git
+- org-mode, git://orgmode.org/org-mode.git
+- evil-mode, https://bitbucket.org/lyro/evil
+- evil-leader, https://github.com/cofi/evil-leader.git
 
 * Installation
 
