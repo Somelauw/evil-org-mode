@@ -30,8 +30,10 @@ Here are the keys introduced by evil-org
   | gl        | outline-next-visible-heading               |
   | t         | org-todo                                   |
   | T         | org-insert-todo-heading nil                |
-  | H         | org-beginning-of-line                      |
-  | L         | org-end-of-line                            |
+  | H         | org-shiftleft                              |
+  | J         | org-shiftdown                              |
+  | K         | org-shiftup                                |
+  | L         | org-shiftright                             |
   | o         | always-insert-item                         |
   | O         | org-insert-heading                         |
   | '$'       | org-end-of-line                            |
