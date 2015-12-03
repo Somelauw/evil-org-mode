@@ -1,12 +1,12 @@
 ;;; evil-org.el --- evil keybindings for org-mode
 
-;; Copyright (C) 2012-2014 by Edward Tjörnhammar
+;; Copyright (C) 2012-2015 by Edward Tjörnhammar
 ;; Author: Edward Tjörnhammar
 ;; URL: https://github.com/edwtjo/evil-org-mode.git
 ;; Git-Repository; git://github.com/edwtjo/evil-org-mode.git
 ;; Created: 2012-06-14
-;; Version: 0.1.1
-;; Package-Requires: ((evil "0") (org "0"))
+;; Version: 0.1.2
+;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
 ;; This file is not part of GNU Emacs
