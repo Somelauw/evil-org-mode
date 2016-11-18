@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.2.0
+;; Version: 0.2.1
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -72,7 +72,7 @@
 (defun evil-org-eol-call (fun)
   "Go to end of line and call provided function.
 FUN function callback"
-  (end-of-line)
+  (end-of-visible-line)
   (funcall fun)
   (evil-append nil))
 
