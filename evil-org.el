@@ -145,6 +145,16 @@ FUN function callback"
   "-" 'org-cycle-list-bullet
   (kbd "<tab>") 'org-cycle)
 
+;; visual state shortcuts
+(evil-define-key 'visual evil-org-mode-map
+  "<" '(lambda () (interactive) (org-metaleft) (evil-visual-restore))
+  ">" '(lambda () (interactive) (org-metaright) (evil-visual-restore)))
+
+;; insert state shortcuts
+(evil-define-key 'insert evil-org-mode-map
+  (kbd "C-t") 'org-metaright
+  (kbd "C-d") 'org-metaleft)
+
 ;; leader maps
 (evil-leader/set-key-for-mode 'org-mode
   "t"  'org-show-todo-tree
