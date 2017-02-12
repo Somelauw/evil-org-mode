@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.1.3
+;; Version: 0.2.0
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -34,11 +34,31 @@
 (require 'evil)
 (require 'org)
 
+(defgroup evil-org nil
+  "Provides integration of org-mode and evil."
+  :group 'org
+  :prefix "evil-org-")
+
+(defcustom evil-org-movement-bindings
+  '((up . "k")
+    (down . "j")
+    (left . "h")
+    (right . "l"))
+  "AList of normal keys to use for arrows.
+
+   This can be used by non-qwerty users who don't use hjkl."
+  :group 'evil-org
+  :type '(alist :key-type symbol :value-type string)
+  :options '(up down left right))
+
+(defvar evil-org-mode-map (make-sparse-keymap))
+
+;;;###autoload
 (define-minor-mode evil-org-mode
   "Buffer local minor mode for evil-org"
   :init-value nil
   :lighter " EvilOrg"
-  :keymap (make-sparse-keymap) ; defines evil-org-mode-map
+  :keymap evil-org-mode-map
   :group 'evil-org)
 
 (add-hook 'org-mode-hook 'evil-org-mode) ;; only load with org-mode
@@ -47,16 +67,14 @@
   "Clever insertion of org item."
   (if (not (org-in-item-p))
       (insert "\n")
-    (org-insert-item))
-  )
+    (org-insert-item)))
 
 (defun evil-org-eol-call (fun)
   "Go to end of line and call provided function.
 FUN function callback"
   (end-of-line)
   (funcall fun)
-  (evil-append nil)
-  )
+  (evil-append nil))
 
 ;; recompute clocks in visual selection
 (evil-define-operator evil-org-recompute-clocks (beg end type register yank-handler)
@@ -64,13 +82,12 @@ FUN function callback"
   :move-point nil
   (interactive "<r>")
   (progn
-        (message "start!" )
-        (save-excursion
-        (while (< (point) end)
-            (org-evaluate-time-range)
-            (next-line)
-            (message "at position %S" (point))
-        ))))
+    (message "start!")
+    (save-excursion
+      (while (< (point) end)
+        (org-evaluate-time-range)
+        (next-line)
+        (message "at position %S" (point))))))
 
 ;; open org-mode links in visual selection
 (defun evil-org-generic-open-links (beg end type register yank-handler incog)
@@ -82,8 +99,8 @@ FUN function callback"
           (org-next-link)
           ;;; break from outer loop when there are no more
           ;;; org links
-          (when (or 
-                 (not (< (point) end)) 
+          (when (or
+                 (not (< (point) end))
                  (not (null org-link-search-failed)))
             (throw 'break 0))
 
@@ -109,81 +126,122 @@ FUN function callback"
   :keep-visual t
   :move-point nil
   (interactive "<r>")
-  (evil-org-generic-open-links beg end type register yank-handler nil)
-)
+  (evil-org-generic-open-links beg end type register yank-handler nil))
 
 ;;; open links in visual selection in incognito mode
 (evil-define-operator evil-org-open-links-incognito (beg end type register yank-handler)
   :keep-visual t
   :move-point nil
   (interactive "<r>")
-  (evil-org-generic-open-links beg end type register yank-handler t)
-)
+  (evil-org-generic-open-links beg end type register yank-handler t))
 
-;; normal state shortcuts
-(evil-define-key 'normal evil-org-mode-map
-  "gh" 'outline-up-heading
-  "gp" 'outline-previous-heading
-  "gj" (if (fboundp 'org-forward-same-level) ;to be backward compatible with older org version
-	   'org-forward-same-level
-	  'org-forward-heading-same-level)
-  "gk" (if (fboundp 'org-backward-same-level)
-	   'org-backward-same-level
-	  'org-backward-heading-same-level)
-  "gl" 'outline-next-visible-heading
-  "t" 'org-todo
-  "T" '(lambda () (interactive) (evil-org-eol-call (lambda() (org-insert-todo-heading nil))))
-  "H" 'org-shiftleft
-  "J" 'org-shiftdown
-  "K" 'org-shiftup
-  "L" 'org-shiftright
-  "o" '(lambda () (interactive) (evil-org-eol-call 'clever-insert-item))
-  "O" '(lambda () (interactive) (evil-org-eol-call 'org-insert-heading))
-  "x" 'org-delete-char
-  "X" 'org-delete-backward-char
-  "$" 'org-end-of-line
-  "^" 'org-beginning-of-line
-  "<" 'org-metaleft
-  ">" 'org-metaright
-  "-" 'org-cycle-list-bullet
-  "(" 'org-backward-sentence
-  ")" 'org-forward-sentence
-  "{" 'org-backward-paragraph
-  "}" 'org-forward-paragraph
-  (kbd "<tab>") 'org-cycle)
+
+
+(defun evil-org--populate-base-bindings ()
+  (let-alist evil-org-movement-bindings
+    (dolist (state '(normal visual operator motion))
+      (evil-define-key state evil-org-mode-map
+        (kbd "$") 'org-end-of-line
+        (kbd "^") 'org-beginning-of-line
+        (kbd "x") 'org-delete-char
+        (kbd "X") 'org-delete-backward-char
+        (kbd ")") 'org-forward-sentence
+        (kbd "(") 'org-backward-sentence
+        (kbd "}") 'org-forward-paragraph
+        (kbd "{") 'org-backward-paragraph))
+    (dolist (state '(normal visual))
+      (evil-define-key state evil-org-mode-map
+        (kbd "<") 'org-metaleft
+        (kbd ">") 'org-metaright
+        (kbd "<tab>") 'org-cycle
+        (kbd "<S-tab>") 'org-shifttab))
+    (evil-define-key 'normal evil-org-mode-map
+      (kbd "o") '(lambda ()
+                   (interactive)
+                   (evil-org-eol-call 'clever-insert-item)))))
+
+(defun evil-org--populate-additional-bindings ()
+  (let-alist evil-org-movement-bindings
+    (dolist (state '(motion))
+      (evil-define-key state evil-org-mode-map
+        (kbd (concat "g" .left)) 'org-up-element
+        (kbd (concat "g" .right)) 'org-down-element
+        (kbd (concat "g" .up)) (if (fboundp 'org-backward-same-level)
+                                  'org-backward-same-level
+                                'org-backward-heading-same-level)
+        (kbd (concat "g" .down)) (if (fboundp 'org-forward-same-level) ;to be backward compatible with older org version
+                                    'org-forward-same-level
+                                  'org-forward-heading-same-level)))
+    (dolist (state '(normal visual))
+      (evil-define-key state evil-org-mode-map
+        (kbd (concat "M-" .left)) 'org-metaleft
+        (kbd (concat "M-" .right)) 'org-metaright
+        (kbd (concat "M-" .up)) 'org-metaup
+        (kbd (concat "M-" .down)) 'org-metadown
+        (kbd (concat "M-" (capitalize .left))) 'org-shiftmetaleft
+        (kbd (concat "M-" (capitalize .right))) 'org-shiftmetaright
+        (kbd (concat "M-" (capitalize .up))) 'org-shiftmetaup
+        (kbd (concat "M-" (capitalize .down))) 'org-shiftmetadown
+        (kbd (concat "C-" (capitalize .left))) 'org-shiftcontrolleft
+        (kbd (concat "C-" (capitalize .right))) 'org-shiftcontrolright
+        (kbd (concat "C-" (capitalize .up))) 'org-shiftcontrolup
+        (kbd (concat "C-" (capitalize .down))) 'org-shiftcontroldown))))
+
+(defun evil-org--populate-shift-bindings ()
+  (let-alist evil-org-movement-bindings
+    (evil-define-key 'normal evil-org-mode-map
+      (capitalize .left) 'org-shiftleft
+      (capitalize .right) 'org-shiftright
+      (capitalize .down) 'org-shiftdown
+      (capitalize .up) 'org-shiftup)))
 
 ;; leader maps
-(evil-leader/set-key-for-mode 'org-mode
-  "t"  'org-show-todo-tree
-  "a"  'org-agenda
-  "c"  'org-archive-subtree
-  "l"  'evil-org-open-links
-  "o"  'evil-org-recompute-clocks
-)
+(defun evil-org--populate-leader-bindings ()
+  (evil-leader/set-key-for-mode 'org-mode
+    "t" 'org-show-todo-tree
+    "a" 'org-agenda
+    "c" 'org-archive-subtree
+    "l" 'evil-org-open-links
+    "o" 'evil-org-recompute-clocks))
 
-;; normal & insert state shortcuts.
-(mapc (lambda (state)
-        (evil-define-key state evil-org-mode-map
-          (kbd "M-l") 'org-metaright
-          (kbd "M-h") 'org-metaleft
-          (kbd "M-k") 'org-metaup
-          (kbd "M-j") 'org-metadown
-          (kbd "M-L") 'org-shiftmetaright
-          (kbd "M-H") 'org-shiftmetaleft
-          (kbd "M-K") 'org-shiftmetaup
-          (kbd "M-J") 'org-shiftmetadown
-          (kbd "M-o") '(lambda () (interactive)
-                         (evil-org-eol-call
-                          '(lambda()
-                             (org-insert-heading)
-                             (org-metaright))))
-          (kbd "M-t") '(lambda () (interactive)
-                         (evil-org-eol-call
-                          '(lambda()
-                             (org-insert-todo-heading nil)
-                             (org-metaright))))
-          ))
-      '(normal insert))
+(defun evil-org--populate-todo-bindings ()
+  (evil-define-key 'normal evil-org-mode-map
+    "t" 'org-todo
+    "T" '(lambda ()
+           (interactive)
+           (evil-org-eol-call
+            (lambda ()
+              (org-insert-todo-heading nil))))))
+
+(defun evil-org--populate-heading-bindings ()
+  (evil-define-key 'normal evil-org-mode-map
+    (kbd "O") '(lambda ()
+                 (interactive)
+                 (evil-org-eol-call
+                  (evil-org-eol-call
+                   (lambda ()
+                     (org-insert-heading)))))
+    (kbd "M-o") '(lambda () (interactive)
+                   (evil-org-eol-call
+                    '(lambda ()
+                       (org-insert-heading)
+                       (org-metaright))))))
+
+;;;###autoload
+(defun evil-org-set-key-theme (theme)
+  (setq evil-org-mode-map (make-sparse-keymap))
+  (evil-org--populate-base-bindings)
+  (when (memq 'additional theme) (evil-org--populate-additional-bindings))
+  (when (memq 'shift theme) (evil-org--populate-shift-bindings))
+  (when (memq 'leader theme) (evil-org--populate-leader-bindings))
+  (when (memq 'todo theme) (evil-org--populate-todo-bindings))
+  (when (memq 'heading theme) (evil-org--populate-heading-bindings))
+  (setcdr
+   (assq 'evil-org-mode minor-mode-map-alist)
+   evil-org-mode-map))
+
+;; This default will soon be changed to '(additional)
+(evil-org-set-key-theme '(additional shift leader todo heading))
 
 (provide 'evil-org)
 ;;; evil-org.el ends here

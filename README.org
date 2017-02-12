@@ -1,12 +1,14 @@
 #+TITLE: evil-org-mode
 
-Supplemental evil-mode key-bindings to Emacs org-mode. This is a work in progress, expect improvements and don't be afraid to contribute patches.
+Supplemental evil-mode key-bindings to Emacs org-mode.
+This is an extended and actively maintained version of https://github.com/edwtjo/evil-org-mode/blob/master/evil-org.el that was originally created by Edward Tjörnhammar.
 
-* Introduction
+* New features since evil-org-mode
+- [X] key themes
+- [X] customizable movement keys
+- [ ] operators
+- [ ] text objects
 
-This is an extended and actively maintained version of
-  https://github.com/edwtjo/evil-org-mode/blob/master/evil-org.el by Edward
-  Tjörnhammar. It's purpose is to be more configurable.
 * Requirements
 
 - org-mode, git://orgmode.org/org-mode.git
@@ -24,34 +26,42 @@ This is an extended and actively maintained version of
 #+begin_src emacs-lisp
     (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
     (require 'evil-org)
+    (evil-org-set-key-theme '(additional))
 #+end_src
 
-* Keys
-Here are the keys introduced by evil-org
+* Keythemes
+The new config is set up in keythemes
+
+To enable all bindings use:
+#+begin_src emacs-lisp
+    (evil-org-set-key-theme '(additional shift leader todo heading))
+#+end_src
+
+
+  |-----------+--------------------------------------------|
+** Basic
+These keys are always enabled
+
+  | 'x'       | org-delete-previous-char                   |
+  | 'X'       | org-delete-char                            |
+  | '$'       | org-end-of-line                            |
+  | '^'       | org-beginning-of-line                      |
+  | <         | org-metaleft                               |
+  | >         | org-metaright                              |
+  | (         | org-forward-sentence                       |
+  | )         | org-backward-sentence                      |
+  | {         | org-forward-paragraph                      |
+  | }         | org-backward-paragraph                     |
+  | TAB       | org-cycle                                  |
+  | o         | always-insert-item                         |
+
+** Additional
+If you don't want to use hjkl, you can customize evil-org-movement-bindings.
 
   | gh        | outline-up-heading                         |
   | gj        | org-forward-heading-same-level             |
   | gk        | org-backward-heading-same-level            |
   | gl        | outline-next-visible-heading               |
-  | t         | org-todo                                   |
-  | T         | org-insert-todo-heading nil                |
-  | H         | org-shiftleft                              |
-  | J         | org-shiftdown                              |
-  | K         | org-shiftup                                |
-  | L         | org-shiftright                             |
-  | o         | always-insert-item                         |
-  | O         | org-insert-heading                         |
-  | '$'       | org-end-of-line                            |
-  | '^'       | org-beginning-of-line                      |
-  | <         | org-metaleft                               |
-  | >         | org-metaright                              |
-  | <leader>a | org-agenda                                 |
-  | <leader>t | org-show-todo-tree                         |
-  | <leader>c | org-archive-subtree                        |
-  | <leader>l | evil-org-open-links                        |
-  | <leader>o | evil-org-recompute-clocks                  |
-  |-----------+--------------------------------------------|
-  | TAB       | org-cycle                                  |
   | M-l       | org-metaright                              |
   | M-h       | org-metaleft                               |
   | M-k       | org-metaup                                 |
@@ -60,8 +70,33 @@ Here are the keys introduced by evil-org
   | M-H       | org-shiftmetaleft                          |
   | M-K       | org-shiftmetaup                            |
   | M-J       | org-shiftmetadown                          |
-  | M-o       | org-insert-heading+org-metaright           |
   | M-t       | org-insert-todo-heading nil+ org-metaright |
+
+** Shift
+If you don't want to use hjkl, you can customize evil-org-movement-bindings.
+
+  | H         | org-shiftleft                              |
+  | J         | org-shiftdown                              |
+  | K         | org-shiftup                                |
+  | L         | org-shiftright                             |
+
+** Leader
+
+  | <leader>a | org-agenda                                 |
+  | <leader>t | org-show-todo-tree                         |
+  | <leader>c | org-archive-subtree                        |
+  | <leader>l | evil-org-open-links                        |
+  | <leader>o | evil-org-recompute-clocks                  |
+
+** Todo
+
+  | t         | org-todo                                   |
+  | T         | org-insert-todo-heading nil                |
+
+** Heading
+
+  | O         | org-insert-heading                         |
+  | M-o       | org-insert-heading+org-metaright           |
 
 * License
 
