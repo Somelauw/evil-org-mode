@@ -1,11 +1,12 @@
 ;;; evil-org.el --- evil keybindings for org-mode
 
-;; Copyright (C) 2012-2015 by Edward Tjörnhammar
-;; Author: Edward Tjörnhammar
-;; URL: https://github.com/edwtjo/evil-org-mode.git
-;; Git-Repository; git://github.com/edwtjo/evil-org-mode.git
+;; Maintainer: Somelauw
+;; Original author: Edward Tjörnhammar
+;; URL: https://github.com/Somelauw/evil-org-improved.git
+;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
-;; Version: 0.1.2
+;; Forked since 2017-02-12
+;; Version: 0.1.3
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -27,7 +28,7 @@
 ;;; Commentary:
 ;;
 ;; Known Bugs:
-;; See, https://github.com/edwtjo/evil-org-mode/issues
+;; See, https://github.com/Somelauw/evil-org-mode/issues
 ;;
 ;;; Code:
 (require 'evil)
@@ -138,11 +139,17 @@ FUN function callback"
   "L" 'org-shiftright
   "o" '(lambda () (interactive) (evil-org-eol-call 'clever-insert-item))
   "O" '(lambda () (interactive) (evil-org-eol-call 'org-insert-heading))
+  "x" 'org-delete-char
+  "X" 'org-delete-backward-char
   "$" 'org-end-of-line
   "^" 'org-beginning-of-line
   "<" 'org-metaleft
   ">" 'org-metaright
   "-" 'org-cycle-list-bullet
+  "(" 'org-backward-sentence
+  ")" 'org-forward-sentence
+  "{" 'org-backward-paragraph
+  "}" 'org-forward-paragraph
   (kbd "<tab>") 'org-cycle)
 
 ;; leader maps

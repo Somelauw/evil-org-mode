@@ -2,6 +2,11 @@
 
 Supplemental evil-mode key-bindings to Emacs org-mode. This is a work in progress, expect improvements and don't be afraid to contribute patches.
 
+* Introduction
+
+This is an extended and actively maintained version of
+  https://github.com/edwtjo/evil-org-mode/blob/master/evil-org.el by Edward
+  Tjörnhammar. It's purpose is to be more configurable.
 * Requirements
 
 - org-mode, git://orgmode.org/org-mode.git
@@ -11,7 +16,7 @@ Supplemental evil-mode key-bindings to Emacs org-mode. This is a work in progres
 * Installation
 
 #+BEGIN_SRC sh
-  mkdir -p ~/.emacs.d/plugins; git clone git://github.com/edwtjo/evil-org-mode.git ~/.emacs.d/plugins/evil-org-mode
+  mkdir -p ~/.emacs.d/plugins; git clone git://github.com/somelauw/evil-org-improved.git ~/.emacs.d/plugins/evil-org-mode
 #+END_SRC
 
 ** emacs.el
