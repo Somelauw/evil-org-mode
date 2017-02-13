@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.2.2
+;; Version: 0.3.0
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -76,6 +76,17 @@ FUN function callback"
   (funcall fun)
   (evil-append nil))
 
+;;; operators
+(evil-define-operator evil-org-shift-left (beg end)
+  "Demote all headings in selection."
+  :move-point nil
+  (org-map-region 'org-metaleft beg end))
+
+(evil-define-operator evil-org-shift-right (beg end)
+  "Promote all headings in selection."
+  :move-point nil
+  (org-map-region 'org-metaright beg end))
+
 ;; recompute clocks in visual selection
 (evil-define-operator evil-org-recompute-clocks (beg end type register yank-handler)
   :keep-visual t
@@ -135,7 +146,21 @@ FUN function callback"
   (interactive "<r>")
   (evil-org-generic-open-links beg end type register yank-handler t))
 
+;;; text-objects
+(evil-define-text-object org-element-textobj (count &optional beg end type)
+  (let ((element (org-element-at-point)))
+    (list (org-element-property :begin element)
+          (org-element-property :end element))))
 
+(evil-define-text-object org-subtree-textobj (count &optional beg end type)
+  (org-with-limited-levels
+   (cond ((org-at-heading-p) (beginning-of-line))
+         ((org-before-first-heading-p) (user-error "Not in a subtree"))
+         (t (outline-previous-visible-heading 1))))
+  (when count (while (and (> count 1) (org-up-heading-safe)) (cl-decf count)))
+  (let ((element (org-element-at-point)))
+    (list (org-element-property :begin element)
+          (org-element-property :end element))))
 
 (defun evil-org--populate-base-bindings ()
   (let-alist evil-org-movement-bindings
@@ -151,14 +176,25 @@ FUN function callback"
         (kbd "{") 'org-backward-paragraph))
     (dolist (state '(normal visual))
       (evil-define-key state evil-org-mode-map
-        (kbd "<") 'org-metaleft
-        (kbd ">") 'org-metaright
+        (kbd "<") 'evil-org-shift-left
+        (kbd ">") 'evil-org-shift-right
         (kbd "<tab>") 'org-cycle
         (kbd "<S-tab>") 'org-shifttab))
     (evil-define-key 'normal evil-org-mode-map
       (kbd "o") '(lambda ()
                    (interactive)
                    (evil-org-eol-call 'clever-insert-item)))))
+
+(defun evil-org--populate-textobjects-bindings ()
+  (define-key evil-visual-state-local-map "ae" 'org-element-textobj)
+  (define-key evil-operator-state-local-map "ae" 'org-element-textobj)
+  (define-key evil-visual-state-local-map "ar" 'org-subtree-textobj)
+  (define-key evil-operator-state-local-map "ar" 'org-subtree-textobj))
+
+(defun evil-org--populate-insert-bindings ()
+  (evil-define-key 'insert evil-org-mode-map
+    (kbd "C-t") 'org-metaright
+    (kbd "C-d") 'org-metaleft))
 
 (defun evil-org--populate-additional-bindings ()
   (let-alist evil-org-movement-bindings
@@ -211,7 +247,13 @@ FUN function callback"
            (interactive)
            (evil-org-eol-call
             (lambda ()
-              (org-insert-todo-heading nil))))))
+              (org-insert-todo-heading nil))))
+    (kbd "M-t") '(lambda ()
+           (interactive)
+           (evil-org-eol-call
+            (lambda ()
+              (org-insert-todo-heading nil)
+              (org-metaright))))))
 
 (defun evil-org--populate-heading-bindings ()
   (evil-define-key 'normal evil-org-mode-map
@@ -231,6 +273,8 @@ FUN function callback"
 (defun evil-org-set-key-theme (theme)
   (setq evil-org-mode-map (make-sparse-keymap))
   (evil-org--populate-base-bindings)
+  (when (memq 'textobjects theme) (evil-org--populate-textobjects-bindings))
+  (when (memq 'insert theme) (evil-org--populate-insert-bindings))
   (when (memq 'additional theme) (evil-org--populate-additional-bindings))
   (when (memq 'shift theme) (evil-org--populate-shift-bindings))
   (when (memq 'leader theme) (evil-org--populate-leader-bindings))
@@ -240,8 +284,11 @@ FUN function callback"
    (assq 'evil-org-mode minor-mode-map-alist)
    evil-org-mode-map))
 
-;; This default will soon be changed to '(additional)
-(evil-org-set-key-theme '(additional shift leader todo heading))
+;; The default will probably be changed to '(textobjects insert additional)
+(if (and (boundp 'evil-disable-insert-state-bindings)
+         (evil-disable-insert-state-bindings))
+    (evil-org-set-key-theme '(textobjects additional shift leader todo heading))
+  (evil-org-set-key-theme '(textobjects insert additional shift leader todo heading)))
 
 ;;; vim-like confirm/abort for capture and src
 ;;; Taken from mwillsey (Max Willsey) on https://github.com/syl20bnr/spacemacs/pull/7400
