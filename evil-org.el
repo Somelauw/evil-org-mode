@@ -87,6 +87,26 @@ FUN function callback"
   :move-point nil
   (org-map-region 'org-metaright beg end))
 
+(evil-define-operator evil-org-delete-char (count beg end type register)
+  "Combine evil-delete-char with org-delete-char"
+  :motion evil-forward-char
+  (interactive "p<R><x>")
+  (if (evil-visual-state-p)             ; No special support for visual state
+      (evil-delete-char beg end type register)
+    (evil-set-register ?- (filter-buffer-substring beg end))
+    (evil-yank beg end type register)
+    (org-delete-char count)))
+
+(evil-define-operator evil-org-delete-backward-char (count beg end type register)
+  "Combine evil-delete-backward-char with org-delete-backward-char"
+  :motion evil-backward-char
+  (interactive "p<R><x>")
+  (if (evil-visual-state-p)             ; No special support for visual state
+      (evil-delete-backward-char beg end type register)
+    (evil-set-register ?- (filter-buffer-substring beg end))
+    (evil-yank beg end type register)
+    (org-delete-backward-char count)))
+
 ;; recompute clocks in visual selection
 (evil-define-operator evil-org-recompute-clocks (beg end type register yank-handler)
   :keep-visual t
@@ -168,8 +188,8 @@ FUN function callback"
       (evil-define-key state evil-org-mode-map
         (kbd "$") 'org-end-of-line
         (kbd "^") 'org-beginning-of-line
-        (kbd "x") 'org-delete-char
-        (kbd "X") 'org-delete-backward-char
+        (kbd "x") 'evil-org-delete-char
+        (kbd "X") 'evil-org-delete-backward-char
         (kbd ")") 'org-forward-sentence
         (kbd "(") 'org-backward-sentence
         (kbd "}") 'org-forward-paragraph
