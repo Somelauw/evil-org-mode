@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.2.1
+;; Version: 0.2.2
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -242,6 +242,18 @@ FUN function callback"
 
 ;; This default will soon be changed to '(additional)
 (evil-org-set-key-theme '(additional shift leader todo heading))
+
+;;; vim-like confirm/abort for capture and src
+;;; Taken from mwillsey (Max Willsey) on https://github.com/syl20bnr/spacemacs/pull/7400
+(with-eval-after-load 'org-capture
+  (define-key org-capture-mode-map [remap evil-save-and-close]          'org-capture-finalize)
+  (define-key org-capture-mode-map [remap evil-save-modified-and-close] 'org-capture-finalize)
+  (define-key org-capture-mode-map [remap evil-quit]                    'org-capture-kill))
+
+(with-eval-after-load 'org-src
+  (define-key org-src-mode-map [remap evil-save-and-close]          'org-edit-src-exit)
+  (define-key org-src-mode-map [remap evil-save-modified-and-close] 'org-edit-src-exit)
+  (define-key org-src-mode-map [remap evil-quit]                    'org-edit-src-abort))
 
 (provide 'evil-org)
 ;;; evil-org.el ends here
