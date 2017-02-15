@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.3.0
+;; Version: 0.3.3
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -63,18 +63,33 @@
 
 (add-hook 'org-mode-hook 'evil-org-mode) ;; only load with org-mode
 
-(defun clever-insert-item ()
-  "Clever insertion of org item."
-  (if (not (org-in-item-p))
-      (insert "\n")
-    (org-insert-item)))
-
 (defun evil-org-eol-call (fun)
   "Go to end of line and call provided function.
 FUN function callback"
   (end-of-visible-line)
   (funcall fun)
   (evil-append nil))
+
+(defun evil-org-bol-call (fun)
+  "Go to beginning of line and call provided function.
+FUN function callback"
+  (beginning-of-visual-line)
+  (funcall fun)
+  (evil-append nil))
+
+(defun evil-org-open-below (count)
+  "Clever insertion of org item."
+  (interactive "p")
+  (cond ((org-in-item-p) (evil-org-eol-call 'org-insert-item))
+        ((org-at-table-p) (org-table-insert-row '(4)) (evil-insert nil))
+        (t (evil-open-below count))))
+
+(defun evil-org-open-above (count)
+  "Clever insertion of org item."
+  (interactive "p")
+  (cond ((org-in-item-p) (evil-org-bol-call 'org-insert-item))
+        ((org-at-table-p) (org-table-insert-row))
+        (t (evil-open-above count))))
 
 ;;; operators
 (evil-define-operator evil-org-shift-left (beg end)
@@ -201,9 +216,8 @@ FUN function callback"
         (kbd "<tab>") 'org-cycle
         (kbd "<S-tab>") 'org-shifttab))
     (evil-define-key 'normal evil-org-mode-map
-      (kbd "o") '(lambda ()
-                   (interactive)
-                   (evil-org-eol-call 'clever-insert-item)))))
+      (kbd "o") 'evil-org-open-below
+      (kbd "O") 'evil-org-open-above)))
 
 (defun evil-org--populate-textobjects-bindings ()
   (define-key evil-visual-state-local-map "ae" 'org-element-textobj)
@@ -280,10 +294,10 @@ FUN function callback"
     (kbd "O") '(lambda ()
                  (interactive)
                  (evil-org-eol-call
-                  (evil-org-eol-call
                    (lambda ()
-                     (org-insert-heading)))))
-    (kbd "M-o") '(lambda () (interactive)
+                     (org-insert-heading))))
+    (kbd "M-o") '(lambda ()
+                   (interactive)
                    (evil-org-eol-call
                     '(lambda ()
                        (org-insert-heading)

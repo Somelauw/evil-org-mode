@@ -42,22 +42,23 @@ To enable all bindings use:
 ** Basic
 These keys are always enabled
 
-  |-----+--------------------------|
-  | key | function                 |
-  |-----+--------------------------|
-  | 'x' | org-delete-previous-char |
-  | 'X' | org-delete-char          |
-  | '$' | org-end-of-line          |
-  | '^' | org-beginning-of-line    |
-  | <   | org-metaleft             |
-  | >   | org-metaright            |
-  | (   | org-forward-sentence     |
-  | )   | org-backward-sentence    |
-  | {   | org-forward-paragraph    |
-  | }   | org-backward-paragraph   |
-  | TAB | org-cycle                |
-  | o   | always-insert-item       |
-  |-----+--------------------------|
+  |-----+-------------------------------|
+  | key | function                      |
+  |-----+-------------------------------|
+  | 'x' | evil-org-delete-char          |
+  | 'X' | evil-org-delete-previous-char |
+  | '$' | org-end-of-line               |
+  | '^' | org-beginning-of-line         |
+  | <   | org-metaleft                  |
+  | >   | org-metaright                 |
+  | (   | org-forward-sentence          |
+  | )   | org-backward-sentence         |
+  | {   | org-forward-paragraph         |
+  | }   | org-backward-paragraph        |
+  | TAB | org-cycle                     |
+  | o   | evil-org-open-below           |
+  | O   | evil-org-open-above           |
+  |-----+-------------------------------|
 
 ** Text objects
 "var" to select an element
