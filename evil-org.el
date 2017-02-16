@@ -138,7 +138,7 @@ FUN function callback"
 ;; open org-mode links in visual selection
 (defun evil-org-generic-open-links (beg end type register yank-handler incog)
   (progn
-    (save-excursion 
+    (save-excursion
       (goto-char beg)
       (catch 'break
         (while t
@@ -183,11 +183,13 @@ FUN function callback"
 
 ;;; text-objects
 (evil-define-text-object org-element-textobj (count &optional beg end type)
+  "An org element."
   (let ((element (org-element-at-point)))
     (list (org-element-property :begin element)
           (org-element-property :end element))))
 
 (evil-define-text-object org-subtree-textobj (count &optional beg end type)
+  "An org subtree."
   (org-with-limited-levels
    (cond ((org-at-heading-p) (beginning-of-line))
          ((org-before-first-heading-p) (user-error "Not in a subtree"))
@@ -196,6 +198,42 @@ FUN function callback"
   (let ((element (org-element-at-point)))
     (list (org-element-property :begin element)
           (org-element-property :end element))))
+
+(evil-define-text-object evil-org-inner-sentence (count &optional beg end type)
+  "Inner sentence or table cell when in an org table."
+  (if (org-at-table-p)
+      (save-excursion
+        (when (not (looking-back "|\\s-?")) (org-table-beginning-of-field 1))
+        (let* ((b (point))
+               (e (if (looking-at "\\s-")
+                      (1+ b)
+                    (progn (org-table-end-of-field 1) (point)))))
+          (list b e)))
+    (evil-a-sentence count beg end type)))
+
+(evil-define-text-object evil-org-a-sentence (count &optional beg end type)
+  "Outer sentence or outer table cell when in an org table."
+  (if (org-at-table-p)
+      (save-excursion
+        (when (not (looking-back "|\\s-?")) (org-table-beginning-of-field 1))
+        (let* ((b (point))
+               (e (if (looking-at "\\s-")
+                      (progn (org-table-end-of-field 1) (point))
+                    (progn (org-table-end-of-field 2) (point)))))
+          (list b e)))
+    (evil-a-sentence count beg end type)))
+
+(evil-define-text-object evil-org-inner-paragraph (count &optional beg end type)
+  "Inner paragraph or table when in an org table."
+  (if (org-at-table-p)
+      (list (org-table-begin) (org-table-end))
+    (evil-inner-paragraph count beg end type)))
+
+(evil-define-text-object evil-org-a-paragraph (count &optional beg end type)
+  "Outer paragraph or table when in an org table."
+  (if (org-at-table-p)
+      (list (org-table-begin) (org-table-end))
+    (evil-a-paragraph count beg end type)))
 
 (defun evil-org--populate-base-bindings ()
   (let-alist evil-org-movement-bindings
@@ -228,10 +266,13 @@ FUN function callback"
       (kbd "O") 'evil-org-open-above)))
 
 (defun evil-org--populate-textobjects-bindings ()
-  (define-key evil-visual-state-local-map "ae" 'org-element-textobj)
-  (define-key evil-operator-state-local-map "ae" 'org-element-textobj)
-  (define-key evil-visual-state-local-map "ar" 'org-subtree-textobj)
-  (define-key evil-operator-state-local-map "ar" 'org-subtree-textobj))
+  (dolist (state '(visual operator))
+    (evil-define-key state evil-org-mode-map "ae" 'org-element-textobj)
+    (evil-define-key state evil-org-mode-map "ar" 'org-subtree-textobj)
+    (evil-define-key state evil-org-mode-map "is" 'evil-org-inner-sentence)
+    (evil-define-key state evil-org-mode-map "as" 'evil-org-a-sentence)
+    (evil-define-key state evil-org-mode-map "ip" 'evil-org-inner-paragraph)
+    (evil-define-key state evil-org-mode-map "ap" 'evil-org-inner-paragraph)))
 
 (defun evil-org--populate-insert-bindings ()
   (evil-define-key 'insert evil-org-mode-map
