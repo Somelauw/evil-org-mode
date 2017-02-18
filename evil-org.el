@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.3.5
+;; Version: 0.3.6
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -80,15 +80,24 @@ FUN function callback"
 (defun evil-org-open-below (count)
   "Clever insertion of org item."
   (interactive "p")
-  (cond ((org-in-item-p) (evil-org-eol-call 'org-insert-item))
-        ((org-at-table-p) (org-table-insert-row '(4)) (evil-insert nil))
+  (cond ((org-in-item-p)
+         (evil-open-below count)
+         (org-insert-item))
+        ((org-at-table-p)
+         (org-table-insert-row '(4))
+         (evil-insert count))
         (t (evil-open-below count))))
 
 (defun evil-org-open-above (count)
   "Clever insertion of org item."
   (interactive "p")
-  (cond ((org-in-item-p) (evil-org-bol-call 'org-insert-item))
-        ((org-at-table-p) (org-table-insert-row))
+  (cond ((org-in-item-p)
+         (beginning-of-visual-line)
+         (org-insert-item)
+         (evil-append count))
+        ((org-at-table-p)
+         (org-table-insert-row)
+         (evil-insert count))
         (t (evil-open-above count))))
 
 ;;; motions
