@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.3.4
+;; Version: 0.3.5
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -199,28 +199,36 @@ FUN function callback"
     (list (org-element-property :begin element)
           (org-element-property :end element))))
 
+(evil-define-text-object evil-org-table-inner-cell (count &optional beg end type)
+  "Inner org table cell."
+  (save-excursion
+    (when (not (looking-back "|\\s-?")) (org-table-beginning-of-field 1))
+    (let* ((b (point))
+           (e (progn (when (looking-at "\\s-*|") ; empty cells
+                       (right-char)
+                       (setq count (1- count)))
+                     (when (> count 0) (org-table-end-of-field count))
+                     (point))))
+      (list b e))))
+
+(evil-define-text-object evil-org-table-a-cell (count &optional beg end type)
+  "An org table cell."
+  (save-excursion
+    (when (not (looking-back "|\\s-?")) (org-table-beginning-of-field 1))
+    (list (point)
+          (dotimes (_ count (point))
+            (org-table-next-field)))))
+
 (evil-define-text-object evil-org-inner-sentence (count &optional beg end type)
   "Inner sentence or table cell when in an org table."
   (if (org-at-table-p)
-      (save-excursion
-        (when (not (looking-back "|\\s-?")) (org-table-beginning-of-field 1))
-        (let* ((b (point))
-               (e (if (looking-at "\\s-")
-                      (1+ b)
-                    (progn (org-table-end-of-field 1) (point)))))
-          (list b e)))
+      (evil-org-table-inner-cell count beg end type)
     (evil-a-sentence count beg end type)))
 
 (evil-define-text-object evil-org-a-sentence (count &optional beg end type)
-  "Outer sentence or outer table cell when in an org table."
+  "Outer sentence or table cell when in an org table."
   (if (org-at-table-p)
-      (save-excursion
-        (when (not (looking-back "|\\s-?")) (org-table-beginning-of-field 1))
-        (let* ((b (point))
-               (e (if (looking-at "\\s-")
-                      (progn (org-table-end-of-field 1) (point))
-                    (progn (org-table-end-of-field 2) (point)))))
-          (list b e)))
+      (evil-org-table-a-cell)
     (evil-a-sentence count beg end type)))
 
 (evil-define-text-object evil-org-inner-paragraph (count &optional beg end type)
@@ -235,6 +243,7 @@ FUN function callback"
       (list (org-table-begin) (org-table-end))
     (evil-a-paragraph count beg end type)))
 
+;;; Keythemes
 (defun evil-org--populate-base-bindings ()
   (let-alist evil-org-movement-bindings
     (dolist (state '(normal visual operator motion))
@@ -272,7 +281,7 @@ FUN function callback"
     (evil-define-key state evil-org-mode-map "is" 'evil-org-inner-sentence)
     (evil-define-key state evil-org-mode-map "as" 'evil-org-a-sentence)
     (evil-define-key state evil-org-mode-map "ip" 'evil-org-inner-paragraph)
-    (evil-define-key state evil-org-mode-map "ap" 'evil-org-inner-paragraph)))
+    (evil-define-key state evil-org-mode-map "ap" 'evil-org-a-paragraph)))
 
 (defun evil-org--populate-insert-bindings ()
   (evil-define-key 'insert evil-org-mode-map
