@@ -91,6 +91,18 @@ FUN function callback"
         ((org-at-table-p) (org-table-insert-row))
         (t (evil-open-above count))))
 
+;;; motions
+(evil-declare-motion 'org-forward-sentence)
+(evil-declare-motion 'org-backward-sentence)
+(evil-declare-motion 'org-forward-paragraph)
+(evil-declare-motion 'org-backward-paragraph)
+(evil-declare-motion 'org-table-next-row)
+(evil-declare-motion 'org-table-previous-row)
+(evil-declare-motion 'org-table-previous-field)
+(evil-declare-motion 'org-table-next-field)
+(evil-declare-motion 'org-table-beginning-of-field)
+(evil-declare-motion 'org-table-end-of-field)
+
 ;;; operators
 (evil-define-operator evil-org-shift-left (beg end)
   "Demote all headings in selection."
