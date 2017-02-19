@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.4.0
+;; Version: 0.4.1
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -111,6 +111,29 @@ FUN function callback"
 (evil-declare-motion 'org-table-next-field)
 (evil-declare-motion 'org-table-beginning-of-field)
 (evil-declare-motion 'org-table-end-of-field)
+
+;; heading
+(evil-declare-motion 'org-forward-heading-same-level)
+(evil-declare-motion 'org-backward-heading-same-level)
+
+;; elements
+(evil-declare-motion 'org-forward-element)
+(evil-declare-motion 'org-backward-element)
+(evil-declare-motion 'org-down-element)
+(evil-declare-motion 'org-up-element)
+
+;; other
+(evil-declare-motion 'org-next-block)
+(evil-declare-motion 'org-next-item)
+(evil-declare-motion 'org-next-visible-heading)
+(evil-declare-motion 'org-previous-block)
+(evil-declare-motion 'org-previous-item)
+(evil-declare-motion 'org-previous-visible-heading)
+
+
+;;; non-repeatible
+(evil-declare-not-repeat 'org-shifttab)
+(evil-declare-not-repeat 'org-cycle)
 
 ;;; operators
 (evil-define-operator evil-org-shift-left (beg end)
