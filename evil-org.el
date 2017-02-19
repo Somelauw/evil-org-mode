@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.3.6
+;; Version: 0.4.0
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -397,11 +397,10 @@ FUN function callback"
    (assq 'evil-org-mode minor-mode-map-alist)
    evil-org-mode-map))
 
-;; The default will probably be changed to '(textobjects insert additional)
 (if (and (boundp 'evil-disable-insert-state-bindings)
          (evil-disable-insert-state-bindings))
-    (evil-org-set-key-theme '(textobjects additional shift leader todo heading))
-  (evil-org-set-key-theme '(textobjects insert additional shift leader todo heading)))
+    (evil-org-set-key-theme '(textobjects additional))
+    (evil-org-set-key-theme '(textobjects insert additional)))
 
 ;;; vim-like confirm/abort for capture and src
 ;;; Taken from mwillsey (Max Willsey) on https://github.com/syl20bnr/spacemacs/pull/7400
