@@ -4,11 +4,14 @@ Supplemental evil-mode key-bindings to Emacs org-mode.
 This is an extended and actively maintained version of https://github.com/edwtjo/evil-org-mode/blob/master/evil-org.el that was originally created by Edward Tjörnhammar.
 
 * New features since evil-org-mode
+
+- [X] less controversial default keybindings (see issue [[https://github.com/edwtjo/evil-org-mode/issues/13][#13]])
 - [X] key themes
 - [X] customizable movement keys
 - [X] operators
 - [X] text objects
 - [X] insert mode bindings
+- [X] table support
 
 * Requirements
 
@@ -30,134 +33,40 @@ This is an extended and actively maintained version of https://github.com/edwtjo
     (evil-org-set-key-theme '(textobjects insert additional))
 #+end_src
 
-* Key themes
-The new config is set up in key themes
+* Keybindings
+  
+  |----------------+---------------------------|
+  | key            | explanation               |
+  |----------------+---------------------------|
+  | M-ret          | insert heading            |
+  | TAB            | fold / unfold headings    |
+  | gh, gj, gk, gl | navigate between elements |
+  | vae            | select an element         |
+  | var            | select a subtree          |
+  | M-h or <<      | promote a heading         |
+  | M-l or >>      | demote a heading          |
+  | M-k            | move subtree up           |
+  | M-j            | move subtree down         |
+  | M-S-h or <ar   | promote a subtree         |
+  | M-S-l or >ar   | demote a subtree          |
+  |----------------+---------------------------|
 
-To enable all bindings use:
-#+begin_src emacs-lisp
-    (evil-org-set-key-theme '(textobjects insert additional shift leader todo heading))
-#+end_src
-
-
-** Basic
-These keys are always enabled
-
-  |-----+-------------------------------|
-  | key | function                      |
-  |-----+-------------------------------|
-  | 'x' | evil-org-delete-char          |
-  | 'X' | evil-org-delete-previous-char |
-  | '$' | org-end-of-line               |
-  | '^' | org-beginning-of-line         |
-  | <   | org-metaleft                  |
-  | >   | org-metaright                 |
-  | (   | org-forward-sentence          |
-  | )   | org-backward-sentence         |
-  | {   | org-forward-paragraph         |
-  | }   | org-backward-paragraph        |
-  | TAB | org-cycle                     |
-  | o   | evil-org-open-below           |
-  | O   | evil-org-open-above           |
-  |-----+-------------------------------|
-
-** Text objects
-"var" to select an element
-"dar" to delete a subtree
-"2yar" to yank the parent of a subtree
-
-  |-----+-------------+------------------------------------------------|
-  | key | function    | explanation                                    |
-  |-----+-------------+------------------------------------------------|
-  | ae  | org-element | An org element                                 |
-  | ar  | org-subtree | A subtree. Use a count to select parent trees. |
-  |-----+-------------+------------------------------------------------|
-
-** Operators
-Operators for promoting/demoting headings
-
-">>" to promote a heading
-">ar" to promote a tree
-
-  |-----+----------------------+-------------------------------------|
-  | key | function             | explanation                         |
-  |-----+----------------------+-------------------------------------|
-  | <   | evil-org-shift-left  | Promote all headings in marked area |
-  | >   | evil-org-shift-right | Demote all headings in marked area  |
-  |-----+----------------------+-------------------------------------|
-
-If you want < and > similar to evil-org-mode, put the following in your init file
-
-#+begin_src emacs-lisp
-  (evil-define-key 'normal evil-org-mode-map
-    (kbd ">") 'org-meta-right
-    (kbd "<") 'org-meta-left)
-#+end_src
-
-Or you enable additional and use M-h and M-l.
-
-** Additional
-If you don't want to use hjkl, you can customize evil-org-movement-bindings.
-
-  |-----+---------------------------------------------+---------------------|
-  | key | function                                    | explanation         |
-  |-----+---------------------------------------------+---------------------|
-  | gh  | outline-up-heading                          | Go to parent tree   |
-  | gj  | org-forward-heading-same-level              | Next heading        |
-  | gk  | org-backward-heading-same-level             | Previous heading    |
-  | gl  | outline-next-visible-heading                | Go to first subtree |
-  | M-l | org-metaright                               | Demote heading      |
-  | M-h | org-metaleft                                | Promote heading     |
-  | M-k | org-metaup                                  | Move subtree up     |
-  | M-j | org-metadown                                | Move subtree down   |
-  | M-L | org-shiftmetaright                          | Demote subtree      |
-  | M-H | org-shiftmetaleft                           | Promote subtree     |
-  | M-K | org-shiftmetaup                             | Move heading up     |
-  | M-J | org-shiftmetadown                           | Move heading down   |
-  |-----+---------------------------------------------+---------------------|
-
-** Shift
-If you don't want to use hjkl, you can customize evil-org-movement-bindings.
-
-  |-----+----------------+--------------------|
-  | key | function       | explanation        |
-  |-----+----------------+--------------------|
-  | H   | org-shiftleft  | previous todo item |
-  | L   | org-shiftright | next todo item     |
-  | J   | org-shiftdown  | decrease priority  |
-  | K   | org-shiftup    | increase priority  |
-  |-----+----------------+--------------------|
-
-** Leader
-
-  |-----------+---------------------------|
-  | key       | function                  |
-  |-----------+---------------------------|
-  | <leader>a | org-agenda                |
-  | <leader>t | org-show-todo-tree        |
-  | <leader>c | org-archive-subtree       |
-  | <leader>l | evil-org-open-links       |
-  | <leader>o | evil-org-recompute-clocks |
-  |-----------+---------------------------|
-
-** Todo
-
-  |-----+---------------------------------------|
-  | key | function                              |
-  |-----+---------------------------------------|
-  | t   | org-todo                              |
-  | T   | org-insert-todo-heading nil           |
-  | M-t | org-insert-todo-heading+org-metaright |
-  |-----+---------------------------------------|
-
-** Heading
-
-  |-----+----------------------------------|
-  | key | function                         |
-  |-----+----------------------------------|
-  | O   | org-insert-heading               |
-  | M-o | org-insert-heading+org-metaright |
-  |-----+----------------------------------|
+  [[file:doc/keythemes.org][Full overview of bindings and configuration]]
 
 * License
 
 Gnu General Public License v3.0, http://www.gnu.org/copyleft/gpl.html
+
+* See also
+
+** http://orgmode.org/
+   The official org-mode website
+
+** [[https://github.com/edwtjo/evil-org-mode][org-mode by edwtjo]]
+   Original org-mode plugin by edwtjo from which this project was forked
+
+** https://github.com/GuiltyDolphin/org-evil
+   Alternative integration of evil and org with different keybindings
+
+** [[http://orgmode.org/orgcard.pdf]]
+   A handy cheat sheet, even if using this plugin
