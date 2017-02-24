@@ -81,8 +81,9 @@ FUN function callback"
   "Clever insertion of org item."
   (interactive "p")
   (cond ((org-in-item-p)
-         (evil-open-below count)
-         (org-insert-item))
+         (end-of-visible-line)
+         (org-insert-item)
+         (evil-append count))
         ((org-at-table-p)
          (org-table-insert-row '(4))
          (evil-insert count))
@@ -99,6 +100,12 @@ FUN function callback"
          (org-table-insert-row)
          (evil-insert count))
         (t (evil-open-above count))))
+
+(defun evil-org-insert-below (count)
+  (interactive "p")
+  (end-of-visible-line)
+  (org-meta-return)
+  (evil-append count))
 
 ;;; motions
 (evil-declare-motion 'org-forward-sentence)
