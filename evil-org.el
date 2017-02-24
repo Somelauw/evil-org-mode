@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.4.2
+;; Version: 0.4.3
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -328,9 +328,25 @@ FUN function callback"
     (evil-define-key state evil-org-mode-map "ap" 'evil-org-a-paragraph)))
 
 (defun evil-org--populate-insert-bindings ()
+  "Define insert mode bindings."
   (evil-define-key 'insert evil-org-mode-map
     (kbd "C-t") 'org-metaright
     (kbd "C-d") 'org-metaleft))
+
+(defun evil-org--populate-rsi-bindings ()
+  "Define key bindings to use in hybrid state."
+  (define-key org-mode-map (kbd "C-d")
+    (lambda (n)
+      (interactive "p")
+      (if (and (org-at-heading-or-item-p) (eolp))
+          (org-metaleft)
+        (org-delete-char n))))
+  (define-key org-mode-map (kbd "C-f")
+    (lambda (n)
+      (interactive "p")
+      (if (and (org-at-heading-or-item-p) (eolp))
+          (org-metaright)
+        (forward-char n)))))
 
 (defun evil-org--populate-additional-bindings ()
   (let-alist evil-org-movement-bindings
@@ -407,6 +423,7 @@ FUN function callback"
   (evil-org--populate-base-bindings)
   (when (memq 'textobjects theme) (evil-org--populate-textobjects-bindings))
   (when (memq 'insert theme) (evil-org--populate-insert-bindings))
+  (when (memq 'rsi theme) (evil-org--populate-rsi-bindings))
   (when (memq 'additional theme) (evil-org--populate-additional-bindings))
   (when (memq 'shift theme) (evil-org--populate-shift-bindings))
   (when (memq 'leader theme) (evil-org--populate-leader-bindings))
