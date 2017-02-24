@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.4.1
+;; Version: 0.4.2
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -338,12 +338,8 @@ FUN function callback"
       (evil-define-key state evil-org-mode-map
         (kbd (concat "g" .left)) 'org-up-element
         (kbd (concat "g" .right)) 'org-down-element
-        (kbd (concat "g" .up)) (if (fboundp 'org-backward-same-level)
-                                  'org-backward-same-level
-                                'org-backward-heading-same-level)
-        (kbd (concat "g" .down)) (if (fboundp 'org-forward-same-level) ;to be backward compatible with older org version
-                                    'org-forward-same-level
-                                  'org-forward-heading-same-level)))
+        (kbd (concat "g" .up)) 'org-backward-element
+        (kbd (concat "g" .down)) 'org-forward-element))
     (dolist (state '(normal visual))
       (evil-define-key state evil-org-mode-map
         (kbd (concat "M-" .left)) 'org-metaleft
