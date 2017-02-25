@@ -1,5 +1,3 @@
-#+TITLE evil-org-mode-keythemes
-
 * Key themes
   
 The new config is set up in key themes

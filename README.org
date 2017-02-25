@@ -3,70 +3,70 @@
 Supplemental evil-mode key-bindings to Emacs org-mode.
 This is an extended and actively maintained version of https://github.com/edwtjo/evil-org-mode/blob/master/evil-org.el that was originally created by Edward Tjörnhammar.
 
-* New features since evil-org-mode
+** New features since evil-org-mode
 
-- [X] less controversial default keybindings (see issue [[https://github.com/edwtjo/evil-org-mode/issues/13][#13]])
-- [X] key themes
-- [X] customizable movement keys
-- [X] operators
-- [X] text objects
-- [X] insert mode bindings
-- [X] table support
+ - [X] less controversial default keybindings (see issue [[https://github.com/edwtjo/evil-org-mode/issues/13][#13]])
+ - [X] key themes
+ - [X] customizable movement keys
+ - [X] operators
+ - [X] text objects
+ - [X] insert mode bindings
+ - [X] table support
 
-* Requirements
+** Requirements
 
-- org-mode, git://orgmode.org/org-mode.git
-- evil-mode, https://bitbucket.org/lyro/evil
-- evil-leader, https://github.com/cofi/evil-leader.git
+ - org-mode, git://orgmode.org/org-mode.git
+ - evil-mode, https://bitbucket.org/lyro/evil
+ - evil-leader, https://github.com/cofi/evil-leader.git
 
-* Installation
+** Installation
 
-#+BEGIN_SRC sh
-  mkdir -p ~/.emacs.d/plugins; git clone git://github.com/somelauw/evil-org-improved.git ~/.emacs.d/plugins/evil-org-mode
-#+END_SRC
+ #+BEGIN_SRC sh
+   mkdir -p ~/.emacs.d/plugins; git clone git://github.com/somelauw/evil-org-improved.git ~/.emacs.d/plugins/evil-org-mode
+ #+END_SRC
 
-** emacs.el
+*** emacs.el
 
-#+begin_src emacs-lisp
-    (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
-    (require 'evil-org)
-    (evil-org-set-key-theme '(textobjects insert additional))
-#+end_src
+ #+begin_src emacs-lisp
+     (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
+     (require 'evil-org)
+     (evil-org-set-key-theme '(textobjects insert additional))
+ #+end_src
 
-* Keybindings
+** Keybindings
   
-  |----------------+---------------------------|
-  | key            | explanation               |
-  |----------------+---------------------------|
-  | M-ret          | insert heading            |
-  | TAB            | fold / unfold headings    |
-  | gh, gj, gk, gl | navigate between elements |
-  | vae            | select an element         |
-  | var            | select a subtree          |
-  | M-h or <<      | promote a heading         |
-  | M-l or >>      | demote a heading          |
-  | M-k            | move subtree up           |
-  | M-j            | move subtree down         |
-  | M-S-h or <ar   | promote a subtree         |
-  | M-S-l or >ar   | demote a subtree          |
-  |----------------+---------------------------|
+   |----------------+---------------------------|
+   | key            | explanation               |
+   |----------------+---------------------------|
+   | M-ret          | insert heading            |
+   | TAB            | fold / unfold headings    |
+   | gh, gj, gk, gl | navigate between elements |
+   | vae            | select an element         |
+   | var            | select a subtree          |
+   | M-h or <<      | promote a heading         |
+   | M-l or >>      | demote a heading          |
+   | M-k            | move subtree up           |
+   | M-j            | move subtree down         |
+   | M-S-h or <ar   | promote a subtree         |
+   | M-S-l or >ar   | demote a subtree          |
+   |----------------+---------------------------|
 
-  [[file:doc/keythemes.org][Full overview of bindings and configuration]]
+   [[file:doc/keythemes.org][Full overview of bindings and configuration]]
 
-* License
+** License
 
-Gnu General Public License v3.0, http://www.gnu.org/copyleft/gpl.html
+ Gnu General Public License v3.0, http://www.gnu.org/copyleft/gpl.html
 
-* See also
+** See also
 
-** http://orgmode.org/
-   The official org-mode website
+*** http://orgmode.org/
+    The official org-mode website
 
-** [[https://github.com/edwtjo/evil-org-mode][org-mode by edwtjo]]
-   Original org-mode plugin by edwtjo from which this project was forked
+*** [[https://github.com/edwtjo/evil-org-mode][org-mode by edwtjo]]
+    Original org-mode plugin by edwtjo from which this project was forked
 
-** https://github.com/GuiltyDolphin/org-evil
-   Alternative integration of evil and org with different keybindings
+*** https://github.com/GuiltyDolphin/org-evil
+    Alternative integration of evil and org with different keybindings
 
-** [[http://orgmode.org/orgcard.pdf]]
-   A handy cheat sheet, even if using this plugin
+*** [[http://orgmode.org/orgcard.pdf]]
+    A handy cheat sheet, even if using this plugin
