@@ -13,26 +13,6 @@ This is an extended and actively maintained version of https://github.com/edwtjo
  - [X] insert mode bindings
  - [X] table support
 
-** Requirements
-
- - org-mode, git://orgmode.org/org-mode.git
- - evil-mode, https://bitbucket.org/lyro/evil
- - evil-leader, https://github.com/cofi/evil-leader.git
-
-** Installation
-
- #+BEGIN_SRC sh
-   mkdir -p ~/.emacs.d/plugins; git clone git://github.com/somelauw/evil-org-improved.git ~/.emacs.d/plugins/evil-org-mode
- #+END_SRC
-
-*** emacs.el
-
- #+begin_src emacs-lisp
-     (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
-     (require 'evil-org)
-     (evil-org-set-key-theme '(textobjects insert additional))
- #+end_src
-
 ** Keybindings
   
    |----------------+---------------------------|
@@ -53,20 +33,42 @@ This is an extended and actively maintained version of https://github.com/edwtjo
 
    [[file:doc/keythemes.org][Full overview of bindings and configuration]]
 
-** License
+** Requirements
 
- Gnu General Public License v3.0, http://www.gnu.org/copyleft/gpl.html
+ - org-mode, git://orgmode.org/org-mode.git
+ - evil-mode, https://bitbucket.org/lyro/evil
+ - evil-leader, https://github.com/cofi/evil-leader.git
+
+** Installation
+
+ #+BEGIN_SRC sh
+   mkdir -p ~/.emacs.d/plugins; git clone git://github.com/somelauw/evil-org-improved.git ~/.emacs.d/plugins/evil-org-mode
+ #+END_SRC
+
+*** emacs.el
+
+ #+begin_src emacs-lisp
+     (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
+     (require 'evil-org)
+     (evil-org-set-key-theme '(textobjects insert additional))
+ #+end_src
+ 
+ For a more elaborate setup, take a look at [[file:doc/example_config.el][this example]].
 
 ** See also
 
-*** http://orgmode.org/
-    The official org-mode website
-
-*** [[https://github.com/edwtjo/evil-org-mode][org-mode by edwtjo]]
+   - [[https://github.com/edwtjo/evil-org-mode][org-mode by edwtjo]]
     Original org-mode plugin by edwtjo from which this project was forked
 
-*** https://github.com/GuiltyDolphin/org-evil
+   - [[https://github.com/GuiltyDolphin/org-evil][org-evil by GuiltyDolphin]]
     Alternative integration of evil and org with different keybindings
 
-*** [[http://orgmode.org/orgcard.pdf]]
+   - http://orgmode.org/
+    The official org-mode website
+
+   - [[http://orgmode.org/orgcard.pdf]]
     A handy cheat sheet, even if using this plugin
+
+** License
+
+ Gnu General Public License v3.0, http://www.gnu.org/copyleft/gpl.html
