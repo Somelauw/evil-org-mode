@@ -78,7 +78,8 @@ FUN function callback"
   (evil-append nil))
 
 (defun evil-org-open-below (count)
-  "Clever insertion of org item."
+  "Clever insertion of org item.
+Argument COUNT number of lines to insert."
   (interactive "p")
   (cond ((org-in-item-p)
          (end-of-visible-line)
@@ -90,7 +91,8 @@ FUN function callback"
         (t (evil-open-below count))))
 
 (defun evil-org-open-above (count)
-  "Clever insertion of org item."
+  "Clever insertion of org item.
+Argument COUNT number of lines to insert."
   (interactive "p")
   (cond ((org-in-item-p)
          (beginning-of-visual-line)
@@ -102,6 +104,8 @@ FUN function callback"
         (t (evil-open-above count))))
 
 (defun evil-org-insert-below (count)
+  "Insert heading or item below.
+Argument COUNT number of lines to insert."
   (interactive "p")
   (end-of-visible-line)
   (org-meta-return)
@@ -189,51 +193,50 @@ FUN function callback"
         (next-line)
         (message "at position %S" (point))))))
 
-;; open org-mode links in visual selection
-(defun evil-org-generic-open-links (beg end type register yank-handler incog)
+(defun evil-org-generic-open-links (beg end incog)
+  "Open org mode links in visual selection.
+Argument BEG beginning of region.
+Argument END end of region.
+Argument INCOG whether to open in incognito mode."
   (progn
     (save-excursion
       (goto-char beg)
       (catch 'break
         (while t
           (org-next-link)
-          ;;; break from outer loop when there are no more
-          ;;; org links
+          ;; break from outer loop when there are no more
+          ;; org links
           (when (or
                  (not (< (point) end))
                  (not (null org-link-search-failed)))
             (throw 'break 0))
-
           (if (not (null incog))
               (let* ((new-arg
-                      ;;; if incog is true, decide which incognito settings to
-                      ;;; use dependening on the browser
-                      (cond ((not (null (string-match "^.*\\(iceweasel\\|firefox\\).*$" browse-url-generic-program)))  "--private-window")
-                            ((not (null (string-match "^.*\\(chrome\\|chromium\\).*$"  browse-url-generic-program)))   "--incognito"     )
-                            (t "")
-                            ))
-                     (old-b (list browse-url-generic-args " " ))
+                      ;; if incog is true, decide which incognito settings to
+                      ;; use dependening on the browser
+                      (cond ((not (null (string-match "^.*\\(iceweasel\\|firefox\\).*$" browse-url-generic-program))) "--private-window")
+                            ((not (null (string-match "^.*\\(chrome\\|chromium\\).*$" browse-url-generic-program))) "--incognito")
+                            (t "")))
+                     (old-b (list browse-url-generic-args " "))
                      (browse-url-generic-args (add-to-ordered-list 'old-b new-arg 0)))
                 (progn
                   (org-open-at-point)))
             (let ((browse-url-generic-args '("")))
-              (org-open-at-point)))
-          )))))
+              (org-open-at-point))))))))
 
-
-;;; open links in visual selection
+;; open links in visual selection
 (evil-define-operator evil-org-open-links (beg end type register yank-handler)
   :keep-visual t
   :move-point nil
   (interactive "<r>")
-  (evil-org-generic-open-links beg end type register yank-handler nil))
+  (evil-org-generic-open-links beg end nil))
 
-;;; open links in visual selection in incognito mode
+;; open links in visual selection in incognito mode
 (evil-define-operator evil-org-open-links-incognito (beg end type register yank-handler)
   :keep-visual t
   :move-point nil
   (interactive "<r>")
-  (evil-org-generic-open-links beg end type register yank-handler t))
+  (evil-org-generic-open-links beg end t))
 
 ;;; text-objects
 (evil-define-text-object org-element-textobj (count &optional beg end type)
@@ -299,6 +302,7 @@ FUN function callback"
 
 ;;; Keythemes
 (defun evil-org--populate-base-bindings ()
+  "Bindings that are always be available ."
   (let-alist evil-org-movement-bindings
     (dolist (state '(normal visual operator motion))
       (evil-define-key state evil-org-mode-map
@@ -315,9 +319,9 @@ FUN function callback"
                              (evil-org-eol-call
                               'org-insert-heading-respect-content))
         (kbd "<C-S-return>") (lambda ()
-                             (interactive)
-                             (evil-org-eol-call
-                              'org-insert-todo-heading-respect-content))))
+                               (interactive)
+                               (evil-org-eol-call
+                                'org-insert-todo-heading-respect-content))))
     (dolist (state '(normal visual))
       (evil-define-key state evil-org-mode-map
         (kbd "<") 'evil-org-shift-left
@@ -329,6 +333,7 @@ FUN function callback"
       (kbd "O") 'evil-org-open-above)))
 
 (defun evil-org--populate-textobjects-bindings ()
+  "Text objects."
   (dolist (state '(visual operator))
     (evil-define-key state evil-org-mode-map "ae" 'org-element-textobj)
     (evil-define-key state evil-org-mode-map "ar" 'org-subtree-textobj)
@@ -386,6 +391,7 @@ FUN function callback"
         (kbd (concat "C-" (capitalize .down))) 'org-shiftcontroldown))))
 
 (defun evil-org--populate-shift-bindings ()
+  "Shift bindings that conflict with evil bindings."
   (let-alist evil-org-movement-bindings
     (evil-define-key 'normal evil-org-mode-map
       (capitalize .left) 'org-shiftleft
@@ -395,6 +401,7 @@ FUN function callback"
 
 ;; leader maps
 (defun evil-org--populate-leader-bindings ()
+  "Leader bindings (deprecated)."
   (evil-leader/set-key-for-mode 'org-mode
     "t" 'org-show-todo-tree
     "a" 'org-agenda
@@ -403,6 +410,7 @@ FUN function callback"
     "o" 'evil-org-recompute-clocks))
 
 (defun evil-org--populate-todo-bindings ()
+  "Bindings for easy todo insertion."
   (evil-define-key 'normal evil-org-mode-map
     "t" 'org-todo
     "T" '(lambda ()
@@ -418,6 +426,7 @@ FUN function callback"
               (org-metaright))))))
 
 (defun evil-org--populate-heading-bindings ()
+  "Bindings for easy heading insertion."
   (evil-define-key 'normal evil-org-mode-map
     (kbd "O") '(lambda ()
                  (interactive)
@@ -433,6 +442,7 @@ FUN function callback"
 
 ;;;###autoload
 (defun evil-org-set-key-theme (theme)
+  "Select what key THEMEs to enable."
   (setq evil-org-mode-map (make-sparse-keymap))
   (evil-org--populate-base-bindings)
   (evil-org--populate-navigation-bindings) ; Automatically included for now
