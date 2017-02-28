@@ -50,7 +50,7 @@ This is an extended and actively maintained version of https://github.com/edwtjo
  #+begin_src emacs-lisp
      (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
      (require 'evil-org)
-     (evil-org-set-key-theme '(textobjects insert additional))
+     (evil-org-set-key-theme '(textobjects insert navigation additional))
  #+end_src
  
  For a more elaborate setup, take a look at [[file:doc/example_config.el][this example]].

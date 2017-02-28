@@ -4,7 +4,7 @@ The new config is set up in key themes
 
 To enable all bindings use:
 #+begin_src emacs-lisp
-    (evil-org-set-key-theme '(textobjects insert additional shift leader todo heading))
+    (evil-org-set-key-theme '(textobjects insert navigation additional shift leader todo heading))
 #+end_src
 
 ** Basic
@@ -41,7 +41,7 @@ These keys are always enabled
   |-----+-------------+------------------------------------------------|
 
 ** Operators
-Operators for promoting/demoting headings
+Operators for promoting/demoting headings and items
 
 ">>" to promote a heading
 ">ar" to promote a tree
@@ -61,9 +61,9 @@ If you want < and > similar to evil-org-mode, put the following in your init fil
     (kbd "<") 'org-meta-left)
 #+end_src
 
-Or you enable additional and use M-h and M-l.
+Or enable the additional key binding theme and use M-h and M-l.
 
-** Additional
+** Movement
 If you don't want to use hjkl, you can customize evil-org-movement-bindings.
 
   |-----+---------------------------------------------+---------------------|
@@ -73,6 +73,14 @@ If you don't want to use hjkl, you can customize evil-org-movement-bindings.
   | gj  | org-forward-heading-same-level              | Next heading        |
   | gk  | org-backward-heading-same-level             | Previous heading    |
   | gl  | outline-next-visible-heading                | Go to first subtree |
+  |-----+---------------------------------------------+---------------------|
+
+** Additional
+If you don't want to use hjkl, you can customize evil-org-movement-bindings.
+
+  |-----+---------------------------------------------+---------------------|
+  | key | function                                    | explanation         |
+  |-----+---------------------------------------------+---------------------|
   | M-l | org-metaright                               | Demote heading      |
   | M-h | org-metaleft                                | Promote heading     |
   | M-k | org-metaup                                  | Move subtree up     |

@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.4.4
+;; Version: 0.4.5
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -358,14 +358,18 @@ FUN function callback"
           (org-metaright)
         (forward-char n)))))
 
-(defun evil-org--populate-additional-bindings ()
+(defun evil-org--populate-navigation-bindings ()
+  "Configures gj/gk/gh/gl for navigation."
   (let-alist evil-org-movement-bindings
-    (dolist (state '(motion))
-      (evil-define-key state evil-org-mode-map
-        (kbd (concat "g" .left)) 'org-up-element
-        (kbd (concat "g" .right)) 'org-down-element
-        (kbd (concat "g" .up)) 'org-backward-element
-        (kbd (concat "g" .down)) 'org-forward-element))
+    (evil-define-key 'motion evil-org-mode-map
+       (kbd (concat "g" .left)) 'org-up-element
+       (kbd (concat "g" .right)) 'org-down-element
+       (kbd (concat "g" .up)) 'org-backward-element
+       (kbd (concat "g" .down)) 'org-forward-element)))
+
+(defun evil-org--populate-additional-bindings ()
+  "Bindings with meta and control."
+  (let-alist evil-org-movement-bindings
     (dolist (state '(normal visual))
       (evil-define-key state evil-org-mode-map
         (kbd (concat "M-" .left)) 'org-metaleft
@@ -431,6 +435,7 @@ FUN function callback"
 (defun evil-org-set-key-theme (theme)
   (setq evil-org-mode-map (make-sparse-keymap))
   (evil-org--populate-base-bindings)
+  (evil-org--populate-navigation-bindings) ; Automatically included for now
   (when (memq 'textobjects theme) (evil-org--populate-textobjects-bindings))
   (when (memq 'insert theme) (evil-org--populate-insert-bindings))
   (when (memq 'rsi theme) (evil-org--populate-rsi-bindings))
@@ -445,8 +450,8 @@ FUN function callback"
 
 (if (and (boundp 'evil-disable-insert-state-bindings)
          (evil-disable-insert-state-bindings))
-    (evil-org-set-key-theme '(textobjects additional))
-    (evil-org-set-key-theme '(textobjects insert additional)))
+    (evil-org-set-key-theme '(textobjects navigation additional shift2))
+    (evil-org-set-key-theme '(textobjects navigation insert additional shift2)))
 
 ;;; vim-like confirm/abort for capture and src
 ;;; Taken from mwillsey (Max Willsey) on https://github.com/syl20bnr/spacemacs/pull/7400
