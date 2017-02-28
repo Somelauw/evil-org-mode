@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.4.3
+;; Version: 0.4.4
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -137,21 +137,24 @@ FUN function callback"
 (evil-declare-motion 'org-previous-item)
 (evil-declare-motion 'org-previous-visible-heading)
 
-
 ;;; non-repeatible
 (evil-declare-not-repeat 'org-shifttab)
 (evil-declare-not-repeat 'org-cycle)
 
 ;;; operators
 (evil-define-operator evil-org-shift-left (beg end)
-  "Demote all headings in selection."
+  "Demote headings and items in selection."
   :move-point nil
-  (org-map-region 'org-metaleft beg end))
+  (goto-char beg)
+  (push-mark end)
+  (org-metaleft))
 
 (evil-define-operator evil-org-shift-right (beg end)
-  "Promote all headings in selection."
+  "Promote headings and items in selection."
   :move-point nil
-  (org-map-region 'org-metaright beg end))
+  (goto-char beg)
+  (push-mark end)
+  (org-metaright))
 
 (evil-define-operator evil-org-delete-char (count beg end type register)
   "Combine evil-delete-char with org-delete-char"
