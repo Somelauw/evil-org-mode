@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.4.5
+;; Version: 0.4.6
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -290,15 +290,20 @@ Argument INCOG whether to open in incognito mode."
 
 (evil-define-text-object evil-org-inner-paragraph (count &optional beg end type)
   "Inner paragraph or table when in an org table."
+  :type line
   (if (org-at-table-p)
       (list (org-table-begin) (org-table-end))
-    (evil-inner-paragraph count beg end type)))
+    (evil-select-inner-object 'evil-paragraph beg end type count t)))
 
 (evil-define-text-object evil-org-a-paragraph (count &optional beg end type)
-  "Outer paragraph or table when in an org table."
+  "A paragraph or table when in an org table."
+  :type line
   (if (org-at-table-p)
-      (list (org-table-begin) (org-table-end))
-    (evil-a-paragraph count beg end type)))
+      (-let* ((p (point))
+              ((b e) (list (org-table-begin) (org-table-end))))
+        (list (min (or beg p) b)
+              (max (or end p) e)))
+    (evil-select-an-object 'evil-paragraph beg end type count t)))
 
 ;;; Keythemes
 (defun evil-org--populate-base-bindings ()
