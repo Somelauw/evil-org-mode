@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.4.6
+;; Version: 0.4.7
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -144,6 +144,25 @@ Argument COUNT number of lines to insert."
 ;;; non-repeatible
 (evil-declare-not-repeat 'org-shifttab)
 (evil-declare-not-repeat 'org-cycle)
+
+;;; new motions
+(evil-define-motion evil-org-forward-sentence (count)
+  "In a table go to next cell, otherwise go to next sentence."
+  :type exclusive
+  :jump t
+  (interactive "p")
+  (if (org-at-table-p)
+      (org-table-end-of-field count)
+    (evil-forward-sentence-begin count)))
+
+(evil-define-motion evil-org-backward-sentence (count)
+  "In a table go to previous cell, otherwise go to previous sentence."
+  :type exclusive
+  :jump t
+  (interactive "p")
+  (if (org-at-table-p)
+      (org-table-beginning-of-field count)
+    (evil-backward-sentence-begin count)))
 
 ;;; operators
 (evil-define-operator evil-org-shift-left (beg end)
@@ -315,8 +334,8 @@ Argument INCOG whether to open in incognito mode."
         (kbd "^") 'org-beginning-of-line
         (kbd "x") 'evil-org-delete-char
         (kbd "X") 'evil-org-delete-backward-char
-        (kbd ")") 'org-forward-sentence
-        (kbd "(") 'org-backward-sentence
+        (kbd ")") 'evil-org-forward-sentence
+        (kbd "(") 'evil-org-backward-sentence
         (kbd "}") 'org-forward-paragraph
         (kbd "{") 'org-backward-paragraph
         (kbd "<C-return>") (lambda ()
