@@ -111,6 +111,20 @@ Argument COUNT number of lines to insert."
   (org-meta-return)
   (evil-append count))
 
+(defun evil-org-insert-subheading (count)
+  (interactive "p")
+   (end-of-visible-line)
+   (org-insert-heading)
+   (org-metaright)
+   (evil-append count))
+
+(defun evil-org-insert-subtodo (count)
+  (interactive "p")
+   (end-of-visible-line)
+   (org-insert-todo-heading nil)
+   (org-metaright)
+   (evil-append count))
+
 ;;; motion declarations
 (evil-declare-motion 'org-forward-sentence)
 (evil-declare-motion 'org-backward-sentence)
@@ -443,12 +457,7 @@ Argument INCOG whether to open in incognito mode."
            (evil-org-eol-call
             (lambda ()
               (org-insert-todo-heading nil))))
-    (kbd "M-t") '(lambda ()
-           (interactive)
-           (evil-org-eol-call
-            (lambda ()
-              (org-insert-todo-heading nil)
-              (org-metaright))))))
+    (kbd "M-t") 'evil-org-insert-subtodo))
 
 (defun evil-org--populate-heading-bindings ()
   "Bindings for easy heading insertion."
@@ -458,12 +467,7 @@ Argument INCOG whether to open in incognito mode."
                  (evil-org-eol-call
                    (lambda ()
                      (org-insert-heading))))
-    (kbd "M-o") '(lambda ()
-                   (interactive)
-                   (evil-org-eol-call
-                    '(lambda ()
-                       (org-insert-heading)
-                       (org-metaright))))))
+    (kbd "M-o") 'evil-org-insert-subheading))
 
 ;;;###autoload
 (defun evil-org-set-key-theme (theme)
