@@ -81,26 +81,26 @@ FUN function callback"
   "Clever insertion of org item.
 Argument COUNT number of lines to insert."
   (interactive "p")
-  (cond ((org-in-item-p)
+  (cond ((org-at-table-p)
+         (org-table-insert-row '(4))
+         (evil-insert count))
+        ((org-in-item-p)
          (end-of-visible-line)
          (org-insert-item)
          (evil-append count))
-        ((org-at-table-p)
-         (org-table-insert-row '(4))
-         (evil-insert count))
         (t (evil-open-below count))))
 
 (defun evil-org-open-above (count)
   "Clever insertion of org item.
 Argument COUNT number of lines to insert."
   (interactive "p")
-  (cond ((org-in-item-p)
+  (cond ((org-at-table-p)
+         (org-table-insert-row)
+         (evil-insert count))
+        ((org-in-item-p)
          (beginning-of-visual-line)
          (org-insert-item)
          (evil-append count))
-        ((org-at-table-p)
-         (org-table-insert-row)
-         (evil-insert count))
         (t (evil-open-above count))))
 
 (defun evil-org-insert-below (count)
