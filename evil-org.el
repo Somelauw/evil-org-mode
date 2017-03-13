@@ -111,7 +111,7 @@ Argument COUNT number of lines to insert."
   (org-meta-return)
   (evil-append count))
 
-;;; motions
+;;; motion declarations
 (evil-declare-motion 'org-forward-sentence)
 (evil-declare-motion 'org-backward-sentence)
 (evil-declare-motion 'org-forward-paragraph)
@@ -142,8 +142,9 @@ Argument COUNT number of lines to insert."
 (evil-declare-motion 'org-previous-visible-heading)
 
 ;;; non-repeatible
-(evil-declare-not-repeat 'org-shifttab)
-(evil-declare-not-repeat 'org-cycle)
+(evil-declare-change-repeat 'org-cycle)
+(evil-declare-change-repeat 'org-shifttab)
+(evil-declare-change-repeat 'org-table-end-of-field)
 
 ;;; new motions
 (evil-define-motion evil-org-forward-sentence (count)
