@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.5.2
+;; Version: 0.5.3
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -435,7 +435,11 @@ Argument INCOG whether to open in incognito mode."
         (kbd (concat "C-" (capitalize .left))) 'org-shiftcontrolleft
         (kbd (concat "C-" (capitalize .right))) 'org-shiftcontrolright
         (kbd (concat "C-" (capitalize .up))) 'org-shiftcontrolup
-        (kbd (concat "C-" (capitalize .down))) 'org-shiftcontroldown))))
+        (kbd (concat "C-" (capitalize .down))) 'org-shiftcontroldown)))
+  (let ((state (if evil-org-use-additional-insert '(normal insert) 'normal)))
+    (evil-define-key state evil-org-mode-map
+      (kbd "M-o") 'evil-org-insert-subheading
+      (kbd "M-t") 'evil-org-insert-subtodo)))
 
 (defun evil-org--populate-shift-bindings ()
   "Shift bindings that conflict with evil bindings."
@@ -465,18 +469,17 @@ Argument INCOG whether to open in incognito mode."
            (interactive)
            (evil-org-eol-call
             (lambda ()
-              (org-insert-todo-heading nil))))
-    (kbd "M-t") 'evil-org-insert-subtodo))
+              (org-insert-todo-heading nil))))))
 
 (defun evil-org--populate-heading-bindings ()
   "Bindings for easy heading insertion."
   (evil-define-key 'normal evil-org-mode-map
+    (make-obsolete 'leader "(evil-define-key 'normal evil-org-mode-map \"O\" evil-org-insert-below.")
     (kbd "O") '(lambda ()
                  (interactive)
                  (evil-org-eol-call
-                   (lambda ()
-                     (org-insert-heading))))
-    (kbd "M-o") 'evil-org-insert-subheading))
+                  (lambda ()
+                    (org-insert-heading))))))
 
 ;;;###autoload
 (defun evil-org-set-key-theme (theme)
