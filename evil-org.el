@@ -476,7 +476,7 @@ Argument INCOG whether to open in incognito mode."
   "Select what key THEMEs to enable."
   (setq evil-org-mode-map (make-sparse-keymap))
   (evil-org--populate-base-bindings)
-  (evil-org--populate-navigation-bindings) ; Automatically included for now
+  (when (memq 'navigation theme) (evil-org--populate-navigation-bindings))
   (when (memq 'textobjects theme) (evil-org--populate-textobjects-bindings))
   (when (memq 'insert theme) (evil-org--populate-insert-bindings))
   (when (memq 'rsi theme) (evil-org--populate-rsi-bindings))
