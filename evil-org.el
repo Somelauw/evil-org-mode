@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.4.7
+;; Version: 0.5.0
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -33,6 +33,7 @@
 ;;; Code:
 (require 'evil)
 (require 'org)
+(require 'leader nil 'noerror)
 
 (defgroup evil-org nil
   "Provides integration of org-mode and evil."
@@ -441,6 +442,7 @@ Argument INCOG whether to open in incognito mode."
 ;; leader maps
 (defun evil-org--populate-leader-bindings ()
   "Leader bindings (deprecated)."
+  (make-obsolete 'leader "please bind leader keys in your local config.")
   (evil-leader/set-key-for-mode 'org-mode
     "t" 'org-show-todo-tree
     "a" 'org-agenda
