@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.5.0
+;; Version: 0.5.2
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -51,6 +51,11 @@
   :group 'evil-org
   :type '(alist :key-type symbol :value-type string)
   :options '(up down left right))
+
+(defcustom evil-org-use-additional-insert
+  nil
+  "Whether additional keybindings should also be available in insert mode."
+  :group 'evil-org)
 
 (defvar evil-org-mode-map (make-sparse-keymap))
 
@@ -415,7 +420,9 @@ Argument INCOG whether to open in incognito mode."
 (defun evil-org--populate-additional-bindings ()
   "Bindings with meta and control."
   (let-alist evil-org-movement-bindings
-    (dolist (state '(normal visual))
+    (dolist (state (if evil-org-use-additional-insert
+                       '('normal visual insert)
+                     '(normal visual)))
       (evil-define-key state evil-org-mode-map
         (kbd (concat "M-" .left)) 'org-metaleft
         (kbd (concat "M-" .right)) 'org-metaright

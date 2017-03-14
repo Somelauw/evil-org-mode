@@ -77,6 +77,7 @@ If you don't want to use hjkl, you can customize evil-org-movement-bindings.
 
 ** Additional
 If you don't want to use hjkl, you can customize evil-org-movement-bindings.
+If you want to use these bindings even in insert mode, you can customize evil-org-use-additional-insert.
 
   |-----+---------------------------------------------+---------------------|
   | key | function                                    | explanation         |
