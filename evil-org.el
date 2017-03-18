@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.5.3
+;; Version: 0.5.4
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -432,10 +432,10 @@ Argument INCOG whether to open in incognito mode."
         (kbd (concat "M-" (capitalize .right))) 'org-shiftmetaright
         (kbd (concat "M-" (capitalize .up))) 'org-shiftmetaup
         (kbd (concat "M-" (capitalize .down))) 'org-shiftmetadown
-        (kbd (concat "C-" (capitalize .left))) 'org-shiftcontrolleft
-        (kbd (concat "C-" (capitalize .right))) 'org-shiftcontrolright
-        (kbd (concat "C-" (capitalize .up))) 'org-shiftcontrolup
-        (kbd (concat "C-" (capitalize .down))) 'org-shiftcontroldown)))
+        (kbd (concat "C-S-" .left)) 'org-shiftcontrolleft
+        (kbd (concat "C-S-" .right)) 'org-shiftcontrolright
+        (kbd (concat "C-S-" .up)) 'org-shiftcontrolup
+        (kbd (concat "C-S-" .down)) 'org-shiftcontroldown)))
   (let ((state (if evil-org-use-additional-insert '(normal insert) 'normal)))
     (evil-define-key state evil-org-mode-map
       (kbd "M-o") 'evil-org-insert-subheading
