@@ -501,8 +501,8 @@ Argument INCOG whether to open in incognito mode."
 
 (if (and (boundp 'evil-disable-insert-state-bindings)
          (evil-disable-insert-state-bindings))
-    (evil-org-set-key-theme '(textobjects navigation additional shift2))
-    (evil-org-set-key-theme '(textobjects navigation insert additional shift2)))
+    (evil-org-set-key-theme '(textobjects navigation additional))
+    (evil-org-set-key-theme '(textobjects navigation insert additional)))
 
 ;;; vim-like confirm/abort for capture and src
 ;;; Taken from mwillsey (Max Willsey) on https://github.com/syl20bnr/spacemacs/pull/7400
