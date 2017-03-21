@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.5.5
+;; Version: 0.5.6
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -186,9 +186,10 @@ Argument COUNT number of lines to insert."
     (evil-backward-sentence-begin count)))
 
 ;;; operators
-(evil-define-operator evil-org-shift-left (beg end)
+(evil-define-operator evil-org-shift-left (beg end count)
   "Demote headings and items in selection."
   :move-point nil
+  (interactive "<r><vc>")
   (cond
    ;; Work with subtrees and headings
    ((org-with-limited-levels
@@ -203,11 +204,14 @@ Argument COUNT number of lines to insert."
              (save-excursion
                (goto-char beg)
                (org-at-item-p))))
-    (apply-on-rectangle (lambda (_ _) (org-outdent-item)) beg (1- end)))))
+    (apply-on-rectangle (lambda (_ _) (org-outdent-item)) beg (1- end)))
+   ;; Default indentation
+   (t (evil-shift-left beg end count))))
 
-(evil-define-operator evil-org-shift-right (beg end)
+(evil-define-operator evil-org-shift-right (beg end count)
   "Promote headings and items in selection."
   :move-point nil
+  (interactive "<r><vc>")
   (cond
    ;; Work with subtrees and headings
    ((org-with-limited-levels
@@ -222,7 +226,9 @@ Argument COUNT number of lines to insert."
              (save-excursion
                (goto-char beg)
                (org-at-item-p))))
-    (apply-on-rectangle (lambda (_ _) (org-indent-item)) beg (1- end)))))
+    (apply-on-rectangle (lambda (_ _) (org-indent-item)) beg (1- end)))
+   ;; Default indentation
+   (t (evil-shift-right beg end count))))
 
 (evil-define-operator evil-org-delete-char (count beg end type register)
   "Combine evil-delete-char with org-delete-char"
