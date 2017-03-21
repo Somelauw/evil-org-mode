@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.5.4
+;; Version: 0.5.5
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -189,16 +189,40 @@ Argument COUNT number of lines to insert."
 (evil-define-operator evil-org-shift-left (beg end)
   "Demote headings and items in selection."
   :move-point nil
-  (goto-char beg)
-  (push-mark end)
-  (org-metaleft))
+  (cond
+   ;; Work with subtrees and headings
+   ((org-with-limited-levels
+     (or (org-at-heading-p)
+         (save-excursion
+           (goto-char beg)
+           (org-at-heading-p))))
+    (org-map-region 'org-do-promote beg end))
+   ;; Work with items
+   ((or (org-at-item-p)
+        (and (org-region-active-p)
+             (save-excursion
+               (goto-char beg)
+               (org-at-item-p))))
+    (apply-on-rectangle (lambda (_ _) (org-outdent-item)) beg (1- end)))))
 
 (evil-define-operator evil-org-shift-right (beg end)
   "Promote headings and items in selection."
   :move-point nil
-  (goto-char beg)
-  (push-mark end)
-  (org-metaright))
+  (cond
+   ;; Work with subtrees and headings
+   ((org-with-limited-levels
+     (or (org-at-heading-p)
+         (save-excursion
+           (goto-char beg)
+           (org-at-heading-p))))
+    (org-map-region 'org-do-demote beg end))
+   ;; Work with items
+   ((or (org-at-item-p)
+        (and (org-region-active-p)
+             (save-excursion
+               (goto-char beg)
+               (org-at-item-p))))
+    (apply-on-rectangle (lambda (_ _) (org-indent-item)) beg (1- end)))))
 
 (evil-define-operator evil-org-delete-char (count beg end type register)
   "Combine evil-delete-char with org-delete-char"
