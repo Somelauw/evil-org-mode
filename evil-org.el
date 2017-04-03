@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.5.6
+;; Version: 0.5.7
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -28,7 +28,7 @@
 ;;; Commentary:
 ;;
 ;; Known Bugs:
-;; See, https://github.com/Somelauw/evil-org-mode/issues
+;; See, https://github.com/Somelauw/evil-org-improved/issues
 ;;
 ;;; Code:
 (require 'evil)
@@ -190,45 +190,69 @@ Argument COUNT number of lines to insert."
   "Demote headings and items in selection."
   :move-point nil
   (interactive "<r><vc>")
+  (when (null count) (setq count 1))
   (cond
    ;; Work with subtrees and headings
    ((org-with-limited-levels
      (or (org-at-heading-p)
-         (save-excursion
-           (goto-char beg)
-           (org-at-heading-p))))
+         (save-excursion (goto-char beg) (org-at-heading-p))))
     (org-map-region 'org-do-promote beg end))
    ;; Work with items
    ((or (org-at-item-p)
         (and (org-region-active-p)
-             (save-excursion
-               (goto-char beg)
-               (org-at-item-p))))
-    (apply-on-rectangle (lambda (_ _) (org-outdent-item)) beg (1- end)))
-   ;; Default indentation
-   (t (evil-shift-left beg end count))))
+             (save-excursion (goto-char beg) (org-at-item-p))))
+    (evil-org-indent-items beg end (- count)))
+   ;; Default evil indentation
+   (t
+    ;; special casing tables
+    (when (org-at-table-p)
+      (setq beg (min beg (org-table-begin)))
+      (setq end (max end (org-table-end))))
+    (evil-shift-left beg end count))))
 
 (evil-define-operator evil-org-shift-right (beg end count)
-  "Promote headings and items in selection."
+  "Promote headings and items in selection (dwim)."
   :move-point nil
   (interactive "<r><vc>")
+  (when (null count) (setq count 1))
   (cond
    ;; Work with subtrees and headings
    ((org-with-limited-levels
      (or (org-at-heading-p)
-         (save-excursion
-           (goto-char beg)
-           (org-at-heading-p))))
+         (save-excursion (goto-char beg) (org-at-heading-p))))
     (org-map-region 'org-do-demote beg end))
    ;; Work with items
    ((or (org-at-item-p)
         (and (org-region-active-p)
-             (save-excursion
-               (goto-char beg)
-               (org-at-item-p))))
-    (apply-on-rectangle (lambda (_ _) (org-indent-item)) beg (1- end)))
+             (save-excursion (goto-char beg) (org-at-item-p))))
+    (evil-org-indent-items beg end count))
    ;; Default indentation
-   (t (evil-shift-right beg end count))))
+   (t
+    ;; special casing tables
+    (when (org-at-table-p)
+      (setq beg (min beg (org-table-begin)))
+      (setq end (max end (org-table-end))))
+    (evil-shift-right beg end count))))
+
+(evil-define-operator evil-org-indent-items (beg end count)
+  "Operator that indents all selected items."
+  (when (null count) (setq count 1))
+  (let* ((struct (save-excursion (goto-char beg) (org-list-struct)))
+         (top (org-list-get-top-point struct)))
+    (if (= top (point-at-bol))
+        ;; special case: indenting all items
+        ;; requires org-list-automatic-rules
+        (if (> count 0)
+            (call-interactively 'org-indent-item-tree)
+          (call-interactively 'org-outdent-item-tree))
+      ;; low-level functions to change item indent
+      (let* ((parents (org-list-parents-alist struct))
+             (prevs (org-list-prevs-alist struct))
+             (new-parents (if (> count 0)
+                              (org-list-struct-indent beg end struct parents prevs)
+                            (org-list-struct-outdent beg end struct parents))))
+        (org-list-write-struct struct new-parents)
+        (org-update-checkbox-count-maybe)))))
 
 (evil-define-operator evil-org-delete-char (count beg end type register)
   "Combine evil-delete-char with org-delete-char"
