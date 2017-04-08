@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.5.7
+;; Version: 0.5.8
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -118,6 +118,7 @@ Argument COUNT number of lines to insert."
   (evil-append count))
 
 (defun evil-org-insert-subheading (count)
+  "Insert new subheading."
   (interactive "p")
    (end-of-visible-line)
    (org-insert-heading)
@@ -125,6 +126,7 @@ Argument COUNT number of lines to insert."
    (evil-append count))
 
 (defun evil-org-insert-subtodo (count)
+  "Insert new todo subheading."
   (interactive "p")
    (end-of-visible-line)
    (org-insert-todo-heading nil)
@@ -489,11 +491,12 @@ Argument INCOG whether to open in incognito mode."
         (kbd (concat "C-S-" .left)) 'org-shiftcontrolleft
         (kbd (concat "C-S-" .right)) 'org-shiftcontrolright
         (kbd (concat "C-S-" .up)) 'org-shiftcontrolup
-        (kbd (concat "C-S-" .down)) 'org-shiftcontroldown)))
-  (let ((state (if evil-org-use-additional-insert '(normal insert) 'normal)))
-    (evil-define-key state evil-org-mode-map
-      (kbd "M-o") 'evil-org-insert-subheading
-      (kbd "M-t") 'evil-org-insert-subtodo)))
+        (kbd (concat "C-S-" .down)) 'org-shiftcontroldown))))
+
+;; (let ((state (if evil-org-use-additional-insert '(normal insert) 'normal)))
+;;   (evil-define-key state evil-org-mode-map
+;;     (kbd "M-o") 'evil-org-insert-subheading
+;;     (kbd "M-t") 'evil-org-insert-subtodo))
 
 (defun evil-org--populate-shift-bindings ()
   "Shift bindings that conflict with evil bindings."
@@ -523,17 +526,18 @@ Argument INCOG whether to open in incognito mode."
            (interactive)
            (evil-org-eol-call
             (lambda ()
-              (org-insert-todo-heading nil))))))
+              (org-insert-todo-heading nil))))
+    (kbd "M-t") 'evil-org-insert-subtodo))
 
 (defun evil-org--populate-heading-bindings ()
   "Bindings for easy heading insertion."
   (evil-define-key 'normal evil-org-mode-map
-    (make-obsolete 'leader "(evil-define-key 'normal evil-org-mode-map \"O\" evil-org-insert-below.")
     (kbd "O") '(lambda ()
                  (interactive)
                  (evil-org-eol-call
                   (lambda ()
-                    (org-insert-heading))))))
+                    (org-insert-heading))))
+    (kbd "M-o") 'evil-org-insert-subheading))
 
 ;;;###autoload
 (defun evil-org-set-key-theme (theme)
