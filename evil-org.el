@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.5.8
+;; Version: 0.5.9
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -302,9 +302,8 @@ Argument INCOG whether to open in incognito mode."
           (org-next-link)
           ;; break from outer loop when there are no more
           ;; org links
-          (when (or
-                 (not (< (point) end))
-                 (not (null org-link-search-failed)))
+          (when (or (not (< (point) end))
+                    (not (null org-link-search-failed)))
             (throw 'break 0))
           (if (not (null incog))
               (let* ((new-arg
@@ -315,20 +314,21 @@ Argument INCOG whether to open in incognito mode."
                             (t "")))
                      (old-b (list browse-url-generic-args " "))
                      (browse-url-generic-args (add-to-ordered-list 'old-b new-arg 0)))
-                (progn
-                  (org-open-at-point)))
+                (org-open-at-point))
             (let ((browse-url-generic-args '("")))
               (org-open-at-point))))))))
 
-;; open links in visual selection
-(evil-define-operator evil-org-open-links (beg end type register yank-handler)
+(evil-define-operator evil-org-open-links (beg end &optional count)
+  "Open links in visual selection.
+If a prefix argument is given, links are opened in incognito mode."
   :keep-visual t
   :move-point nil
-  (interactive "<r>")
-  (evil-org-generic-open-links beg end nil))
+  (interactive "<r><vc>")
+  (evil-org-generic-open-links beg end (not (null count))))
 
 ;; open links in visual selection in incognito mode
-(evil-define-operator evil-org-open-links-incognito (beg end type register yank-handler)
+(evil-define-operator evil-org-open-links-incognito (beg end)
+  "Open links in visual selection in incognito mode."
   :keep-visual t
   :move-point nil
   (interactive "<r>")
