@@ -66,14 +66,15 @@ Or enable the additional key binding theme and use M-h and M-l.
 ** Movement
 If you don't want to use hjkl, you can customize evil-org-movement-bindings.
 
-  |-----+---------------------------------------------+---------------------|
-  | key | function                                    | explanation         |
-  |-----+---------------------------------------------+---------------------|
-  | gh  | outline-up-heading                          | Go to parent tree   |
-  | gj  | org-forward-heading-same-level              | Next heading        |
-  | gk  | org-backward-heading-same-level             | Previous heading    |
-  | gl  | outline-next-visible-heading                | Go to first subtree |
-  |-----+---------------------------------------------+---------------------|
+  |-----+---------------------------------+--------------------------|
+  | key | function                        | explanation              |
+  |-----+---------------------------------+--------------------------|
+  | gh  | outline-up-heading              | Go to parent tree        |
+  | gj  | org-forward-heading-same-level  | Next heading             |
+  | gk  | org-backward-heading-same-level | Previous heading         |
+  | gl  | outline-next-visible-heading    | Go to first subtree      |
+  | gH  | evil-org-top                    | Move to one-star heading |
+  |-----+---------------------------------+--------------------------|
 
 ** Additional
 If you don't want to use hjkl, you can customize evil-org-movement-bindings.

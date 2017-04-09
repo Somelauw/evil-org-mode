@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.5.10
+;; Version: 0.5.11
 ;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -134,34 +134,44 @@ Argument COUNT number of lines to insert."
    (evil-append count))
 
 ;;; motion declarations
-(evil-declare-motion 'org-forward-sentence)
+(evil-declare-motion 'org-beginning-of-line)
+(evil-declare-motion 'org-end-of-line)
 (evil-declare-motion 'org-backward-sentence)
-(evil-declare-motion 'org-forward-paragraph)
+(evil-declare-motion 'org-forward-sentence)
 (evil-declare-motion 'org-backward-paragraph)
-(evil-declare-motion 'org-table-next-row)
+(evil-declare-motion 'org-forward-paragraph)
+
+;; heading
+(evil-declare-motion 'org-backward-heading-same-level)
+(evil-declare-motion 'org-forward-heading-same-level)
+(evil-declare-motion 'org-previous-visible-heading)
+(evil-declare-motion 'org-next-visible-heading)
+
+;; elements
+(evil-declare-motion 'org-backward-element)
+(evil-declare-motion 'org-forward-element)
+(evil-declare-motion 'org-up-element)
+(evil-declare-motion 'org-down-element)
+
+;; items
+(evil-declare-motion 'org-previous-item)
+(evil-declare-motion 'org-next-item)
+(evil-declare-motion 'org-beginning-of-item)
+(evil-declare-motion 'org-end-of-item)
+(evil-declare-motion 'org-beginning-of-item-list)
+(evil-declare-motion 'org-end-of-item-list)
+
+;; blocks
+(evil-declare-motion 'org-previous-block)
+(evil-declare-motion 'org-next-block)
+
+;; table
 (evil-declare-motion 'org-table-previous-row)
+(evil-declare-motion 'org-table-next-row)
 (evil-declare-motion 'org-table-previous-field)
 (evil-declare-motion 'org-table-next-field)
 (evil-declare-motion 'org-table-beginning-of-field)
 (evil-declare-motion 'org-table-end-of-field)
-
-;; heading
-(evil-declare-motion 'org-forward-heading-same-level)
-(evil-declare-motion 'org-backward-heading-same-level)
-
-;; elements
-(evil-declare-motion 'org-forward-element)
-(evil-declare-motion 'org-backward-element)
-(evil-declare-motion 'org-down-element)
-(evil-declare-motion 'org-up-element)
-
-;; other
-(evil-declare-motion 'org-next-block)
-(evil-declare-motion 'org-next-item)
-(evil-declare-motion 'org-next-visible-heading)
-(evil-declare-motion 'org-previous-block)
-(evil-declare-motion 'org-previous-item)
-(evil-declare-motion 'org-previous-visible-heading)
 
 ;;; non-repeatible
 (evil-declare-change-repeat 'org-cycle)
@@ -187,6 +197,10 @@ Argument COUNT number of lines to insert."
       (org-table-beginning-of-field count)
     (evil-backward-sentence-begin count)))
 
+(evil-define-motion evil-org-top ()
+  :type exclusive
+  :jump t
+  (while (org-up-heading-safe)))
 
 ;;; operators
 (evil-define-operator evil-org-demote-or-indent (beg end count)
@@ -447,10 +461,11 @@ If a prefix argument is given, links are opened in incognito mode."
   "Configures gj/gk/gh/gl for navigation."
   (let-alist evil-org-movement-bindings
     (evil-define-key 'motion evil-org-mode-map
-       (kbd (concat "g" .left)) 'org-up-element
-       (kbd (concat "g" .right)) 'org-down-element
-       (kbd (concat "g" .up)) 'org-backward-element
-       (kbd (concat "g" .down)) 'org-forward-element)))
+      (kbd (concat "g" .left)) 'org-up-element
+      (kbd (concat "g" .right)) 'org-down-element
+      (kbd (concat "g" .up)) 'org-backward-element
+      (kbd (concat "g" .down)) 'org-forward-element
+      (kbd (concat "g" (capitalize .left))) 'evil-org-top)))
 
 (defun evil-org--populate-additional-bindings ()
   "Bindings with meta and control."
