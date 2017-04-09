@@ -1,37 +1,38 @@
 * Key themes
   
-The new config is set up in key themes
+  The new config is set up in key themes
 
-To enable all bindings use:
-#+begin_src emacs-lisp
-    (evil-org-set-key-theme '(textobjects insert navigation additional shift leader todo heading))
-#+end_src
+  To enable all bindings use:
+
+  #+begin_src emacs-lisp
+  (evil-org-set-key-theme '(textobjects insert navigation additional shift leader todo heading))
+  #+end_src
 
 ** Basic
-These keys are always enabled
+   These keys are always enabled
 
-  |-----+-------------------------------|
-  | key | function                      |
-  |-----+-------------------------------|
-  | 'x' | evil-org-delete-char          |
-  | 'X' | evil-org-delete-previous-char |
-  | '$' | org-end-of-line               |
-  | '^' | org-beginning-of-line         |
-  | <   | org-metaleft                  |
-  | >   | org-metaright                 |
-  | (   | org-forward-sentence          |
-  | )   | org-backward-sentence         |
-  | {   | org-forward-paragraph         |
-  | }   | org-backward-paragraph        |
-  | TAB | org-cycle                     |
-  | o   | evil-org-open-below           |
-  | O   | evil-org-open-above           |
-  |-----+-------------------------------|
+   |-----+-------------------------------|
+   | key | function                      |
+   |-----+-------------------------------|
+   | 'x' | evil-org-delete-char          |
+   | 'X' | evil-org-delete-previous-char |
+   | '$' | org-end-of-line               |
+   | '^' | org-beginning-of-line         |
+   | <   | org-promote-or-dedent         |
+   | >   | org-demote-or-indent          |
+   | (   | org-forward-sentence          |
+   | )   | org-backward-sentence         |
+   | {   | org-forward-paragraph         |
+   | }   | org-backward-paragraph        |
+   | TAB | org-cycle                     |
+   | o   | evil-org-open-below           |
+   | O   | evil-org-open-above           |
+   |-----+-------------------------------|
 
 ** Text objects
-"var" to select an element
-"dar" to delete a subtree
-"2yar" to yank the parent of a subtree
+   "var" to select an element
+   "dar" to delete a subtree
+   "2yar" to yank the parent of a subtree
 
   |-----+-------------+------------------------------------------------|
   | key | function    | explanation                                    |
@@ -41,101 +42,101 @@ These keys are always enabled
   |-----+-------------+------------------------------------------------|
 
 ** Operators
-Operators for promoting/demoting headings and items
+   Operators for promoting/demoting headings and items
 
-">>" to promote a heading
-">ar" to promote a tree
+   ">>" to promote a heading
+   ">ar" to promote a tree
 
-  |-----+----------------------+-------------------------------------|
-  | key | function             | explanation                         |
-  |-----+----------------------+-------------------------------------|
-  | <   | evil-org-shift-left  | Promote all headings in marked area |
-  | >   | evil-org-shift-right | Demote all headings in marked area  |
-  |-----+----------------------+-------------------------------------|
+   |-----+----------------------+-------------------------------------|
+   | key | function             | explanation                         |
+   |-----+----------------------+-------------------------------------|
+   | <   | evil-org-shift-left  | Promote all headings in marked area |
+   | >   | evil-org-shift-right | Demote all headings in marked area  |
+   |-----+----------------------+-------------------------------------|
 
-If you want < and > similar to evil-org-mode, put the following in your init file
+   If you want < and > similar to evil-org-mode, put the following in your init file
 
-#+begin_src emacs-lisp
-  (evil-define-key 'normal evil-org-mode-map
-    (kbd ">") 'org-meta-right
-    (kbd "<") 'org-meta-left)
-#+end_src
+   #+begin_src emacs-lisp
+   (evil-define-key 'normal evil-org-mode-map
+                    (kbd ">") 'org-meta-right
+                    (kbd "<") 'org-meta-left)
+   #+end_src
 
-Or enable the additional key binding theme and use M-h and M-l.
+   Or enable the additional key binding theme and use M-h and M-l.
 
 ** Movement
-If you don't want to use hjkl, you can customize evil-org-movement-bindings.
+   If you don't want to use hjkl, you can customize evil-org-movement-bindings.
 
-  |-----+---------------------------------+--------------------------|
-  | key | function                        | explanation              |
-  |-----+---------------------------------+--------------------------|
-  | gh  | outline-up-heading              | Go to parent tree        |
-  | gj  | org-forward-heading-same-level  | Next heading             |
-  | gk  | org-backward-heading-same-level | Previous heading         |
-  | gl  | outline-next-visible-heading    | Go to first subtree      |
-  | gH  | evil-org-top                    | Move to one-star heading |
-  |-----+---------------------------------+--------------------------|
+   |-----+----------------------+--------------------------|
+   | key | function             | explanation              |
+   |-----+----------------------+--------------------------|
+   | gh  | org-element-up       | Go to parent tree        |
+   | gj  | org-forward-element  | Next heading             |
+   | gk  | org-backward-element | Previous heading         |
+   | gl  | org-down-element     | Go to first subtree      |
+   | gH  | evil-org-top         | Move to one-star heading |
+   |-----+----------------------+--------------------------|
 
 ** Additional
-If you don't want to use hjkl, you can customize evil-org-movement-bindings.
-If you want to use these bindings even in insert mode, you can customize evil-org-use-additional-insert.
+   If you don't want to use hjkl, you can customize evil-org-movement-bindings.
+   If you want to use these bindings even in insert mode, you can customize evil-org-use-additional-insert.
 
-  |-----+---------------------------------------------+---------------------|
-  | key | function                                    | explanation         |
-  |-----+---------------------------------------------+---------------------|
-  | M-l | org-metaright                               | Demote heading      |
-  | M-h | org-metaleft                                | Promote heading     |
-  | M-k | org-metaup                                  | Move subtree up     |
-  | M-j | org-metadown                                | Move subtree down   |
-  | M-L | org-shiftmetaright                          | Demote subtree      |
-  | M-H | org-shiftmetaleft                           | Promote subtree     |
-  | M-K | org-shiftmetaup                             | Move heading up     |
-  | M-J | org-shiftmetadown                           | Move heading down   |
-  |-----+---------------------------------------------+---------------------|
+   |-----+--------------------+-------------------|
+   | key | function           | explanation       |
+   |-----+--------------------+-------------------|
+   | M-l | org-metaright      | Demote heading    |
+   | M-h | org-metaleft       | Promote heading   |
+   | M-k | org-metaup         | Move subtree up   |
+   | M-j | org-metadown       | Move subtree down |
+   | M-L | org-shiftmetaright | Demote subtree    |
+   | M-H | org-shiftmetaleft  | Promote subtree   |
+   | M-K | org-shiftmetaup    | Move heading up   |
+   | M-J | org-shiftmetadown  | Move heading down |
+   |-----+--------------------+-------------------|
 
 ** Shift
    Disabled by default.
    If you don't want to use hjkl, you can customize evil-org-movement-bindings.
 
-  |-----+----------------+--------------------|
-  | key | function       | explanation        |
-  |-----+----------------+--------------------|
-  | H   | org-shiftleft  | previous todo item |
-  | L   | org-shiftright | next todo item     |
-  | J   | org-shiftdown  | decrease priority  |
-  | K   | org-shiftup    | increase priority  |
-  |-----+----------------+--------------------|
+   |-----+----------------+--------------------|
+   | key | function       | explanation        |
+   |-----+----------------+--------------------|
+   | H   | org-shiftleft  | previous todo item |
+   | L   | org-shiftright | next todo item     |
+   | J   | org-shiftdown  | decrease priority  |
+   | K   | org-shiftup    | increase priority  |
+   |-----+----------------+--------------------|
 
 ** Leader                                                        :deprecated:
    Disabled by default.
 
-  |-----------+---------------------------|
-  | key       | function                  |
-  |-----------+---------------------------|
-  | <leader>a | org-agenda                |
-  | <leader>t | org-show-todo-tree        |
-  | <leader>c | org-archive-subtree       |
-  | <leader>l | evil-org-open-links       |
-  | <leader>o | evil-org-recompute-clocks |
-  |-----------+---------------------------|
+   |-----------+---------------------------|
+   | key       | function                  |
+   |-----------+---------------------------|
+   | <leader>a | org-agenda                |
+   | <leader>t | org-show-todo-tree        |
+   | <leader>c | org-archive-subtree       |
+   | <leader>l | evil-org-open-links       |
+   | <leader>o | evil-org-recompute-clocks |
+   |-----------+---------------------------|
   
-** Todo                                                          :deprecated:
+** Todo
    Disabled by default.
 
-  |-----+---------------------------------------|
-  | key | function                              |
-  |-----+---------------------------------------|
-  | t   | org-todo                              |
-  | T   | org-insert-todo-heading nil           |
-  | M-t | org-insert-todo-heading+org-metaright |
-  |-----+---------------------------------------|
-
-** Heading                                                       :deprecated:
+   |-----+---------------------------------------|
+   | key | function                              |
+   |-----+---------------------------------------|
+   | t   | org-todo                              |
+   | T   | org-insert-todo-heading nil           |
+   | M-t | org-insert-todo-heading+org-metaright |
+   |-----+---------------------------------------|
+  
+** Heading
    Disabled by default.
 
-  |-----+----------------------------------|
-  | key | function                         |
-  |-----+----------------------------------|
-  | O   | org-insert-heading               |
-  | M-o | org-insert-heading+org-metaright |
-  |-----+----------------------------------|
+   |-----+----------------------------------|
+   | key | function                         |
+   |-----+----------------------------------|
+   | O   | org-insert-heading               |
+   | M-o | org-insert-heading+org-metaright |
+   |-----+----------------------------------|

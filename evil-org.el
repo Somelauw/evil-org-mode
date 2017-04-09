@@ -198,6 +198,7 @@ Argument COUNT number of lines to insert."
     (evil-backward-sentence-begin count)))
 
 (evil-define-motion evil-org-top ()
+  "Find the nearest one-star heading."
   :type exclusive
   :jump t
   (while (org-up-heading-safe)))
@@ -269,8 +270,8 @@ Argument COUNT number of lines to insert."
     (evil-yank beg end type register)
     (org-delete-backward-char count)))
 
-;; recompute clocks in visual selection
 (evil-define-operator evil-org-recompute-clocks (beg end type register yank-handler)
+  "Recompute clocks in visual selection."
   :keep-visual t
   :move-point nil
   (interactive "<r>")
@@ -319,7 +320,6 @@ If a prefix argument is given, links are opened in incognito mode."
   (interactive "<r><vc>")
   (evil-org-generic-open-links beg end (not (null count))))
 
-;; open links in visual selection in incognito mode
 (evil-define-operator evil-org-open-links-incognito (beg end)
   "Open links in visual selection in incognito mode."
   :keep-visual t
@@ -396,7 +396,7 @@ If a prefix argument is given, links are opened in incognito mode."
 
 ;;; Keythemes
 (defun evil-org--populate-base-bindings ()
-  "Bindings that are always be available ."
+  "Bindings that are always available."
   (let-alist evil-org-movement-bindings
     (dolist (state '(normal visual operator motion))
       (evil-define-key state evil-org-mode-map

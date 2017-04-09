@@ -41,33 +41,40 @@ This is an extended and actively maintained version of https://github.com/edwtjo
 
 ** Installation
 
- #+BEGIN_SRC sh
+   #+BEGIN_SRC sh
    mkdir -p ~/.emacs.d/plugins; git clone git://github.com/somelauw/evil-org-improved.git ~/.emacs.d/plugins/evil-org-mode
- #+END_SRC
+   #+END_SRC
 
 *** emacs.el
 
- #+begin_src emacs-lisp
-     (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
-     (require 'evil-org)
-     (evil-org-set-key-theme '(textobjects insert navigation additional))
- #+end_src
- 
- For a more elaborate setup, take a look at [[file:doc/example_config.el][this example]].
+#+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
+(require 'evil-org)
+(add-hook 'org-mode-hook 'evil-org-mode)
+(evil-org-set-key-theme '(textobjects insert navigation additional))
+#+end_src
+
+For a more elaborate setup, take a look at [[file:doc/example_config.el][this example]].
 
 ** See also
 
    - [[https://github.com/edwtjo/evil-org-mode][org-mode by edwtjo]]
-    Original org-mode plugin by edwtjo from which this project was forked
+     Original org-mode plugin by edwtjo from which this project was forked
 
    - [[https://github.com/GuiltyDolphin/org-evil][org-evil by GuiltyDolphin]]
-    Alternative integration of evil and org with different keybindings
+     Alternative integration of evil and org with different keybindings
+
+   - https://github.com/jceb/vim-orgmode
+     Org mode plugin for vim
 
    - http://orgmode.org/
-    The official org-mode website
+     The official org-mode website
 
    - [[http://orgmode.org/orgcard.pdf]]
-    A handy cheat sheet, even if using this plugin
+     A handy cheat sheet, even if using this plugin
+
+   - https://github.com/Somelauw/evil-markdown
+     Similar project for markdown code
 
 ** License
 
