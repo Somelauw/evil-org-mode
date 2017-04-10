@@ -1,4 +1,4 @@
-#+TITLE: evil-org-mode
+#+TITLE: evil-org-improved
 
 Supplemental evil-mode key-bindings to Emacs org-mode.
 This is an extended and actively maintained version of https://github.com/edwtjo/evil-org-mode/blob/master/evil-org.el that was originally created by Edward Tjörnhammar.
@@ -42,14 +42,15 @@ This is an extended and actively maintained version of https://github.com/edwtjo
 ** Installation
 
    #+BEGIN_SRC sh
-   mkdir -p ~/.emacs.d/plugins; git clone git://github.com/somelauw/evil-org-improved.git ~/.emacs.d/plugins/evil-org-mode
+   mkdir -p ~/.emacs.d/plugins; git clone
+   git://github.com/somelauw/evil-org-improved.git ~/.emacs.d/plugins/evil-org-improved
    #+END_SRC
 
 *** emacs.el
 
 #+begin_src emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
-(require 'evil-org)
+(add-to-list 'load-path "~/.emacs.d/plugins/evil-org-improved")
+(require 'evil-org-improved)
 (add-hook 'org-mode-hook 'evil-org-mode)
 (evil-org-set-key-theme '(textobjects insert navigation additional))
 #+end_src
