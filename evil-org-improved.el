@@ -280,7 +280,7 @@ Argument COUNT number of lines to insert."
     (save-excursion
       (while (< (point) end)
         (org-evaluate-time-range)
-        (next-line)
+        (forward-line)
         (message "at position %S" (point))))))
 
 (defun evil-org-generic-open-links (beg end incog)
@@ -568,5 +568,5 @@ If a prefix argument is given, links are opened in incognito mode."
   (define-key org-src-mode-map [remap evil-save-modified-and-close] 'org-edit-src-exit)
   (define-key org-src-mode-map [remap evil-quit]                    'org-edit-src-abort))
 
-(provide 'evil-org)
+(provide 'evil-org-improved)
 ;;; evil-org.el ends here

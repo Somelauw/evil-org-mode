@@ -14,7 +14,7 @@ This is an extended and actively maintained version of https://github.com/edwtjo
  - [X] table support
 
 ** Keybindings
-  
+
    |----------------+---------------------------|
    | key            | explanation               |
    |----------------+---------------------------|

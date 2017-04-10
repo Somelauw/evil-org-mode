@@ -1,5 +1,5 @@
 (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-improved")
-(require 'evil-org)
+(require 'evil-org-improved)
 (require 'leader)
 (require 'hydra)
 
