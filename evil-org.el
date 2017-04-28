@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.5.12
+;; Version: 0.5.13
 ;; Package-Requires: ((evil "0") (org "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -56,6 +56,12 @@
   nil
   "Whether additional keybindings should also be available in insert mode."
   :group 'evil-org)
+
+;;; Variable declarations
+(defvar browse-url-generic-program)
+(defvar browse-url-generic-args)
+(defvar evil-disable-insert-state-bindings)
+(defvar org-capture-mode-map)
 
 (defvar evil-org-mode-map (make-sparse-keymap))
 
@@ -504,7 +510,7 @@ If a prefix argument is given, links are opened in incognito mode."
 ;; leader maps
 (defun evil-org--populate-leader-bindings ()
   "Leader bindings (deprecated)."
-  (make-obsolete 'leader "please bind leader keys in your local config.")
+  (make-obsolete 'leader "please bind leader keys in your local config." "0.5.0")
   (evil-leader/set-key-for-mode 'org-mode
     "t" 'org-show-todo-tree
     "a" 'org-agenda
