@@ -6,8 +6,8 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.5.11
-;; Package-Requires: ((evil "0") (org "0") (evil-leader "0"))
+;; Version: 0.5.12
+;; Package-Requires: ((evil "0") (org "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
 ;; This file is not part of GNU Emacs
