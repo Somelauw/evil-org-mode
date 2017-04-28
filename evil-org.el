@@ -2,8 +2,8 @@
 
 ;; Maintainer: Somelauw
 ;; Original author: Edward Tjörnhammar
-;; URL: https://github.com/Somelauw/evil-org-improved.git
-;; Git-Repository; git://github.com/Somelauw/evil-org-improved.git
+;; URL: https://github.com/Somelauw/evil-org.git
+;; Git-Repository; git://github.com/Somelauw/evil-org.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
 ;; Version: 0.5.11
@@ -28,7 +28,7 @@
 ;;; Commentary:
 ;;
 ;; Known Bugs:
-;; See, https://github.com/Somelauw/evil-org-improved/issues
+;; See, https://github.com/Somelauw/evil-org/issues
 ;;
 ;;; Code:
 (require 'evil)
@@ -568,5 +568,5 @@ If a prefix argument is given, links are opened in incognito mode."
   (define-key org-src-mode-map [remap evil-save-modified-and-close] 'org-edit-src-exit)
   (define-key org-src-mode-map [remap evil-quit]                    'org-edit-src-abort))
 
-(provide 'evil-org-improved)
+(provide 'evil-org)
 ;;; evil-org.el ends here
