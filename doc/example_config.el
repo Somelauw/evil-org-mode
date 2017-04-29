@@ -7,7 +7,7 @@
  (lambda ()
    ;; Set key theme(s)
    (evil-org-mode)
-   (evil-org-set-key-theme '(additional textobjects))
+   (evil-org-set-key-theme '(navigation insert textobjects additional))
 
    ;; Custom mappings
    (evil-define-key 'normal evil-org-mode-map

@@ -6,7 +6,7 @@
 ;; Git-Repository; git://github.com/Somelauw/evil-org.git
 ;; Created: 2012-06-14
 ;; Forked since 2017-02-12
-;; Version: 0.5.13
+;; Version: 0.6.0
 ;; Package-Requires: ((evil "0") (org "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -40,6 +40,7 @@
   :group 'org
   :prefix "evil-org-")
 
+;;; Customizations
 (defcustom evil-org-movement-bindings
   '((up . "k")
     (down . "j")
@@ -57,6 +58,25 @@
   "Whether additional keybindings should also be available in insert mode."
   :group 'evil-org)
 
+(defcustom evil-org-key-theme
+  (if (and (boundp 'evil-disable-insert-state-bindings)
+           (evil-disable-insert-state-bindings))
+      '(textobjects navigation additional)
+    '(textobjects navigation insert additional))
+  "Which key themes to enable."
+  :group 'evil-org
+  :type '(set (const navigation)
+              (const textobjects)
+              (const insert)
+              (const rsi)
+              (const additional)
+              (const shift)
+              (const todo)
+              (const heading)
+              (const leader)))
+
+(add-hook 'org-mode-hook 'evil-org-mode) ;; only load with org-mode
+
 ;;; Variable declarations
 (defvar browse-url-generic-program)
 (defvar browse-url-generic-args)
@@ -71,9 +91,10 @@
   :init-value nil
   :lighter " EvilOrg"
   :keymap evil-org-mode-map
-  :group 'evil-org)
+  :group 'evil-org
 
-(add-hook 'org-mode-hook 'evil-org-mode) ;; only load with org-mode
+  ;; Set customizable theme
+  (evil-org-set-key-theme evil-org-key-theme))
 
 (defun evil-org-eol-call (fun)
   "Go to end of line and call provided function.
@@ -507,17 +528,6 @@ If a prefix argument is given, links are opened in incognito mode."
       (capitalize .down) 'org-shiftdown
       (capitalize .up) 'org-shiftup)))
 
-;; leader maps
-(defun evil-org--populate-leader-bindings ()
-  "Leader bindings (deprecated)."
-  (make-obsolete 'leader "please bind leader keys in your local config." "0.5.0")
-  (evil-leader/set-key-for-mode 'org-mode
-    "t" 'org-show-todo-tree
-    "a" 'org-agenda
-    "c" 'org-archive-subtree
-    "l" 'evil-org-open-links
-    "o" 'evil-org-recompute-clocks))
-
 (defun evil-org--populate-todo-bindings ()
   "Bindings for easy todo insertion."
   (evil-define-key 'normal evil-org-mode-map
@@ -539,28 +549,34 @@ If a prefix argument is given, links are opened in incognito mode."
                     (org-insert-heading))))
     (kbd "M-o") 'evil-org-insert-subheading))
 
+;; leader maps
+(defun evil-org--populate-leader-bindings ()
+  "Leader bindings (deprecated)."
+  (make-obsolete 'leader "please bind leader keys in your local config." "0.5.0")
+  (evil-leader/set-key-for-mode 'org-mode
+    "t" 'org-show-todo-tree
+    "a" 'org-agenda
+    "c" 'org-archive-subtree
+    "l" 'evil-org-open-links
+    "o" 'evil-org-recompute-clocks))
+
 ;;;###autoload
 (defun evil-org-set-key-theme (theme)
   "Select what key THEMEs to enable."
   (setq evil-org-mode-map (make-sparse-keymap))
   (evil-org--populate-base-bindings)
   (when (memq 'navigation theme) (evil-org--populate-navigation-bindings))
-  (when (memq 'textobjects theme) (evil-org--populate-textobjects-bindings))
   (when (memq 'insert theme) (evil-org--populate-insert-bindings))
+  (when (memq 'textobjects theme) (evil-org--populate-textobjects-bindings))
   (when (memq 'rsi theme) (evil-org--populate-rsi-bindings))
   (when (memq 'additional theme) (evil-org--populate-additional-bindings))
   (when (memq 'shift theme) (evil-org--populate-shift-bindings))
-  (when (memq 'leader theme) (evil-org--populate-leader-bindings))
   (when (memq 'todo theme) (evil-org--populate-todo-bindings))
   (when (memq 'heading theme) (evil-org--populate-heading-bindings))
+  (when (memq 'leader theme) (evil-org--populate-leader-bindings))
   (setcdr
    (assq 'evil-org-mode minor-mode-map-alist)
    evil-org-mode-map))
-
-(if (and (boundp 'evil-disable-insert-state-bindings)
-         (evil-disable-insert-state-bindings))
-    (evil-org-set-key-theme '(textobjects navigation additional))
-    (evil-org-set-key-theme '(textobjects navigation insert additional)))
 
 ;;; vim-like confirm/abort for capture and src
 ;;; Taken from mwillsey (Max Willsey) on https://github.com/syl20bnr/spacemacs/pull/7400

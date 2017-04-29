@@ -52,7 +52,7 @@ This is an extended and actively maintained version of https://github.com/edwtjo
    (add-to-list 'load-path "~/.emacs.d/plugins/evil-org")
    (require 'evil-org)
    (add-hook 'org-mode-hook 'evil-org-mode)
-   (evil-org-set-key-theme '(textobjects insert navigation additional))
+   (setq evil-org-key-theme '(navigation insert textobjects additional))
    #+END_SRC
 
 For a more elaborate setup, take a look at [[file:doc/example_config.el][this example]].
