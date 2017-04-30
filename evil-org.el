@@ -3,9 +3,9 @@
 ;; Maintainer: Somelauw
 ;; Original author: Edward Tjörnhammar
 ;; URL: https://github.com/Somelauw/evil-org.git
-;; Git-Repository; git://github.com/Somelauw/evil-org.git
+;; Git-Repository: git://github.com/Somelauw/evil-org.git
 ;; Created: 2012-06-14
-;; Forked since 2017-02-12
+;; Forked since: 2017-02-12
 ;; Version: 0.6.0
 ;; Package-Requires: ((evil "0") (org "0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
