@@ -32,11 +32,12 @@
 ;; See, https://github.com/Somelauw/evil-org/issues
 ;;
 ;;; Code:
+(eval-when-compile
+  (require 'let-alist))
 (require 'evil)
 (require 'org)
 (require 'org-element)
 (require 'org-table)
-(require 'let-alist)
 (require 'leader nil 'noerror)
 
 (defgroup evil-org nil
