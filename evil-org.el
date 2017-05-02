@@ -420,8 +420,9 @@ If a prefix argument is given, links are opened in incognito mode."
   "A paragraph or table when in an org table."
   :type line
   (if (org-at-table-p)
-      (-let* ((p (point))
-              ((b e) (list (org-table-begin) (org-table-end))))
+      (let ((p (point))
+            (b (org-table-begin))
+            (e (org-table-end)))
         (list (min (or beg p) b)
               (max (or end p) e)))
     (evil-select-an-object 'evil-paragraph beg end type count t)))
