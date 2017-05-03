@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.6.0
+;; Version: 0.6.1
 ;; Package-Requires: ((emacs "24.4") (evil "0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -97,9 +97,7 @@
   :lighter " EvilOrg"
   :keymap evil-org-mode-map
   :group 'evil-org
-
-  ;; Set customizable theme
-  (evil-org-set-key-theme evil-org-key-theme))
+)
 
 (defun evil-org-eol-call (fun)
   "Go to end of line and call provided function.
@@ -595,6 +593,9 @@ If a prefix argument is given, links are opened in incognito mode."
   (define-key org-src-mode-map [remap evil-save-and-close]          'org-edit-src-exit)
   (define-key org-src-mode-map [remap evil-save-modified-and-close] 'org-edit-src-exit)
   (define-key org-src-mode-map [remap evil-quit]                    'org-edit-src-abort))
+
+;; Set customizable theme
+(evil-org-set-key-theme evil-org-key-theme)
 
 (provide 'evil-org)
 ;;; evil-org.el ends here
