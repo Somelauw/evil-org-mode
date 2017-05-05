@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.6.1
+;; Version: 0.6.2
 ;; Package-Requires: ((emacs "24.4") (evil "0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -68,7 +68,9 @@
            (evil-disable-insert-state-bindings))
       '(textobjects navigation additional)
     '(textobjects navigation insert additional))
-  "Which key themes to enable."
+  "Which key themes to enable.
+If you use this variable, you should call `evil-org-set-key-theme' with zero
+arguments."
   :group 'evil-org
   :type '(set (const navigation)
               (const textobjects)
@@ -565,22 +567,24 @@ If a prefix argument is given, links are opened in incognito mode."
     "o" 'evil-org-recompute-clocks))
 
 ;;;###autoload
-(defun evil-org-set-key-theme (theme)
-  "Select what key THEMEs to enable."
-  (setq evil-org-mode-map (make-sparse-keymap))
-  (evil-org--populate-base-bindings)
-  (when (memq 'navigation theme) (evil-org--populate-navigation-bindings))
-  (when (memq 'insert theme) (evil-org--populate-insert-bindings))
-  (when (memq 'textobjects theme) (evil-org--populate-textobjects-bindings))
-  (when (memq 'rsi theme) (evil-org--populate-rsi-bindings))
-  (when (memq 'additional theme) (evil-org--populate-additional-bindings))
-  (when (memq 'shift theme) (evil-org--populate-shift-bindings))
-  (when (memq 'todo theme) (evil-org--populate-todo-bindings))
-  (when (memq 'heading theme) (evil-org--populate-heading-bindings))
-  (when (memq 'leader theme) (evil-org--populate-leader-bindings))
-  (setcdr
-   (assq 'evil-org-mode minor-mode-map-alist)
-   evil-org-mode-map))
+(defun evil-org-set-key-theme (&optional theme)
+  "Select what keythemes to enable.
+Optional argument THEME list of themes. See evil-org-keytheme for a list of values."
+  (let ((theme (or theme evil-org-key-theme)))
+    (setq evil-org-mode-map (make-sparse-keymap))
+    (evil-org--populate-base-bindings)
+    (when (memq 'navigation theme) (evil-org--populate-navigation-bindings))
+    (when (memq 'insert theme) (evil-org--populate-insert-bindings))
+    (when (memq 'textobjects theme) (evil-org--populate-textobjects-bindings))
+    (when (memq 'rsi theme) (evil-org--populate-rsi-bindings))
+    (when (memq 'additional theme) (evil-org--populate-additional-bindings))
+    (when (memq 'shift theme) (evil-org--populate-shift-bindings))
+    (when (memq 'todo theme) (evil-org--populate-todo-bindings))
+    (when (memq 'heading theme) (evil-org--populate-heading-bindings))
+    (when (memq 'leader theme) (evil-org--populate-leader-bindings))
+    (setcdr
+     (assq 'evil-org-mode minor-mode-map-alist)
+     evil-org-mode-map)))
 
 ;;; vim-like confirm/abort for capture and src
 ;;; Taken from mwillsey (Max Willsey) on https://github.com/syl20bnr/spacemacs/pull/7400
