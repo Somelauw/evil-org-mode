@@ -8,7 +8,7 @@
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
 ;; Version: 0.6.3
-;; Package-Requires: ((emacs "24.4") (evil "0") (org "8.0.0"))
+;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
 ;; This file is not part of GNU Emacs
