@@ -150,7 +150,8 @@ Argument COUNT number of lines to insert."
   (evil-append count))
 
 (defun evil-org-insert-subheading (&optional arg)
-  "Insert new subheading."
+  "Insert new subheading.
+Optional argument ARG If one prefix argument is given, insert at the end of current subtree."
   (interactive "P")
   (end-of-visible-line)
   (org-insert-heading arg)
@@ -158,7 +159,8 @@ Argument COUNT number of lines to insert."
   (evil-append 1))
 
 (defun evil-org-insert-subtodo (&optional arg)
-  "Insert new todo subheading."
+  "Insert new todo subheading.
+Optional argument ARG If one prefix argument is given, insert at the end of current subtree."
   (interactive "P")
   (end-of-visible-line)
   (org-insert-todo-heading arg)
@@ -267,7 +269,10 @@ Argument COUNT number of lines to insert."
   (evil-org-demote-or-indent beg end (- (or count 1))))
 
 (defun evil-org-indent-items (beg end count)
-  "Indent all selected items in itemlist."
+  "Indent all selected items in itemlist.
+Argument BEG Begin of subtree items to indent.
+Argument END End of subtree items to indent.
+Argument COUNT if negative, items are dedented instead."
   (when (null count) (setq count 1))
   (let* ((struct (save-excursion (goto-char beg) (org-list-struct)))
          (region-p (region-active-p)))
