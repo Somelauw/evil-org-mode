@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.6.2
+;; Version: 0.6.3
 ;; Package-Requires: ((emacs "24.4") (evil "0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -149,21 +149,21 @@ Argument COUNT number of lines to insert."
   (org-meta-return)
   (evil-append count))
 
-(defun evil-org-insert-subheading (count)
+(defun evil-org-insert-subheading (&optional arg)
   "Insert new subheading."
-  (interactive "p")
-   (end-of-visible-line)
-   (org-insert-heading)
-   (org-metaright)
-   (evil-append count))
+  (interactive "P")
+  (end-of-visible-line)
+  (org-insert-heading arg)
+  (org-metaright)
+  (evil-append 1))
 
-(defun evil-org-insert-subtodo (count)
+(defun evil-org-insert-subtodo (&optional arg)
   "Insert new todo subheading."
-  (interactive "p")
-   (end-of-visible-line)
-   (org-insert-todo-heading nil)
-   (org-metaright)
-   (evil-append count))
+  (interactive "P")
+  (end-of-visible-line)
+  (org-insert-todo-heading arg)
+  (org-metaright)
+  (evil-append 1))
 
 ;;; motion declarations
 (evil-declare-motion 'org-beginning-of-line)
