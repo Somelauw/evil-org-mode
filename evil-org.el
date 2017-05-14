@@ -3,8 +3,8 @@
 ;; Copyright (C) 2012-2017 by Somelauw
 ;; Maintainer: Somelauw
 ;; Original-author: Edward Tjörnhammar
-;; URL: https://github.com/Somelauw/evil-org.git
-;; Git-Repository: git://github.com/Somelauw/evil-org.git
+;; URL: https://github.com/Somelauw/evil-org-mode.git
+;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
 ;; Version: 0.6.3
@@ -29,7 +29,7 @@
 ;;; Commentary:
 ;;
 ;; Known Bugs:
-;; See, https://github.com/Somelauw/evil-org/issues
+;; See, https://github.com/Somelauw/evil-org-mode/issues
 ;;
 ;;; Code:
 (eval-when-compile
