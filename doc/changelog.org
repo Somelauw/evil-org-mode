@@ -1,0 +1,8 @@
+* Changes made between version 1.2 and 6.3
+ - less controversial default keybindings (see issue [[https://github.com/edwtjo/evil-org-mode/issues/13][#13]])
+   t, T, O and leader bindings are no longer bound by default, but can be enabled using key themes.
+ - customizable movement keys
+ - operators (>, <) for promotion, demotion
+ - text objects (ae, ar, ap, as)
+ - insert mode bindings
+ - table support
