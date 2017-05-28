@@ -43,24 +43,37 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
 
 ** Installation
 
-   #+BEGIN_SRC sh
-   mkdir -p ~/.emacs.d/plugins; git clone
-   git://github.com/somelauw/evil-org.git ~/.emacs.d/plugins/evil-org
-   #+END_SRC
+*** Manual installation
+    #+BEGIN_SRC sh
+    mkdir -p ~/.emacs.d/plugins; git clone
+    git://github.com/somelauw/evil-org.git ~/.emacs.d/plugins/evil-org
+    #+END_SRC
 
-*** emacs.el
+**** Configuration emacs.el
 
-   #+BEGIN_SRC emacs-lisp
-   (add-to-list 'load-path "~/.emacs.d/plugins/evil-org")
-   (require 'evil-org)
-   (add-hook 'org-mode-hook 'evil-org-mode)
-   (evil-org-set-key-theme '(navigation insert textobjects additional))
-   #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+    (add-to-list 'load-path "~/.emacs.d/plugins/evil-org")
+    (require 'evil-org)
+    (add-hook 'org-mode-hook 'evil-org-mode)
+    (evil-org-set-key-theme '(navigation insert textobjects additional))
+    #+END_SRC
 
-   Or you can customize =evil-org-key-theme= and replace the last line by:
-   #+BEGIN_SRC emacs-lisp
-   (evil-org-set-key-theme)
-   #+END_SRC
+    Or you can customize =evil-org-key-theme= and replace the last line by:
+    #+BEGIN_SRC emacs-lisp
+    (evil-org-set-key-theme)
+    #+END_SRC
+
+*** Installation by use-package
+    #+BEGIN_SRC emacs-lisp
+    (use-package evil-org
+      :ensure t
+      :after org
+      :config
+      (add-hook 'org-mode-hook 'evil-org-mode)
+      (add-hook 'evil-org-mode-hook
+                (lambda ()
+                  (evil-org-set-key-theme))))
+    #+END_SRC
 
 For a more elaborate setup, take a look at [[file:doc/example_config.el][this example]].
 
