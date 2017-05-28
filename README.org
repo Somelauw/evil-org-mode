@@ -1,16 +1,20 @@
 #+TITLE: evil-org
 
+[[https://melpa.org/#/evil-org][file:https://melpa.org/packages/evil-org-badge.svg]]
+[[https://stable.melpa.org/#/evil-org][file:https://stable.melpa.org/packages/evil-org-badge.svg]]
+
 Supplemental evil-mode key-bindings to Emacs org-mode.
-This is an extended and actively maintained version of https://github.com/edwtjo/evil-org-mode/blob/master/evil-org.el that was originally created by Edward Tjörnhammar.
+This project is a continuation of
+https://github.com/edwtjo/evil-org-mode/blob/master/evil-org.el by Edward Tjörnhammar.
+From version 1.3 it was taken over by Somelauw.
+See [[file:doc/changelog.org][changelog]] for a history of changes.
 
 ** Features
+ - normal, visual and insert mode bindings
  - key bindings organised in key themes
- - operators like > and <
+ - operators like > and < to work on headings
  - text objects
- - insert mode bindings
  - table support
-
-See [[file:doc/changelog.org][changelog]] for a history of changes.
 
 ** Keybindings
 
@@ -34,9 +38,8 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
 
 ** Requirements
 
- - org-mode, git://orgmode.org/org-mode.git
- - evil-mode, https://bitbucket.org/lyro/evil
- - evil-leader, https://github.com/cofi/evil-leader.git
+   - org-mode, git://orgmode.org/org-mode.git
+   - evil-mode, https://bitbucket.org/lyro/evil
 
 ** Installation
 
