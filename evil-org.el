@@ -305,7 +305,7 @@ Argument COUNT if negative, items are dedented instead."
       (evil-delete-backward-char beg end type register)
     (evil-set-register ?- (filter-buffer-substring beg end))
     (evil-yank beg end type register)
-    (org-delete-backward-char count)))
+    (org-delete-char count)))
 
 (evil-define-operator evil-org-recompute-clocks (beg end type register yank-handler)
   "Recompute clocks in visual selection."
