@@ -16,8 +16,8 @@
    |-----+-------------------------------+-----------------------------------------|
    | 'x' | evil-org-delete-char          | like x but keep tables and tags aligned |
    | 'X' | evil-org-delete-previous-char | like X but keep tables and tags aligned |
-   | '$' | org-end-of-line               | like $ but stop before fold marker      |
-   | '^' | org-beginning-of-line         |                                         |
+   | '$' | org-end-of-line               | like $ but stop before fold marker*     |
+   | '^' | org-beginning-of-line         | like 0 but can be special*              |
    | TAB | org-cycle                     | change folding level of current heading |
    | o   | evil-org-open-below           | like o but continue tables and items    |
    | O   | evil-org-open-above           | like O but continue tables and items    |
@@ -26,6 +26,8 @@
    | {   | org-backward-paragraph        | beginning of table                      |
    | }   | org-forward-paragraph         | end of table                            |
    |-----+-------------------------------+-----------------------------------------|
+   
+   * Set evil-org-special-ctrl-a/e to t to make org-beginning-of-line and org-end-of-line ignore leading stars and ending tags on headings.*
 
 *** Operators
     Operators for promoting/demoting headings and items
