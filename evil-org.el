@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.6.3
+;; Version: 0.7.0
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -25,6 +25,9 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+;; Minimal config
+;; (add-hook 'org-mode-hook 'evil-org-mode)
 
 ;;; Commentary:
 ;;
@@ -81,8 +84,6 @@ arguments."
               (const todo)
               (const heading)
               (const leader)))
-
-(add-hook 'org-mode-hook 'evil-org-mode) ;; only load with org-mode
 
 ;;; Variable declarations
 (defvar browse-url-generic-program)
