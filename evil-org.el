@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.7.0
+;; Version: 0.7.1
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -41,7 +41,6 @@
 (require 'org)
 (require 'org-element)
 (require 'org-table)
-(require 'leader nil 'noerror)
 
 (defgroup evil-org nil
   "Provides integration of org-mode and evil."
@@ -561,17 +560,6 @@ If a prefix argument is given, links are opened in incognito mode."
                     (org-insert-heading))))
     (kbd "M-o") 'evil-org-insert-subheading))
 
-;; leader maps
-(defun evil-org--populate-leader-bindings ()
-  "Leader bindings (deprecated)."
-  (make-obsolete 'leader "please bind leader keys in your local config." "0.5.0")
-  (evil-leader/set-key-for-mode 'org-mode
-    "t" 'org-show-todo-tree
-    "a" 'org-agenda
-    "c" 'org-archive-subtree
-    "l" 'evil-org-open-links
-    "o" 'evil-org-recompute-clocks))
-
 ;;;###autoload
 (defun evil-org-set-key-theme (&optional theme)
   "Select what keythemes to enable.
@@ -587,7 +575,6 @@ Optional argument THEME list of themes. See evil-org-keytheme for a list of valu
     (when (memq 'shift theme) (evil-org--populate-shift-bindings))
     (when (memq 'todo theme) (evil-org--populate-todo-bindings))
     (when (memq 'heading theme) (evil-org--populate-heading-bindings))
-    (when (memq 'leader theme) (evil-org--populate-leader-bindings))
     (setcdr
      (assq 'evil-org-mode minor-mode-map-alist)
      evil-org-mode-map)))

@@ -5,6 +5,8 @@
   #+END_SRC
   This line is from now on required in a user config.
   
+  - Leader key bindings are removed. See [[file:example_config.el][example config]] for an example how you can set them up yourself.
+  
 * Between versions 0.1.2 and 0.6.3
   - less controversial default keybindings (see issue [[https://github.com/edwtjo/evil-org-mode/issues/13][#13]])
     t, T, O and leader bindings are no longer bound by default, but can be enabled using key themes.

@@ -5,7 +5,7 @@
   To enable all bindings use:
 
   #+begin_src emacs-lisp
-  (evil-org-set-key-theme '(textobjects insert navigation additional shift leader todo heading))
+  (evil-org-set-key-theme '(textobjects insert navigation additional shift todo heading))
   #+end_src
 
 ** Basic
@@ -129,16 +129,3 @@
    | M-o | org-insert-heading+org-metaright |
    |-----+----------------------------------|
 
-** Leader                                                        :deprecated:
-   Disabled by default.
-
-   |-----------+---------------------------|
-   | key       | function                  |
-   |-----------+---------------------------|
-   | <leader>a | org-agenda                |
-   | <leader>t | org-show-todo-tree        |
-   | <leader>c | org-archive-subtree       |
-   | <leader>l | evil-org-open-links       |
-   | <leader>o | evil-org-recompute-clocks |
-   |-----------+---------------------------|
-  
