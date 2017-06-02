@@ -66,17 +66,18 @@
    |-----+----------------------+-------------------|
 
 ** Text objects
-   "var" to select an element
+   "vae" to select an element
    "dar" to delete a subtree
-   "2yar" to yank the parent of a subtree
+   "2yaR" to yank the parent of a subtree
 
-  |-----+-------------+------------------------------------------------|
-  | key | function    | explanation                                    |
-  |-----+-------------+------------------------------------------------|
-  | ae  | org-element | An org element                                 |
-  | ar  | org-subtree | A subtree. Use a count to select parent trees. |
-  |-----+-------------+------------------------------------------------|
-
+  |---------+---------------------+-------------------------------------------------|
+  | key     | function            | explanation                                     |
+  |---------+---------------------+-------------------------------------------------|
+  | ae / ie | org-object          | An / inner object (markup, table cell)          |
+  | aE / iE | org-element         | An / inner element (code block, table row)      |
+  | ar / ir | org-greater-element | An / inner recursive element (item list, table) |
+  | aR / iR | org-subtree         | An / inner subtree starting with a *            |
+  |---------+---------------------+-------------------------------------------------|
 
 ** Additional
    If you don't want to use hjkl, you can customize evil-org-movement-bindings.

@@ -18,23 +18,48 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
 
 ** Keybindings
 
-   |----------------+---------------------------|
-   | key            | explanation               |
-   |----------------+---------------------------|
-   | M-ret          | insert heading            |
-   | TAB            | fold / unfold headings    |
-   | gh, gj, gk, gl | navigate between elements |
-   | vae            | select an element         |
-   | var            | select a subtree          |
-   | M-h or <<      | promote a heading         |
-   | M-l or >>      | demote a heading          |
-   | M-k            | move subtree up           |
-   | M-j            | move subtree down         |
-   | M-S-h or <ar   | promote a subtree         |
-   | M-S-l or >ar   | demote a subtree          |
-   |----------------+---------------------------|
-
    [[file:doc/keythemes.org][Full overview of bindings and configuration]]
+
+*** Quick overview
+
+    |----------------+---------------------------|
+    | key            | explanation               |
+    |----------------+---------------------------|
+    | gh, gj, gk, gl | navigate between elements |
+    | vae            | select an element         |
+    |----------------+---------------------------|
+
+**** Headings and items
+
+     |--------------+------------------------|
+     | key          | explanation            |
+     |--------------+------------------------|
+     | M-ret        | insert heading         |
+     | TAB          | fold / unfold headings |
+     | M-h or <<    | promote a heading      |
+     | M-l or >>    | demote a heading       |
+     | M-k          | move subtree up        |
+     | M-j          | move subtree down      |
+     | M-S-h or <aR | promote a subtree      |
+     | M-S-l or >aR | demote a subtree       |
+     | vaR          | select a subtree       |
+     |--------------+------------------------|
+
+**** Tables
+
+     |-----------+--------------------------------|
+     | key       | explanation                    |
+     |-----------+--------------------------------|
+     | (         | previous table cell            |
+     | )         | next table cell                |
+     | {         | beginning of table             |
+     | }         | end of table                   |
+     | M-h / M-l | move table column left / right |
+     | M-k / M-j | move table column up / down    |
+     | vae       | select table cell              |
+     | vaE       | select table row               |
+     | var       | select whole table             |
+     |-----------+--------------------------------|
 
 ** Requirements
 

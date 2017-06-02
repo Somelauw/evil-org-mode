@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.7.1
+;; Version: 0.7.2
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -365,73 +365,123 @@ If a prefix argument is given, links are opened in incognito mode."
   (evil-org-generic-open-links beg end t))
 
 ;;; text-objects
-(evil-define-text-object org-element-textobj (count &optional beg end type)
-  "An org element."
-  (let ((element (org-element-at-point)))
-    (list (org-element-property :begin element)
+(defun evil-org-select-an-element (element)
+  "Select an org ELEMENT."
+  (list (org-element-property :begin element)
+        (org-element-property :end element)))
+
+(defun evil-org-select-inner-element (element)
+  "Select inner org ELEMENT."
+  (list (or (org-element-property :contents-begin element)
+            (org-element-property :begin element))
+        (or (org-element-property :contents-end element)
+            ;; Prune post-blank lines from :end element
+            (save-excursion
+              (goto-char (org-element-property :end element))
+              (let ((post-blank (org-element-property :post-blank element)))
+                (unless (zerop post-blank)
+                  (forward-line (- post-blank))))
+              (point)))))
+
+(defun evil-org-parent (element)
+  "Find a parent or nearest heading of ELEMENT."
+  (or (org-element-property :parent element)
+      (save-excursion
+        (goto-char (org-element-property :begin element))
+        (if (org-with-limited-levels (org-at-heading-p))
+            (org-up-heading-safe)
+          (org-with-limited-levels (org-back-to-heading)))
+        (org-element-at-point))))
+
+(evil-define-text-object evil-org-an-object (count beg end type)
+  "An org object.
+Matches urls and table cells."
+  (when (null end) (setq end (point)))
+  (when (null beg) (setq beg (point)))
+  (let* ((first (org-element-context))
+         (element first))
+    ;; select next object on repetitive presses
+    (goto-char end)
+    (when (<= (org-element-property :end element) end)
+      (setq element (org-element-context)))
+    (dotimes (_ (1- count))
+      (goto-char (org-element-property :end element))
+      (setq element (org-element-context)))
+    (list (min beg (org-element-property :begin first))
           (org-element-property :end element))))
 
-(evil-define-text-object org-subtree-textobj (count &optional beg end type)
+(evil-define-text-object evil-org-inner-object (count &optional beg end type)
+  "Select an org object.
+Matches urls and table cells."
+  (evil-org-select-inner-element (org-element-context)))
+
+(evil-define-text-object evil-org-an-element (count &optional beg end type)
+  "An org element.
+Includes paragraphs, table rows and code blocks.
+"
+  (let* ((first (org-element-at-point))
+         (element first))
+    (when (and end (>= end (org-element-property :end element)))
+      (org-forward-element)
+      (setq element (org-element-at-point)))
+    (dotimes (_ (1- count))
+      (org-forward-element)
+      (setq element (org-element-at-point)))
+    (list (min (or beg (point)) (org-element-property :begin first))
+          (org-element-property :end element))))
+
+(evil-define-text-object evil-org-inner-element (count &optional beg end type)
+  "Inner org element.
+Includes paragraphs, table rows and code blocks.
+"
+  (evil-org-select-inner-element (org-element-at-point)))
+
+(evil-define-text-object evil-org-a-greater-element (count &optional beg end type)
+  "A greater (recursive) org element.
+Includes tables, list items and subtrees."
+  (when (null count) (setq count 1))
+  (save-excursion
+    (when beg (goto-char beg))
+    (let ((element (org-element-at-point)))
+      (when (or (not (memq (first element) org-element-greater-elements))
+                (and end (>= end (org-element-property :end element))))
+        (setq element (evil-org-parent element)))
+      (dotimes (_ (1- count))
+        (setq element (evil-org-parent element)))
+      (evil-org-select-an-element element))))
+
+(evil-define-text-object evil-org-inner-greater-element (count &optional beg end type)
+  "Inner greater (recursive) org element.
+Includes tables, list items and subtrees."
+  (when (null count) (setq count 1))
+  (save-excursion
+    (when beg (goto-char beg))
+    (let ((element (org-element-at-point)))
+      (unless (memq (first element) org-element-greater-elements)
+        (setq element (evil-org-parent element)))
+      (dotimes (_ (1- count))
+        (setq element (evil-org-parent element)))
+      (evil-org-select-inner-element element))))
+
+(evil-define-text-object evil-org-a-subtree (count &optional beg end type)
   "An org subtree."
+  (when (null count) (setq count 1))
   (org-with-limited-levels
    (cond ((org-at-heading-p) (beginning-of-line))
          ((org-before-first-heading-p) (user-error "Not in a subtree"))
          (t (outline-previous-visible-heading 1))))
   (when count (while (and (> count 1) (org-up-heading-safe)) (cl-decf count)))
-  (let ((element (org-element-at-point)))
-    (list (org-element-property :begin element)
-          (org-element-property :end element))))
+  (evil-org-select-an-element (org-element-at-point)))
 
-(evil-define-text-object evil-org-table-inner-cell (count &optional beg end type)
-  "Inner org table cell."
-  (save-excursion
-    (when (not (looking-back "|\\s-?")) (org-table-beginning-of-field 1))
-    (let* ((b (point))
-           (e (progn (when (looking-at "\\s-*|") ; empty cells
-                       (right-char)
-                       (setq count (1- count)))
-                     (when (> count 0) (org-table-end-of-field count))
-                     (point))))
-      (list b e))))
-
-(evil-define-text-object evil-org-table-a-cell (count &optional beg end type)
-  "An org table cell."
-  (save-excursion
-    (when (not (looking-back "|\\s-?")) (org-table-beginning-of-field 1))
-    (list (point)
-          (dotimes (_ count (point))
-            (org-table-next-field)))))
-
-(evil-define-text-object evil-org-inner-sentence (count &optional beg end type)
-  "Inner sentence or table cell when in an org table."
-  (if (org-at-table-p)
-      (evil-org-table-inner-cell count beg end type)
-    (evil-a-sentence count beg end type)))
-
-(evil-define-text-object evil-org-a-sentence (count &optional beg end type)
-  "Outer sentence or table cell when in an org table."
-  (if (org-at-table-p)
-      (evil-org-table-a-cell)
-    (evil-a-sentence count beg end type)))
-
-(evil-define-text-object evil-org-inner-paragraph (count &optional beg end type)
-  "Inner paragraph or table when in an org table."
-  :type line
-  (if (org-at-table-p)
-      (list (org-table-begin) (org-table-end))
-    (evil-select-inner-object 'evil-paragraph beg end type count t)))
-
-(evil-define-text-object evil-org-a-paragraph (count &optional beg end type)
-  "A paragraph or table when in an org table."
-  :type line
-  (if (org-at-table-p)
-      (let ((p (point))
-            (b (org-table-begin))
-            (e (org-table-end)))
-        (list (min (or beg p) b)
-              (max (or end p) e)))
-    (evil-select-an-object 'evil-paragraph beg end type count t)))
-
+(evil-define-text-object evil-org-inner-subtree (count &optional beg end type)
+  "Inner org subtree."
+  (when (null count) (setq count 1))
+  (org-with-limited-levels
+   (cond ((org-at-heading-p) (beginning-of-line))
+         ((org-before-first-heading-p) (user-error "Not in a subtree"))
+         (t (outline-previous-visible-heading 1))))
+  (when count (while (and (> count 1) (org-up-heading-safe)) (cl-decf count)))
+  (evil-org-select-inner-element (org-element-at-point)))
 ;;; Keythemes
 (defun evil-org--populate-base-bindings ()
   "Bindings that are always available."
@@ -467,12 +517,14 @@ If a prefix argument is given, links are opened in incognito mode."
 (defun evil-org--populate-textobjects-bindings ()
   "Text objects."
   (dolist (state '(visual operator))
-    (evil-define-key state evil-org-mode-map "ae" 'org-element-textobj)
-    (evil-define-key state evil-org-mode-map "ar" 'org-subtree-textobj)
-    (evil-define-key state evil-org-mode-map "is" 'evil-org-inner-sentence)
-    (evil-define-key state evil-org-mode-map "as" 'evil-org-a-sentence)
-    (evil-define-key state evil-org-mode-map "ip" 'evil-org-inner-paragraph)
-    (evil-define-key state evil-org-mode-map "ap" 'evil-org-a-paragraph)))
+    (evil-define-key state evil-org-mode-map "ae" 'evil-org-an-object)
+    (evil-define-key state evil-org-mode-map "ie" 'evil-org-inner-object)
+    (evil-define-key state evil-org-mode-map "aE" 'evil-org-an-element)
+    (evil-define-key state evil-org-mode-map "iE" 'evil-org-inner-element)
+    (evil-define-key state evil-org-mode-map "ir" 'evil-org-inner-greater-element)
+    (evil-define-key state evil-org-mode-map "ar" 'evil-org-a-greater-element)
+    (evil-define-key state evil-org-mode-map "aR" 'evil-org-a-subtree)
+    (evil-define-key state evil-org-mode-map "iR" 'evil-org-inner-subtree)))
 
 (defun evil-org--populate-insert-bindings ()
   "Define insert mode bindings."
@@ -524,11 +576,6 @@ If a prefix argument is given, links are opened in incognito mode."
         (kbd (concat "C-S-" .right)) 'org-shiftcontrolright
         (kbd (concat "C-S-" .up)) 'org-shiftcontrolup
         (kbd (concat "C-S-" .down)) 'org-shiftcontroldown))))
-
-;; (let ((state (if evil-org-use-additional-insert '(normal insert) 'normal)))
-;;   (evil-define-key state evil-org-mode-map
-;;     (kbd "M-o") 'evil-org-insert-subheading
-;;     (kbd "M-t") 'evil-org-insert-subtodo))
 
 (defun evil-org--populate-shift-bindings ()
   "Shift bindings that conflict with evil bindings."
