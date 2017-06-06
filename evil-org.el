@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.7.2
+;; Version: 0.7.3
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -119,35 +119,23 @@ FUN function callback"
   "Clever insertion of org item.
 Argument COUNT number of lines to insert."
   (interactive "p")
-  (cond ((org-at-table-p)
-         (org-table-insert-row '(4))
-         (evil-insert count))
-        ((org-in-item-p)
-         (end-of-visible-line)
-         (org-insert-item)
-         (evil-append count))
-        (t (evil-open-below count))))
+  (end-of-visible-line)
+  (let ((e (org-element-lineage (org-element-at-point) '(item table-row) t)))
+    (case (org-element-type e)
+      ((table-row) (org-table-insert-row '(4)) (evil-insert nil))
+      ((item) (org-insert-item) (evil-append nil))
+      (otherwise (evil-open-below count)))))
 
 (defun evil-org-open-above (count)
   "Clever insertion of org item.
 Argument COUNT number of lines to insert."
   (interactive "p")
-  (cond ((org-at-table-p)
-         (org-table-insert-row)
-         (evil-insert count))
-        ((org-in-item-p)
-         (beginning-of-visual-line)
-         (org-insert-item)
-         (evil-append count))
-        (t (evil-open-above count))))
-
-(defun evil-org-insert-below (count)
-  "Insert heading or item below.
-Argument COUNT number of lines to insert."
-  (interactive "p")
   (end-of-visible-line)
-  (org-meta-return)
-  (evil-append count))
+  (let ((e (org-element-lineage (org-element-at-point) '(item table-row) t)))
+    (case (org-element-type e)
+      ((table-row) (org-table-insert-row) (evil-insert nil))
+      ((item) (beginning-of-visual-line) (org-insert-item) (evil-append nil))
+      (otherwise (evil-open-above count)))))
 
 (defun evil-org-insert-subheading (&optional arg)
   "Insert new subheading.
