@@ -19,15 +19,16 @@
    | '$' | org-end-of-line               | like $ but stop before fold marker*     |
    | '^' | org-beginning-of-line         | like 0 but can be special*              |
    | TAB | org-cycle                     | change folding level of current heading |
-   | o   | evil-org-open-below           | like o but continue tables and items    |
-   | O   | evil-org-open-above           | like O but continue tables and items    |
+   | o   | evil-org-open-below           | like o but continue tables and items*   |
+   | O   | evil-org-open-above           | like O but continue tables and items*   |
    | (   | org-forward-sentence          | next cell in table                      |
    | )   | org-backward-sentence         | previous cell in table                  |
    | {   | org-backward-paragraph        | beginning of table                      |
    | }   | org-forward-paragraph         | end of table                            |
    |-----+-------------------------------+-----------------------------------------|
    
-   * Set evil-org-special-ctrl-a/e to t to make org-beginning-of-line and org-end-of-line ignore leading stars and ending tags on headings.*
+   * Set =org-special-ctrl-a/e= to t to make =org-beginning-of-line= and =org-end-of-line= ignore leading stars and ending tags on headings.
+   * The cases in which o and O should behave special can be controlled using =evil-org-special-o/O=. By default it's set to '(table-row item).
 
 *** Operators
     Operators for promoting/demoting headings and items
