@@ -104,7 +104,7 @@ For a more elaborate setup, take a look at [[file:doc/example_config.el][this ex
 
 ** See also
 
-   - [[https://github.com/edwtjo/evil-org-mode][org-mode by edwtjo]]
+   - [[https://github.com/edwtjo/evil-org-mode][evil-org-mode by edwtjo]]
      Original org-mode plugin by edwtjo from which this project was forked
 
    - [[https://github.com/GuiltyDolphin/org-evil][org-evil by GuiltyDolphin]]
