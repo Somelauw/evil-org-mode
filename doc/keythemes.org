@@ -14,10 +14,10 @@
    |-----+-------------------------------+-----------------------------------------|
    | key | function                      | explanation                             |
    |-----+-------------------------------+-----------------------------------------|
-   | 'x' | evil-org-delete-char          | like x but keep tables and tags aligned |
-   | 'X' | evil-org-delete-previous-char | like X but keep tables and tags aligned |
-   | '$' | org-end-of-line               | like $ but stop before fold marker*     |
-   | '^' | org-beginning-of-line         | like 0 but can be special*              |
+   | x   | evil-org-delete-char          | like x but keep tables and tags aligned |
+   | X   | evil-org-delete-previous-char | like X but keep tables and tags aligned |
+   | \$  | org-end-of-line               | like $ but stop before fold marker*     |
+   | \^  | org-beginning-of-line         | like 0 but can be special*              |
    | TAB | org-cycle                     | change folding level of current heading |
    | o   | evil-org-open-below           | like o but continue tables and items*   |
    | O   | evil-org-open-above           | like O but continue tables and items*   |
@@ -27,8 +27,8 @@
    | }   | org-forward-paragraph         | end of table                            |
    |-----+-------------------------------+-----------------------------------------|
    
-   * Set =org-special-ctrl-a/e= to t to make =org-beginning-of-line= and =org-end-of-line= ignore leading stars and ending tags on headings.
-   * The cases in which o and O should behave special can be controlled using =evil-org-special-o/O=. By default it's set to '(table-row item).
+   * Set =org-special-ctrl-a/e= to =t= to make =org-beginning-of-line= and =org-end-of-line= ignore leading stars and ending tags on headings.
+   * The cases in which =o= and =O= should behave special can be controlled using =evil-org-special-o/O=. By default it's set to ='(table-row item)=.
 
 *** Operators
     Operators for promoting/demoting headings and items
@@ -43,7 +43,7 @@
     | >   | evil-org-shift-right | Demote all headings in marked area  |
     |-----+----------------------+-------------------------------------|
 
-    If you want < and > to promote / demote on a single press, add the following to your org setup:
+    If you want =<= and =>= to promote / demote on a single press, add the following to your org setup:
 
     #+begin_src emacs-lisp
     (evil-define-key 'normal evil-org-mode-map
@@ -54,60 +54,68 @@
     Or enable the additional key binding theme and use M-h and M-l.
 
 ** Navigation
-   If you don't want to use hjkl, you can customize evil-org-movement-bindings.
+   If you don't want to use hjkl, you can customize =evil-org-movement-bindings=.
 
    |-----+----------------------+-------------------|
    | key | function             | explanation       |
    |-----+----------------------+-------------------|
-   | gh  | org-element-up       | Parent of element |
-   | gj  | org-forward-element  | Next element      |
-   | gk  | org-backward-element | Previous element  |
-   | gl  | org-down-element     | First subelement  |
-   | gH  | evil-org-top         | Top-level heading |
+   | gh  | org-element-up       | parent of element |
+   | gj  | org-forward-element  | next element      |
+   | gk  | org-backward-element | previous element  |
+   | gl  | org-down-element     | first subelement  |
+   | gH  | evil-org-top         | top-level heading |
    |-----+----------------------+-------------------|
 
 ** Text objects
-   "vae" to select an element
-   "dar" to delete a subtree
-   "2yaR" to yank the parent of a subtree
-
-  |---------+---------------------+-------------------------------------------------|
-  | key     | function            | explanation                                     |
-  |---------+---------------------+-------------------------------------------------|
-  | ae / ie | org-object          | An / inner object (markup, table cell)          |
-  | aE / iE | org-element         | An / inner element (code block, table row)      |
-  | ar / ir | org-greater-element | An / inner recursive element (item list, table) |
-  | aR / iR | org-subtree         | An / inner subtree starting with a *            |
-  |---------+---------------------+-------------------------------------------------|
+   
+   |---------+---------------------+-------------------------------------------------------|
+   | key     | function            | explanation                                           |
+   |---------+---------------------+-------------------------------------------------------|
+   | ae / ie | org-object          | an / inner object (bold / italic markup, table cell)  |
+   | aE / iE | org-element         | an / inner element (paragraph, code block, table row) |
+   | ar / ir | org-greater-element | an / inner recursive element (item list, table)       |
+   | aR / iR | org-subtree         | an / inner subtree starting with a header             |
+   |---------+---------------------+-------------------------------------------------------|
+  
+  - =ae/ie= select the smallest object or element at point.
+  - =aE/iE= select the smallest element at point. Elements build up the structure of the document, so there is always an element at any point.
+  - =ar/ir= select smallest element that is a container of other elements.
+  - =ae= and =aE= can be repeated to select adjacent objects/elements
+  - =ar= can be repeated to select greater elements
+    
+  Examples:
+   - =vae= to select a paragraph
+   - =daR= to delete a subtree
+   - =yiR= to yank the contents of a subtree
 
 ** Additional
-   If you don't want to use hjkl, you can customize evil-org-movement-bindings.
-   If you want to use these bindings even in insert mode, you can customize evil-org-use-additional-insert.
+   If you don't want to use hjkl, you can customize =evil-org-movement-bindings=.
+   If you want to use these bindings even in insert mode, you can customize =evil-org-use-additional-insert=.
 
    |-----+--------------------+-------------------+-------------------|
    | key | function           | On headings       | On tables         |
    |-----+--------------------+-------------------+-------------------|
-   | M-h | org-metaleft       | Promote heading   | Move column left  |
-   | M-l | org-metaright      | Demote heading    | Move column right |
-   | M-k | org-metaup         | Move subtree up   | Move column up    |
-   | M-j | org-metadown       | Move subtree down | Move column down  |
-   | M-H | org-shiftmetaleft  | Promote subtree   | Delete column     |
-   | M-L | org-shiftmetaright | Demote subtree    | Insert column     |
-   | M-K | org-shiftmetaup    | Move heading up   | Delete row        |
-   | M-J | org-shiftmetadown  | Move heading down | Insert row        |
+   | M-h | org-metaleft       | promote heading   | move column left  |
+   | M-l | org-metaright      | demote heading    | move column right |
+   | M-k | org-metaup         | move subtree up   | move column up    |
+   | M-j | org-metadown       | move subtree down | move column down  |
+   | M-H | org-shiftmetaleft  | promote subtree   | delete column     |
+   | M-L | org-shiftmetaright | demote subtree    | insert column     |
+   | M-K | org-shiftmetaup    | move heading up   | delete row        |
+   | M-J | org-shiftmetadown  | move heading down | insert row        |
    |-----+--------------------+-------------------+-------------------|
 
 ** Shift
    Disabled by default.
-   If you don't want to use hjkl, you can customize evil-org-movement-bindings.
+   If you don't want to use hjkl, you can customize =evil-org-movement-bindings=.
 
    |-----+----------------+--------------------|
    | key | function       | explanation        |
    |-----+----------------+--------------------|
-   | H   | org-shiftleft  | Previous todo item |
-   | L   | org-shiftright | Next todo item     |
-   | J   | org-shiftdown  | Decrease priority  |
-   | K   | org-shiftup    | Increase priority  |
+   | H   | org-shiftleft  | previous todo item |
+   | L   | org-shiftright | next todo item     |
+   | J   | org-shiftdown  | decrease priority  |
+   | K   | org-shiftup    | increase priority  |
    |-----+----------------+--------------------|
 
 ** Todo

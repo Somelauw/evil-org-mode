@@ -110,6 +110,9 @@ For a more elaborate setup, take a look at [[file:doc/example_config.el][this ex
    - [[https://github.com/GuiltyDolphin/org-evil][org-evil by GuiltyDolphin]]
      Alternative integration of evil and org with different keybindings
 
+   - https://github.com/abo-abo/worf
+     Not an evil plugin, but provides vim-inspired key bindings
+
    - https://github.com/jceb/vim-orgmode
      Org mode plugin for vim
 
