@@ -508,7 +508,7 @@ Includes tables, list items and subtrees."
       (evil-define-key state evil-org-mode-map
         (kbd "<") 'evil-org-promote-or-dedent
         (kbd ">") 'evil-org-demote-or-indent
-        (kbd "<tab>") 'org-cycle
+        (kbd "TAB") 'org-cycle
         (kbd "<S-tab>") 'org-shifttab))
     (evil-define-key 'normal evil-org-mode-map
       (kbd "o") 'evil-org-open-below
