@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.7.4
+;; Version: 0.7.5
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -37,6 +37,7 @@
 ;;; Code:
 (eval-when-compile
   (require 'let-alist))
+(require 'cl-lib)
 (require 'evil)
 (require 'org)
 (require 'org-element)
@@ -130,7 +131,7 @@ Passing in any prefix argument, executes the command without special behavior."
   (end-of-visible-line)
   (let* ((special (and (null count) evil-org-special-o/O))
          (e (org-element-lineage (org-element-at-point) special t)))
-    (case (org-element-type e)
+    (cl-case (org-element-type e)
       ((table-row) (org-table-insert-row '(4)) (evil-insert nil))
       ((item) (org-insert-item) (evil-append nil))
       (otherwise (evil-open-below count)))))
@@ -141,12 +142,12 @@ Argument COUNT number of lines to insert.
 The behavior in items and tables can be controlled using evil-org-special-o/O.
 Passing in any prefix argument, executes the command without special behavior."
   (interactive "P")
-  (beginning-of-line)
+  (end-of-visible-line)
   (let* ((special (and (null count) evil-org-special-o/O))
          (e (org-element-lineage (org-element-at-point) special t)))
-    (case (org-element-type e)
+    (cl-case (org-element-type e)
       ((table-row) (org-table-insert-row) (evil-insert nil))
-      ((item) (org-insert-item) (evil-append nil))
+      ((item) (beginning-of-line) (org-insert-item) (evil-append nil))
       (otherwise (evil-open-above count)))))
 
 (defun evil-org-insert-subheading (&optional arg)
