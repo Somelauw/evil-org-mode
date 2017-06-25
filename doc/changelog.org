@@ -1,3 +1,5 @@
+* Version 0.8
+  - Make evil-org-a-greater-org-object (ar), evil-org-inner/a-subtree (iR, aR) text objects linewise. The other text objects remain characterwise.
 * Version 0.7
   - A hook is no longer created automatically. The following line of code is from now on required in a user config:
   #+BEGIN_SRC emacs-lisp
@@ -11,7 +13,6 @@
     - Move subtree text object bindings from ir/ar to iR/aR
     - New text object ir/ar that works on recursive objects. Repeatable in visual mode.
   - Make o/O customizable by =evil-org-special-o/O=.
-  
 * Between versions 0.1.2 and 0.6.3
   - less controversial default keybindings (see issue [[https://github.com/edwtjo/evil-org-mode/issues/13][#13]])
     t, T, O and leader bindings are no longer bound by default, but can be enabled using key themes.

@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.7.5
+;; Version: 0.8.1
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -368,7 +368,7 @@ If a prefix argument is given, links are opened in incognito mode."
 ;;; text-objects
 (defun evil-org-select-an-element (element)
   "Select an org ELEMENT."
-  (list (org-element-property :begin element)
+  (list (min (region-beginning) (org-element-property :begin element))
         (org-element-property :end element)))
 
 (defun evil-org-select-inner-element (element)
@@ -408,8 +408,7 @@ Matches urls and table cells."
     (dotimes (_ (1- count))
       (goto-char (org-element-property :end element))
       (setq element (org-element-context)))
-    (list (min beg (org-element-property :begin first))
-          (org-element-property :end element))))
+    (evil-org-select-an-element element)))
 
 (evil-define-text-object evil-org-inner-object (count &optional beg end type)
   "Select an org object.
@@ -428,8 +427,7 @@ Includes paragraphs, table rows and code blocks.
     (dotimes (_ (1- count))
       (org-forward-element)
       (setq element (org-element-at-point)))
-    (list (min (or beg (point)) (org-element-property :begin first))
-          (org-element-property :end element))))
+    (evil-org-select-an-element element)))
 
 (evil-define-text-object evil-org-inner-element (count &optional beg end type)
   "Inner org element.
@@ -440,6 +438,7 @@ Includes paragraphs, table rows and code blocks.
 (evil-define-text-object evil-org-a-greater-element (count &optional beg end type)
   "A greater (recursive) org element.
 Includes tables, list items and subtrees."
+  :type line
   (when (null count) (setq count 1))
   (save-excursion
     (when beg (goto-char beg))
@@ -466,6 +465,7 @@ Includes tables, list items and subtrees."
 
 (evil-define-text-object evil-org-a-subtree (count &optional beg end type)
   "An org subtree."
+  :type line
   (when (null count) (setq count 1))
   (org-with-limited-levels
    (cond ((org-at-heading-p) (beginning-of-line))
@@ -476,6 +476,7 @@ Includes tables, list items and subtrees."
 
 (evil-define-text-object evil-org-inner-subtree (count &optional beg end type)
   "Inner org subtree."
+  :type line
   (when (null count) (setq count 1))
   (org-with-limited-levels
    (cond ((org-at-heading-p) (beginning-of-line))
