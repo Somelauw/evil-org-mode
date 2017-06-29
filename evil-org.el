@@ -84,12 +84,15 @@ arguments."
               (const heading)
               (const leader)))
 
-(defcustom evil-org-special-o/O '(table-row item)
+(defcustom evil-org-special-o/O '(table-row item src-block)
   "When o and O should be special.
 This makes them continue item lists and table rows.
 By default, o and O are bound to evil-org-open-above and evil-org-open-below."
   :group 'evil-org
-  :type '(set (const table-row) (const item)))
+  :type '(set
+          (const table-row)
+          (const item)
+          (const src-block)))
 
 ;;; Variable declarations
 (defvar browse-url-generic-program)
