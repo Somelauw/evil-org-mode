@@ -133,7 +133,7 @@ Passing in any prefix argument, executes the command without special behavior."
          (e (org-element-lineage (org-element-at-point) special t)))
     (cl-case (org-element-type e)
       ((table-row) (org-table-insert-row '(4)) (evil-insert nil))
-      ((item) (org-insert-item) (evil-append nil))
+      ((item) (org-insert-item) (evil-insert nil))
       (otherwise (evil-open-below count)))))
 
 (defun evil-org-open-above (count)
@@ -147,7 +147,7 @@ Passing in any prefix argument, executes the command without special behavior."
          (e (org-element-lineage (org-element-at-point) special t)))
     (cl-case (org-element-type e)
       ((table-row) (org-table-insert-row) (evil-insert nil))
-      ((item) (beginning-of-line) (org-insert-item) (evil-append nil))
+      ((item) (beginning-of-line) (org-insert-item) (evil-insert nil))
       (otherwise (evil-open-above count)))))
 
 (defun evil-org-insert-subheading (&optional arg)
