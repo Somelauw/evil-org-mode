@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.8.1
+;; Version: 0.8.2
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -91,6 +91,13 @@ By default, o and O are bound to evil-org-open-above and evil-org-open-below."
   :group 'evil-org
   :type '(set (const table-row) (const item)))
 
+;; Constants
+(defconst evil-org-special-o/O-ignore
+  (append '(latex-environment drawer property-drawer)
+          (cl-remove-if-not (lambda (s) (string-suffix-p "block" (symbol-name s)))
+                            org-element-all-elements))
+  "Org elements on which o/O should not special.")
+
 ;;; Variable declarations
 (defvar browse-url-generic-program)
 (defvar browse-url-generic-args)
@@ -130,7 +137,9 @@ Passing in any prefix argument, executes the command without special behavior."
   (interactive "P")
   (end-of-visible-line)
   (let* ((special (and (null count) evil-org-special-o/O))
-         (e (org-element-lineage (org-element-at-point) special t)))
+         (ignore (when (memq 'item special) evil-org-special-o/O-ignore))
+         (elements (append special ignore))
+         (e (org-element-lineage (org-element-at-point) elements t)))
     (cl-case (org-element-type e)
       ((table-row) (org-table-insert-row '(4)) (evil-insert nil))
       ((item) (org-insert-item) (evil-insert nil))
@@ -144,7 +153,9 @@ Passing in any prefix argument, executes the command without special behavior."
   (interactive "P")
   (end-of-visible-line)
   (let* ((special (and (null count) evil-org-special-o/O))
-         (e (org-element-lineage (org-element-at-point) special t)))
+         (ignore (when (memq 'item special) evil-org-special-o/O-ignore))
+         (elements (append special ignore))
+         (e (org-element-lineage (org-element-at-point) elements t)))
     (cl-case (org-element-type e)
       ((table-row) (org-table-insert-row) (evil-insert nil))
       ((item) (beginning-of-line) (org-insert-item) (evil-insert nil))

@@ -1,5 +1,6 @@
 * Version 0.8
   - Make evil-org-a-greater-org-object (ar), evil-org-inner/a-subtree (iR, aR) text objects linewise. The other text objects remain characterwise.
+  - Improvements to o/O
 * Version 0.7
   - A hook is no longer created automatically. The following line of code is from now on required in a user config:
   #+BEGIN_SRC emacs-lisp
