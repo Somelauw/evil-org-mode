@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.8.2
+;; Version: 0.8.3
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -87,7 +87,7 @@ arguments."
 (defcustom evil-org-special-o/O '(table-row item)
   "When o and O should be special.
 This makes them continue item lists and table rows.
-By default, o and O are bound to evil-org-open-above and evil-org-open-below."
+By default, o and O are bound to ‘evil-org-open-above’ and ‘evil-org-open-below’."
   :group 'evil-org
   :type '(set (const table-row) (const item)))
 
@@ -115,24 +115,26 @@ By default, o and O are bound to evil-org-open-above and evil-org-open-below."
   :group 'evil-org
 )
 
-(defun evil-org-eol-call (fun)
+(defun evil-org-eol-call (fun &rest arguments)
   "Go to end of line and call provided function.
-FUN function callback"
+FUN function callback
+Optional argument ARGUMENTS arguments to pass to FUN."
   (end-of-visible-line)
-  (funcall fun)
-  (evil-append nil))
+  (apply fun arguments)
+  (evil-insert nil))
 
-(defun evil-org-bol-call (fun)
+(defun evil-org-bol-call (fun &rest arguments)
   "Go to beginning of line and call provided function.
-FUN function callback"
+FUN function callback
+Optional argument ARGUMENTS arguments to pass to FUN."
   (beginning-of-visual-line)
-  (funcall fun)
-  (evil-append nil))
+  (apply fun arguments)
+  (evil-insert nil))
 
 (defun evil-org-open-below (count)
   "Clever insertion of org item.
 Argument COUNT number of lines to insert.
-The behavior in items and tables can be controlled using evil-org-special-o/O.
+The behavior in items and tables can be controlled using ‘evil-org-special-o/O’.
 Passing in any prefix argument, executes the command without special behavior."
   (interactive "P")
   (end-of-visible-line)
@@ -148,7 +150,7 @@ Passing in any prefix argument, executes the command without special behavior."
 (defun evil-org-open-above (count)
   "Clever insertion of org item.
 Argument COUNT number of lines to insert.
-The behavior in items and tables can be controlled using evil-org-special-o/O.
+The behavior in items and tables can be controlled using ‘evil-org-special-o/O’.
 Passing in any prefix argument, executes the command without special behavior."
   (interactive "P")
   (end-of-visible-line)
@@ -168,7 +170,7 @@ Optional argument ARG If one prefix argument is given, insert at the end of curr
   (end-of-visible-line)
   (org-insert-heading arg)
   (org-metaright)
-  (evil-append 1))
+  (evil-insert nil))
 
 (defun evil-org-insert-subtodo (&optional arg)
   "Insert new todo subheading.
@@ -177,7 +179,7 @@ Optional argument ARG If one prefix argument is given, insert at the end of curr
   (end-of-visible-line)
   (org-insert-todo-heading arg)
   (org-metaright)
-  (evil-append 1))
+  (evil-insert nil))
 
 ;;; motion declarations
 (evil-declare-motion 'org-beginning-of-line)
@@ -498,34 +500,33 @@ Includes tables, list items and subtrees."
 ;;; Keythemes
 (defun evil-org--populate-base-bindings ()
   "Bindings that are always available."
-  (let-alist evil-org-movement-bindings
-    (dolist (state '(normal visual operator motion))
-      (evil-define-key state evil-org-mode-map
-        (kbd "$") 'org-end-of-line
-        (kbd "^") 'org-beginning-of-line
-        (kbd "x") 'evil-org-delete-char
-        (kbd "X") 'evil-org-delete-backward-char
-        (kbd ")") 'evil-org-forward-sentence
-        (kbd "(") 'evil-org-backward-sentence
-        (kbd "}") 'org-forward-paragraph
-        (kbd "{") 'org-backward-paragraph
-        (kbd "<C-return>") (lambda ()
+  (dolist (state '(normal visual operator motion))
+    (evil-define-key state evil-org-mode-map
+      (kbd "$") 'org-end-of-line
+      (kbd "^") 'org-beginning-of-line
+      (kbd "x") 'evil-org-delete-char
+      (kbd "X") 'evil-org-delete-backward-char
+      (kbd ")") 'evil-org-forward-sentence
+      (kbd "(") 'evil-org-backward-sentence
+      (kbd "}") 'org-forward-paragraph
+      (kbd "{") 'org-backward-paragraph
+      (kbd "<C-return>") (lambda ()
+                           (interactive)
+                           (evil-org-eol-call
+                            #'org-insert-heading-respect-content))
+      (kbd "<C-S-return>") (lambda ()
                              (interactive)
                              (evil-org-eol-call
-                              'org-insert-heading-respect-content))
-        (kbd "<C-S-return>") (lambda ()
-                               (interactive)
-                               (evil-org-eol-call
-                                'org-insert-todo-heading-respect-content))))
-    (dolist (state '(normal visual))
-      (evil-define-key state evil-org-mode-map
-        (kbd "<") 'evil-org-promote-or-dedent
-        (kbd ">") 'evil-org-demote-or-indent
-        (kbd "<tab>") 'org-cycle
-        (kbd "<S-tab>") 'org-shifttab))
-    (evil-define-key 'normal evil-org-mode-map
-      (kbd "o") 'evil-org-open-below
-      (kbd "O") 'evil-org-open-above)))
+                              #'org-insert-todo-heading-respect-content))))
+ (dolist (state '(normal visual))
+    (evil-define-key state evil-org-mode-map
+      (kbd "<") 'evil-org-promote-or-dedent
+      (kbd ">") 'evil-org-demote-or-indent
+      (kbd "<tab>") 'org-cycle
+      (kbd "<S-tab>") 'org-shifttab))
+  (evil-define-key 'normal evil-org-mode-map
+    (kbd "o") 'evil-org-open-below
+    (kbd "O") 'evil-org-open-above))
 
 (defun evil-org--populate-textobjects-bindings ()
   "Text objects."
@@ -602,22 +603,18 @@ Includes tables, list items and subtrees."
 (defun evil-org--populate-todo-bindings ()
   "Bindings for easy todo insertion."
   (evil-define-key 'normal evil-org-mode-map
-    "t" 'org-todo
-    "T" '(lambda ()
-           (interactive)
-           (evil-org-eol-call
-            (lambda ()
-              (org-insert-todo-heading nil))))
+    (kbd "t") 'org-todo
+    (kbd "T") (lambda (arg)
+                (interactive "P")
+                (evil-org-eol-call #'org-insert-todo-heading arg))
     (kbd "M-t") 'evil-org-insert-subtodo))
 
 (defun evil-org--populate-heading-bindings ()
   "Bindings for easy heading insertion."
   (evil-define-key 'normal evil-org-mode-map
-    (kbd "O") '(lambda ()
-                 (interactive)
-                 (evil-org-eol-call
-                  (lambda ()
-                    (org-insert-heading))))
+    (kbd "O") (lambda (arg)
+                (interactive "P")
+                (evil-org-eol-call #'org-insert-heading arg))
     (kbd "M-o") 'evil-org-insert-subheading))
 
 ;;;###autoload
