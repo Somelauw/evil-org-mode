@@ -139,3 +139,18 @@
    | =M-o= | org-insert-heading+org-metaright |
    |-------+----------------------------------|
 
+** Commands without default binding
+   These functions don't have any bindings by default. You can bind them under C-c or another leader key. These functions may have a few bugs. Improvements in the form of pull requests
+   are welcome.
+  
+   |---------------------------+----------------------------------------|
+   | function                  | explanation                            |
+   |---------------------------+----------------------------------------|
+   | evil-org-recompute-clocks | recompute clocks in selection          |
+   | evil-org-open-links       | opens links in selection               |
+   | evil-org-open-incognito   | open link at point in incognito window |
+   |---------------------------+----------------------------------------|
+
+   Recomputing a single clock can also be done with =C-c C-c=.
+   =evil-org-open-links= opens all links in a selection. Use =RET= to open a single link.
+   =evil-org-open-incognito= tries to open a link in a private window.

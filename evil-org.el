@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.8.3
+;; Version: 0.8.4
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -350,17 +350,21 @@ Argument INCOG whether to open in incognito mode."
                     (not (null org-link-search-failed)))
             (throw 'break 0))
           (if (not (null incog))
-              (let* ((new-arg
-                      ;; if incog is true, decide which incognito settings to
-                      ;; use dependening on the browser
-                      (cond ((not (null (string-match "^.*\\(iceweasel\\|firefox\\).*$" browse-url-generic-program))) "--private-window")
-                            ((not (null (string-match "^.*\\(chrome\\|chromium\\).*$" browse-url-generic-program))) "--incognito")
-                            (t "")))
-                     (old-b (list browse-url-generic-args " "))
-                     (browse-url-generic-args (add-to-ordered-list 'old-b new-arg 0)))
-                (org-open-at-point))
-            (let ((browse-url-generic-args '("")))
-              (org-open-at-point))))))))
+              (evil-org-open-incognito)
+             (let ((browse-url-generic-args '("")))
+               (org-open-at-point '(16)))))))))
+
+(defun evil-org-open-incognito ()
+  "Open link in new incognito window."
+  (interactive)
+  (let* ((new-arg
+          ;; decide which incognito settings to use depending on the browser
+          (cond ((not (null (string-match "^.*\\(iceweasel\\|firefox\\).*$" browse-url-generic-program))) "--private-window")
+                ((not (null (string-match "^.*\\(chrome\\|chromium\\).*$" browse-url-generic-program))) "--incognito")
+                (t "")))
+         (old-b (list browse-url-generic-args " "))
+         (browse-url-generic-args (add-to-ordered-list 'old-b new-arg 0)))
+    (org-open-at-point '(16))))
 
 (evil-define-operator evil-org-open-links (beg end &optional count)
   "Open links in visual selection.
