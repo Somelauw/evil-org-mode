@@ -66,10 +66,9 @@
   :group 'evil-org)
 
 (defcustom evil-org-key-theme
-  (if (and (boundp 'evil-disable-insert-state-bindings)
-           (evil-disable-insert-state-bindings))
+  (if (bound-and-true-p evil-disable-insert-state-bindings)
       '(textobjects navigation additional)
-    '(textobjects navigation insert additional))
+      '(textobjects navigation insert additional))
   "Which key themes to enable.
 If you use this variable, you should call `evil-org-set-key-theme' with zero
 arguments."
