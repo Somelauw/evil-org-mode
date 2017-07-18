@@ -503,37 +503,38 @@ Includes tables, list items and subtrees."
 ;;; Keythemes
 (defun evil-org--populate-base-bindings ()
   "Bindings that are always available."
-  (dolist (state '(normal visual operator motion))
-    (evil-define-key state evil-org-mode-map
-      (kbd "$") 'org-end-of-line
-      (kbd "^") 'org-beginning-of-line
-      (kbd "x") 'evil-org-delete-char
-      (kbd "X") 'evil-org-delete-backward-char
-      (kbd ")") 'evil-org-forward-sentence
-      (kbd "(") 'evil-org-backward-sentence
-      (kbd "}") 'org-forward-paragraph
-      (kbd "{") 'org-backward-paragraph
-      (kbd "<C-return>") (lambda ()
+  ;; (let-alist evil-org-movement-bindings)
+  (let ((motion-map (evil-get-auxiliary-keymap evil-org-mode-map 'motion t)))
+    (evil-redirect-digit-argument motion-map "0" 'org-beginning-of-line))
+  (evil-define-key 'motion evil-org-mode-map
+    (kbd "$") 'org-end-of-line
+    (kbd "x") 'evil-org-delete-char
+    (kbd "X") 'evil-org-delete-backward-char
+    (kbd ")") 'evil-org-forward-sentence
+    (kbd "(") 'evil-org-backward-sentence
+    (kbd "}") 'org-forward-paragraph
+    (kbd "{") 'org-backward-paragraph
+    (kbd "<C-return>") (lambda ()
+                         (interactive)
+                         (evil-org-eol-call
+                          #'org-insert-heading-respect-content))
+    (kbd "<C-S-return>") (lambda ()
                            (interactive)
                            (evil-org-eol-call
-                            #'org-insert-heading-respect-content))
-      (kbd "<C-S-return>") (lambda ()
-                             (interactive)
-                             (evil-org-eol-call
-                              #'org-insert-todo-heading-respect-content))))
  (dolist (state '(normal visual))
     (evil-define-key state evil-org-mode-map
       (kbd "<") 'evil-org-promote-or-dedent
       (kbd ">") 'evil-org-demote-or-indent
       (kbd "<tab>") 'org-cycle
       (kbd "<S-tab>") 'org-shifttab))
+                            #'org-insert-todo-heading-respect-content)))
   (evil-define-key 'normal evil-org-mode-map
     (kbd "o") 'evil-org-open-below
     (kbd "O") 'evil-org-open-above))
 
 (defun evil-org--populate-textobjects-bindings ()
   "Text objects."
-  (dolist (state '(visual operator))
+  (let ((state '(visual operator)))
     (evil-define-key state evil-org-mode-map "ae" 'evil-org-an-object)
     (evil-define-key state evil-org-mode-map "ie" 'evil-org-inner-object)
     (evil-define-key state evil-org-mode-map "aE" 'evil-org-an-element)
@@ -577,9 +578,9 @@ Includes tables, list items and subtrees."
 (defun evil-org--populate-additional-bindings ()
   "Bindings with meta and control."
   (let-alist evil-org-movement-bindings
-    (dolist (state (if evil-org-use-additional-insert
-                       '('normal visual insert)
-                     '(normal visual)))
+    (let ((state (if evil-org-use-additional-insert
+                     '('normal visual insert)
+                   '(normal visual))))
       (evil-define-key state evil-org-mode-map
         (kbd (concat "M-" .left)) 'org-metaleft
         (kbd (concat "M-" .right)) 'org-metaright

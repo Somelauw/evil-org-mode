@@ -1,6 +1,7 @@
 * Version 0.8
-  - Make evil-org-a-greater-org-object (ar), evil-org-inner/a-subtree (iR, aR) text objects linewise. The other text objects remain characterwise.
-  - Improvements to o/O
+  - Make evil-org-a-greater-org-object (=ar=), evil-org-inner/a-subtree (=iR=, =aR=) text objects linewise. The other text objects remain characterwise.
+  - Improvements to =o/O=
+  - Bind =org-beginning-to-line= to =0=. Leave =^= mapped to =evil-first-non-blank=.
 * Version 0.7
   - A hook is no longer created automatically. The following line of code is from now on required in a user config:
   #+BEGIN_SRC emacs-lisp
@@ -8,21 +9,21 @@
   #+END_SRC
   - Leader key bindings are removed. See [[file:example_config.el][example config]] for an example how you can set them up yourself.
   - Redone text objects
-    - Sentence (is/as) and paragraph (ip/ap) text objects no longer get special treatment in tables. Use ie/ae for cells and ir/ar for tables instead.
-    - Move element text object bindings from ie/ae to iE/aE
-    - New text object ie/ae that works on elements and a few smaller objects.
-    - Move subtree text object bindings from ir/ar to iR/aR
-    - New text object ir/ar that works on recursive objects. Repeatable in visual mode.
-  - Make o/O customizable by =evil-org-special-o/O=.
+    - Sentence (=is/as=) and paragraph (=ip/ap=) text objects no longer get special treatment in tables. Use =ie/ae= for cells and =ir/ar= for tables instead.
+    - Move element text object bindings from =ie/ae= to =iE/aE=
+    - New text object =ie/ae= that works on elements and a few smaller objects.
+    - Move subtree text object bindings from =ir/ar= to =iR/aR=.
+    - New text object =ir/ar= that works on recursive objects. Repeatable in visual mode.
+  - Make =o/O= customizable by =evil-org-special-o/O=.
 * Between versions 0.1.2 and 0.6.3
   - less controversial default keybindings (see issue [[https://github.com/edwtjo/evil-org-mode/issues/13][#13]])
-    t, T, O and leader bindings are no longer bound by default, but can be enabled using key themes.
+    =t=, =T=, =O= and leader bindings are no longer bound by default, but can be enabled using key themes.
   - leader keys are deprecated and evil-leader is no longer required
   - customizable movement keys (as a courtesy to dvorak users)
-  - new operators (>, <) for promotion, demotion. Can also be used for plain indentation when in a code block.
-    That means < and > are no longer bound to org-meta-left/right.
+  - new operators (=>=, =<=) for promotion, demotion. Can also be used for plain indentation when in a code block.
+    That means =<= and =>= are no longer bound to =org-meta-left/right=.
   - new text objects
-    - ae, ar to match element, subheading
-    - ap, as to match whole table, table cell in table context
-  - optional insert mode bindings C-d and C-t
-  - table support for keys: x, X, (, ), { and }.
+    - =ae=, =ar= to match element, subheading
+    - =ap=, =as= to match whole table, table cell in table context
+  - optional insert mode bindings =C-d= and =C-t=
+  - table support for keys: =x=, =X=, =(=, =)=, ={= and =}=.
