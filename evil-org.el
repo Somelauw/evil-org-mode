@@ -521,13 +521,13 @@ Includes tables, list items and subtrees."
     (kbd "<C-S-return>") (lambda ()
                            (interactive)
                            (evil-org-eol-call
- (dolist (state '(normal visual))
+                            #'org-insert-todo-heading-respect-content)))
+  (dolist (state '(normal visual))
     (evil-define-key state evil-org-mode-map
       (kbd "<") 'evil-org-promote-or-dedent
       (kbd ">") 'evil-org-demote-or-indent
       (kbd "<tab>") 'org-cycle
       (kbd "<S-tab>") 'org-shifttab))
-                            #'org-insert-todo-heading-respect-content)))
   (evil-define-key 'normal evil-org-mode-map
     (kbd "o") 'evil-org-open-below
     (kbd "O") 'evil-org-open-above))
