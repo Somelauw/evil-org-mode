@@ -16,8 +16,8 @@
    |-------+-------------------------------+-----------------------------------------|
    | =x=   | evil-org-delete-char          | like x but keep tables and tags aligned |
    | =X=   | evil-org-delete-previous-char | like X but keep tables and tags aligned |
-   | =0=   | org-beginning-of-line         | like 0 but can be special*              |
-   | =$=   | org-end-of-line               | like $ but can be special*              |
+   | =0=   | evil-org-beginning-of-line    | like 0 but can be special*              |
+   | =$=   | evil-org-end-of-line          | like $ but can be special*              |
    | =TAB= | org-cycle                     | change folding level of current heading |
    | =o=   | evil-org-open-below           | like o but continue tables and items*   |
    | =O=   | evil-org-open-above           | like O but continue tables and items*   |

@@ -250,6 +250,19 @@ Optional argument ARG If one prefix argument is given, insert at the end of curr
   :jump t
   (while (org-up-heading-safe)))
 
+(evil-define-motion evil-org-end-of-line (&optional n)
+  "Like evil-org-end-of-line but makes org-special-ctrl-a work in evil."
+  (when (and org-special-ctrl-a/e
+             evil-move-cursor-back
+             (not evil-move-beyond-eol)
+             (memq evil-state '(normal visual operator))
+             (not (invisible-p (line-end-position)))
+             (= (point) (1- (line-end-position))))
+    (forward-char))
+  (org-end-of-line n))
+
+(defalias 'evil-org-beginning-of-line 'org-beginning-of-line)
+
 ;;; operators
 (evil-define-operator evil-org-demote-or-indent (beg end count)
   "Demote or indent selection (dwim)."
@@ -505,9 +518,9 @@ Includes tables, list items and subtrees."
   "Bindings that are always available."
   ;; (let-alist evil-org-movement-bindings)
   (let ((motion-map (evil-get-auxiliary-keymap evil-org-mode-map 'motion t)))
-    (evil-redirect-digit-argument motion-map "0" 'org-beginning-of-line))
+    (evil-redirect-digit-argument motion-map "0" 'evil-org-beginning-of-line))
   (evil-define-key 'motion evil-org-mode-map
-    (kbd "$") 'org-end-of-line
+    (kbd "$") 'evil-org-end-of-line
     (kbd "x") 'evil-org-delete-char
     (kbd "X") 'evil-org-delete-backward-char
     (kbd ")") 'evil-org-forward-sentence
