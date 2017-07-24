@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.8.4
+;; Version: 0.8.5
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -334,10 +334,12 @@ Argument COUNT if negative, items are dedented instead."
     (org-delete-char count)))
 
 (evil-define-operator evil-org-recompute-clocks (beg end type register yank-handler)
-  "Recompute clocks in visual selection."
+  "Recompute clocks in visual selection.
+Deprecated, because org-mode already has org-resolve-clocks built-in."
   :keep-visual t
   :move-point nil
   (interactive "<r>")
+  (obsolete 'org-resolve-clocks "0.8.5")
   (progn
     (message "start!")
     (save-excursion

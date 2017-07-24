@@ -23,7 +23,7 @@
      "a" 'org-agenda
      "c" 'org-archive-subtree
      "l" 'evil-org-open-links
-     "o" 'evil-org-recompute-clocks)
+     "C" 'org-resolve-clocks)
 
    ;; Define a hydra
    (defhydra hydra-org-state ()
