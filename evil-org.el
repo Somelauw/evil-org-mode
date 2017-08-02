@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.8.5
+;; Version: 0.8.6
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -666,6 +666,11 @@ Optional argument THEME list of themes. See evil-org-keytheme for a list of valu
   (define-key org-src-mode-map [remap evil-save-and-close]          'org-edit-src-exit)
   (define-key org-src-mode-map [remap evil-save-modified-and-close] 'org-edit-src-exit)
   (define-key org-src-mode-map [remap evil-quit]                    'org-edit-src-abort))
+
+(with-eval-after-load 'org-table
+  (define-key org-table-fedit-map [remap evil-save-and-close]          'org-table-fedit-finish)
+  (define-key org-table-fedit-map [remap evil-save-modified-and-close] 'org-table-fedit-finish)
+  (define-key org-table-fedit-map [remap evil-quit]                    'org-table-fedit-abort))
 
 ;; Set customizable theme
 (evil-org-set-key-theme evil-org-key-theme)
