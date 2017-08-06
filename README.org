@@ -102,7 +102,7 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
 
 For a more elaborate setup, take a look at [[file:doc/example_config.el][this example]].
 
-In the case where you run into trouble with =TAB= does not work as expected (being binded to =evil-jump-forward=), you might want to add this to your configuration =(setq evil-want-C-i-jump nil)=.
+In the case where you run into trouble with =TAB= does not work as expected (being binded to =evil-jump-forward=), you might want to add this to your configuration =(setq evil-want-C-i-jump nil)= before =evil= is loaded.
 
 ** See also
 
