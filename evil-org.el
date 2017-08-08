@@ -55,15 +55,15 @@
     (left . "h")
     (right . "l"))
   "AList of normal keys to use for arrows.
-
-   This can be used by non-qwerty users who don't use hjkl."
+This can be used by non-qwerty users who don't use hjkl."
   :group 'evil-org
   :type '(alist :key-type symbol :value-type string)
   :options '(up down left right))
 
 (defcustom evil-org-use-additional-insert nil
   "Whether additional keybindings should also be available in insert mode."
-  :group 'evil-org)
+  :group 'evil-org
+  :type 'boolean)
 
 (defcustom evil-org-key-theme
   (if (bound-and-true-p evil-disable-insert-state-bindings)
