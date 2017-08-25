@@ -14,13 +14,15 @@
    |-------+-------------------------------+-----------------------------------------|
    | key   | function                      | explanation                             |
    |-------+-------------------------------+-----------------------------------------|
-   | =x=   | evil-org-delete-char          | like x but keep tables and tags aligned |
-   | =X=   | evil-org-delete-previous-char | like X but keep tables and tags aligned |
+   | =TAB= | org-cycle                     | change folding level of current heading |
    | =0=   | evil-org-beginning-of-line    | like 0 but can be special*              |
    | =$=   | evil-org-end-of-line          | like $ but can be special*              |
-   | =TAB= | org-cycle                     | change folding level of current heading |
+   | =I=   | evil-org-insert-line          | like I but ignore leading stars         |
+   | =A=   | evil-org-append-line          | like A but ignore tags and ellipses     |
    | =o=   | evil-org-open-below           | like o but continue tables and items*   |
    | =O=   | evil-org-open-above           | like O but continue tables and items*   |
+   | =x=   | evil-org-delete-char          | like x but keep tables and tags aligned |
+   | =X=   | evil-org-delete-previous-char | like X but keep tables and tags aligned |
    | =(=   | org-forward-sentence          | next cell in table                      |
    | =)=   | org-backward-sentence         | previous cell in table                  |
    | ={=   | org-backward-paragraph        | beginning of table                      |

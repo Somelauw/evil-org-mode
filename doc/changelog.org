@@ -1,3 +1,5 @@
+* Version 0.9
+  - Make I / A ignore leading stars, tags and ellipses on headings
 * Version 0.8
   - Make evil-org-a-greater-org-object (=ar=), evil-org-inner/a-subtree (=iR=, =aR=) text objects linewise. The other text objects remain characterwise.
   - Improvements to =o/O=

@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.8.6
+;; Version: 0.9.0
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -129,6 +129,31 @@ Optional argument ARGUMENTS arguments to pass to FUN."
   (beginning-of-visual-line)
   (apply fun arguments)
   (evil-insert nil))
+
+;;; insertion commands
+(defun evil-org-insert-line (count)
+  "Insert at beginning of line, but ignore heading and item markers.
+The insertion will be repeated COUNT times."
+  (interactive "p")
+  (if (org-at-heading-or-item-p)
+      ;; Manipulate org-beginning-of-line to become special
+      (let ((org-special-ctrl-a/e t))
+        (beginning-of-line)
+        (org-beginning-of-line nil)
+        (evil-insert count))
+    (evil-insert-line count)))
+
+(defun evil-org-append-line (count)
+  "Insert at beginning of line but ignore tags and ellipses at end of the line.
+The insertion will be repeated COUNT times."
+  (interactive "p")
+  (if (org-at-heading-p)
+      ;; Manipulate org-end-of-line to become special
+      (let ((org-special-ctrl-a/e t))
+        (end-of-line)
+        (org-end-of-line nil)
+        (evil-insert count))
+    (evil-append-line count)))
 
 (defun evil-org-open-below (count)
   "Clever insertion of org item.
@@ -518,7 +543,6 @@ Includes tables, list items and subtrees."
 ;;; Keythemes
 (defun evil-org--populate-base-bindings ()
   "Bindings that are always available."
-  ;; (let-alist evil-org-movement-bindings)
   (let ((motion-map (evil-get-auxiliary-keymap evil-org-mode-map 'motion t)))
     (evil-redirect-digit-argument motion-map "0" 'evil-org-beginning-of-line))
   (evil-define-key 'motion evil-org-mode-map
@@ -544,6 +568,8 @@ Includes tables, list items and subtrees."
       (kbd "<tab>") 'org-cycle
       (kbd "<S-tab>") 'org-shifttab))
   (evil-define-key 'normal evil-org-mode-map
+    (kbd "I") 'evil-org-insert-line
+    (kbd "A") 'evil-org-append-line
     (kbd "o") 'evil-org-open-below
     (kbd "O") 'evil-org-open-above))
 
