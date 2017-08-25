@@ -80,8 +80,7 @@ arguments."
               (const additional)
               (const shift)
               (const todo)
-              (const heading)
-              (const leader)))
+              (const heading)))
 
 (defcustom evil-org-special-o/O '(table-row item)
   "When o and O should be special.
@@ -128,81 +127,6 @@ FUN function callback
 Optional argument ARGUMENTS arguments to pass to FUN."
   (beginning-of-visual-line)
   (apply fun arguments)
-  (evil-insert nil))
-
-;;; insertion commands
-(defun evil-org-insert-line (count)
-  "Insert at beginning of line, but ignore heading and item markers.
-The insertion will be repeated COUNT times."
-  (interactive "p")
-  (if (org-at-heading-or-item-p)
-      ;; Manipulate org-beginning-of-line to become special
-      (let ((org-special-ctrl-a/e t))
-        (beginning-of-line)
-        (org-beginning-of-line nil)
-        (evil-insert count))
-    (evil-insert-line count)))
-
-(defun evil-org-append-line (count)
-  "Insert at beginning of line but ignore tags and ellipses at end of the line.
-The insertion will be repeated COUNT times."
-  (interactive "p")
-  (if (org-at-heading-p)
-      ;; Manipulate org-end-of-line to become special
-      (let ((org-special-ctrl-a/e t))
-        (end-of-line)
-        (org-end-of-line nil)
-        (evil-insert count))
-    (evil-append-line count)))
-
-(defun evil-org-open-below (count)
-  "Clever insertion of org item.
-Argument COUNT number of lines to insert.
-The behavior in items and tables can be controlled using ‘evil-org-special-o/O’.
-Passing in any prefix argument, executes the command without special behavior."
-  (interactive "P")
-  (end-of-visible-line)
-  (let* ((special (and (null count) evil-org-special-o/O))
-         (ignore (when (memq 'item special) evil-org-special-o/O-ignore))
-         (elements (append special ignore))
-         (e (org-element-lineage (org-element-at-point) elements t)))
-    (cl-case (org-element-type e)
-      ((table-row) (org-table-insert-row '(4)) (evil-insert nil))
-      ((item) (org-insert-item) (evil-insert nil))
-      (otherwise (evil-open-below count)))))
-
-(defun evil-org-open-above (count)
-  "Clever insertion of org item.
-Argument COUNT number of lines to insert.
-The behavior in items and tables can be controlled using ‘evil-org-special-o/O’.
-Passing in any prefix argument, executes the command without special behavior."
-  (interactive "P")
-  (end-of-visible-line)
-  (let* ((special (and (null count) evil-org-special-o/O))
-         (ignore (when (memq 'item special) evil-org-special-o/O-ignore))
-         (elements (append special ignore))
-         (e (org-element-lineage (org-element-at-point) elements t)))
-    (cl-case (org-element-type e)
-      ((table-row) (org-table-insert-row) (evil-insert nil))
-      ((item) (beginning-of-line) (org-insert-item) (evil-insert nil))
-      (otherwise (evil-open-above count)))))
-
-(defun evil-org-insert-subheading (&optional arg)
-  "Insert new subheading.
-Optional argument ARG If one prefix argument is given, insert at the end of current subtree."
-  (interactive "P")
-  (end-of-visible-line)
-  (org-insert-heading arg)
-  (org-metaright)
-  (evil-insert nil))
-
-(defun evil-org-insert-subtodo (&optional arg)
-  "Insert new todo subheading.
-Optional argument ARG If one prefix argument is given, insert at the end of current subtree."
-  (interactive "P")
-  (end-of-visible-line)
-  (org-insert-todo-heading arg)
-  (org-metaright)
   (evil-insert nil))
 
 ;;; motion declarations
@@ -287,6 +211,81 @@ Optional argument ARG If one prefix argument is given, insert at the end of curr
   (org-end-of-line n))
 
 (defalias 'evil-org-beginning-of-line 'org-beginning-of-line)
+
+;;; insertion commands
+(defun evil-org-insert-line (count)
+  "Insert at beginning of line, but ignore heading and item markers.
+The insertion will be repeated COUNT times."
+  (interactive "p")
+  (if (org-at-heading-or-item-p)
+      ;; Manipulate org-beginning-of-line to become special
+      (let ((org-special-ctrl-a/e t))
+        (beginning-of-line)
+        (org-beginning-of-line nil)
+        (evil-insert count))
+    (evil-insert-line count)))
+
+(defun evil-org-append-line (count)
+  "Insert at beginning of line but ignore tags and ellipses at end of the line.
+The insertion will be repeated COUNT times."
+  (interactive "p")
+  (if (org-at-heading-p)
+      ;; Manipulate org-end-of-line to become special
+      (let ((org-special-ctrl-a/e t))
+        (end-of-line)
+        (org-end-of-line nil)
+        (evil-insert count))
+    (evil-append-line count)))
+
+(defun evil-org-open-below (count)
+  "Clever insertion of org item.
+Argument COUNT number of lines to insert.
+The behavior in items and tables can be controlled using ‘evil-org-special-o/O’.
+Passing in any prefix argument, executes the command without special behavior."
+  (interactive "P")
+  (end-of-visible-line)
+  (let* ((special (and (null count) evil-org-special-o/O))
+         (ignore (when (memq 'item special) evil-org-special-o/O-ignore))
+         (elements (append special ignore))
+         (e (org-element-lineage (org-element-at-point) elements t)))
+    (cl-case (org-element-type e)
+      ((table-row) (org-table-insert-row '(4)) (evil-insert nil))
+      ((item) (org-insert-item) (evil-insert nil))
+      (otherwise (evil-open-below count)))))
+
+(defun evil-org-open-above (count)
+  "Clever insertion of org item.
+Argument COUNT number of lines to insert.
+The behavior in items and tables can be controlled using ‘evil-org-special-o/O’.
+Passing in any prefix argument, executes the command without special behavior."
+  (interactive "P")
+  (end-of-visible-line)
+  (let* ((special (and (null count) evil-org-special-o/O))
+         (ignore (when (memq 'item special) evil-org-special-o/O-ignore))
+         (elements (append special ignore))
+         (e (org-element-lineage (org-element-at-point) elements t)))
+    (cl-case (org-element-type e)
+      ((table-row) (org-table-insert-row) (evil-insert nil))
+      ((item) (beginning-of-line) (org-insert-item) (evil-insert nil))
+      (otherwise (evil-open-above count)))))
+
+(defun evil-org-insert-subheading (&optional arg)
+  "Insert new subheading.
+Optional argument ARG If one prefix argument is given, insert at the end of current subtree."
+  (interactive "P")
+  (end-of-visible-line)
+  (org-insert-heading arg)
+  (org-metaright)
+  (evil-insert nil))
+
+(defun evil-org-insert-subtodo (&optional arg)
+  "Insert new todo subheading.
+Optional argument ARG If one prefix argument is given, insert at the end of current subtree."
+  (interactive "P")
+  (end-of-visible-line)
+  (org-insert-todo-heading arg)
+  (org-metaright)
+  (evil-insert nil))
 
 ;;; operators
 (evil-define-operator evil-org-demote-or-indent (beg end count)
@@ -593,6 +592,7 @@ Includes tables, list items and subtrees."
 
 (defun evil-org--populate-rsi-bindings ()
   "Define key bindings to use in hybrid state."
+  (obsolete "Please create a github issue if you want to keep RSI bindings." "0.9.1")
   (define-key org-mode-map (kbd "C-d")
     (lambda (n)
       (interactive "p")
