@@ -546,12 +546,17 @@ Includes tables, list items and subtrees."
     (evil-redirect-digit-argument motion-map "0" 'evil-org-beginning-of-line))
   (evil-define-key 'motion evil-org-mode-map
     (kbd "$") 'evil-org-end-of-line
-    (kbd "x") 'evil-org-delete-char
-    (kbd "X") 'evil-org-delete-backward-char
     (kbd ")") 'evil-org-forward-sentence
     (kbd "(") 'evil-org-backward-sentence
     (kbd "}") 'org-forward-paragraph
-    (kbd "{") 'org-backward-paragraph
+    (kbd "{") 'org-backward-paragraph)
+  (evil-define-key 'normal evil-org-mode-map
+    (kbd "I") 'evil-org-insert-line
+    (kbd "A") 'evil-org-append-line
+    (kbd "o") 'evil-org-open-below
+    (kbd "O") 'evil-org-open-above
+    (kbd "x") 'evil-org-delete-char
+    (kbd "X") 'evil-org-delete-backward-char
     (kbd "<C-return>") (lambda ()
                          (interactive)
                          (evil-org-eol-call
@@ -566,11 +571,6 @@ Includes tables, list items and subtrees."
       (kbd ">") 'evil-org-demote-or-indent
       (kbd "<tab>") 'org-cycle
       (kbd "<S-tab>") 'org-shifttab))
-  (evil-define-key 'normal evil-org-mode-map
-    (kbd "I") 'evil-org-insert-line
-    (kbd "A") 'evil-org-append-line
-    (kbd "o") 'evil-org-open-below
-    (kbd "O") 'evil-org-open-above))
 
 (defun evil-org--populate-textobjects-bindings ()
   "Text objects."
