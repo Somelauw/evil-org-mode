@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.9.0
+;; Version: 0.9.2
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -214,27 +214,25 @@ Optional argument ARGUMENTS arguments to pass to FUN."
 
 ;;; insertion commands
 (defun evil-org-insert-line (count)
-  "Insert at beginning of line, but ignore heading and item markers.
+  "Insert at beginning of line, but if org-special-ctrl-a/e ignore heading and item markers.
 The insertion will be repeated COUNT times."
   (interactive "p")
   (if (org-at-heading-or-item-p)
       ;; Manipulate org-beginning-of-line to become special
-      (let ((org-special-ctrl-a/e t))
-        (beginning-of-line)
-        (org-beginning-of-line nil)
-        (evil-insert count))
+      (progn (beginning-of-line)
+             (org-beginning-of-line nil)
+             (evil-insert count))
     (evil-insert-line count)))
 
 (defun evil-org-append-line (count)
-  "Insert at beginning of line but ignore tags and ellipses at end of the line.
+  "Insert at beginning of line but if org-special-ctrl-a/e ignore tags and ellipses at end of the line.
 The insertion will be repeated COUNT times."
   (interactive "p")
   (if (org-at-heading-p)
       ;; Manipulate org-end-of-line to become special
-      (let ((org-special-ctrl-a/e t))
-        (end-of-line)
-        (org-end-of-line nil)
-        (evil-insert count))
+      (progn (end-of-line)
+             (org-end-of-line nil)
+             (evil-insert count))
     (evil-append-line count)))
 
 (defun evil-org-open-below (count)
@@ -570,7 +568,7 @@ Includes tables, list items and subtrees."
       (kbd "<") 'evil-org-promote-or-dedent
       (kbd ">") 'evil-org-demote-or-indent
       (kbd "<tab>") 'org-cycle
-      (kbd "<S-tab>") 'org-shifttab))
+      (kbd "<S-tab>") 'org-shifttab)))
 
 (defun evil-org--populate-textobjects-bindings ()
   "Text objects."
