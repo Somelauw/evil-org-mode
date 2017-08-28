@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.9.2
+;; Version: 0.9.3
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -286,8 +286,11 @@ Optional argument ARG If one prefix argument is given, insert at the end of curr
   (evil-insert nil))
 
 ;;; operators
-(evil-define-operator evil-org-demote-or-indent (beg end count)
-  "Demote or indent selection (dwim)."
+(evil-define-operator evil-org-> (beg end count)
+  "Demote, indent, move column right.
+In items or headings, demote heading/item.
+In code blocks, indent lines
+In tables, move column to the right."
   :move-point nil
   (interactive "<r><vc>")
   (when (null count) (setq count 1))
@@ -299,9 +302,15 @@ Optional argument ARG If one prefix argument is given, insert at the end of curr
     (if (> count 0)
         (org-map-region 'org-do-demote beg end)
       (org-map-region 'org-do-promote beg end)))
+   ;; Shifting table columns
+   ((and (org-at-table-p)
+         (save-excursion
+           (goto-char beg)
+           (<= (line-beginning-position) end (line-end-position))))
+    (evil-org-table-move-column beg end count))
    ;; Work with items
-   ((or (org-at-item-p)
-        (save-excursion (goto-char beg) (org-at-item-p)))
+   ((and (org-at-item-p)
+         (<= end (save-excursion (org-end-of-item-list))))
     (evil-org-indent-items beg end count))
    ;; Default indentation
    (t
@@ -311,10 +320,13 @@ Optional argument ARG If one prefix argument is given, insert at the end of curr
       (setq end (max end (org-table-end))))
     (evil-shift-right beg end count))))
 
-(evil-define-operator evil-org-promote-or-dedent (beg end count)
-  "Promote or dedent selection (dwim)."
+(evil-define-operator evil-org-< (beg end count)
+  "Promote, dedent, move column left.
+In items or headings, promote heading/item.
+In code blocks, indent lines
+In tables, move column to the left."
   (interactive "<r><vc>")
-  (evil-org-demote-or-indent beg end (- (or count 1))))
+  (evil-org-> beg end (- (or count 1))))
 
 (defun evil-org-indent-items (beg end count)
   "Indent all selected items in itemlist.
@@ -334,6 +346,19 @@ Argument COUNT if negative, items are dedented instead."
         (set-mark beg)
         (goto-char end)
         (org-list-indent-item-generic count t struct)))))
+
+(defun evil-org-table-move-column (beg end arg)
+  "Move org table column.
+Argument BEG, first column
+Argument END, second column
+If ARG > 0, move column BEG to END.
+If ARG < 0, move column END to BEG"
+  (let* ((text (buffer-substring beg end))
+         (n-cells-selected (max 1 (count ?| text)))
+         (n-columns-to-move (* n-cells-selected (abs arg)))
+         (move-left-p (< arg 0)))
+    (goto-char (if move-left-p end beg))
+    (dotimes (_ n-columns-to-move) (org-table-move-column move-left-p))))
 
 (evil-define-operator evil-org-delete-char (count beg end type register)
   "Combine evil-delete-char with org-delete-char"
@@ -563,12 +588,11 @@ Includes tables, list items and subtrees."
                            (interactive)
                            (evil-org-eol-call
                             #'org-insert-todo-heading-respect-content)))
-  (dolist (state '(normal visual))
-    (evil-define-key state evil-org-mode-map
-      (kbd "<") 'evil-org-promote-or-dedent
-      (kbd ">") 'evil-org-demote-or-indent
-      (kbd "<tab>") 'org-cycle
-      (kbd "<S-tab>") 'org-shifttab)))
+  (evil-define-key '(normal visual) evil-org-mode-map
+    (kbd "<tab>") 'org-cycle
+    (kbd "<S-tab>") 'org-shifttab
+    (kbd "<") 'evil-org-<
+    (kbd ">") 'evil-org->))
 
 (defun evil-org--populate-textobjects-bindings ()
   "Text objects."

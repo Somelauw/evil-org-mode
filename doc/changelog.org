@@ -1,5 +1,6 @@
 * Version 0.9
-  - Make I / A optionally ignore leading stars, tags and ellipses on headings
+  - Make =I= / =A= ignore ellipses on heading. Also make them respect =org-special-ctrl-a/e=.
+  - Make it possible for =<= and =>= (renamed to evil-org-</>) to move table columns.
 * Version 0.8
   - Make evil-org-a-greater-org-object (=ar=), evil-org-inner/a-subtree (=iR=, =aR=) text objects linewise. The other text objects remain characterwise.
   - Improvements to =o/O=

@@ -34,27 +34,31 @@
    * The cases in which =o= and =O= should behave special can be controlled using =evil-org-special-o/O=. By default it's set to ~'(table-row item)~.
 
 *** Operators
-    Operators for promoting/demoting headings and items
+    Context dependent dwim operators for:
+    - promoting/demoting on headings and items (=< <= and => >=)
+    - moving table columns (=< (= and => )=)
+    - changing indent in other contexts (such as org-bable-src-block's)
 
-    |-----+----------------------+-------------------------------------|
-    | key | function             | explanation                         |
-    |-----+----------------------+-------------------------------------|
-    | =<= | evil-org-shift-left  | Promote all headings in marked area |
-    | =>= | evil-org-shift-right | Demote all headings in marked area  |
-    |-----+----------------------+-------------------------------------|
+    |-----+------------+-------------------------------------|
+    | key | function   | explanation                         |
+    |-----+------------+-------------------------------------|
+    | =<= | evil-org-< | Promote all headings in marked area |
+    | =>= | evil-org-< | Demote all headings in marked area  |
+    |-----+------------+-------------------------------------|
 
     Examples:
     - =>>= to promote a heading
-    - =>ar= to promote a tree (if text objects are enabled)
+    - =>ar= to promote a tree
+    - =<(= to swap a table column with the one on the left
+    - =vie2>= to move a table column two places to the right
 
-    If you want =<= and =>= to promote / demote on a single press, add the following to your org setup:
+    If you want =<= and =>= to promote / demote headings and items on a single press, add the following to your org setup:
 
     #+begin_src emacs-lisp
     (evil-define-key 'normal evil-org-mode-map
                      (kbd ">") 'org-meta-right
                      (kbd "<") 'org-meta-left)
     #+end_src
-
     Or enable the additional key binding theme and use M-h and M-l.
 
 ** Navigation
