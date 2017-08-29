@@ -127,23 +127,23 @@
 ** Todo
    Disabled by default.
 
-   |-------+---------------------------------------|
-   | key   | function                              |
-   |-------+---------------------------------------|
-   | =t=   | org-todo                              |
-   | =T=   | org-insert-todo-heading nil           |
-   | =M-t= | org-insert-todo-heading+org-metaright |
-   |-------+---------------------------------------|
+   |-------+----------------------------|
+   | key   | function                   |
+   |-------+----------------------------|
+   | =t=   | org-todo                   |
+   | =T=   | org-insert-todo-heading    |
+   | =M-t= | org-insert-todo-subheading |
+   |-------+----------------------------|
   
 ** Heading
    Disabled by default.
 
-   |-------+----------------------------------|
-   | key   | function                         |
-   |-------+----------------------------------|
-   | =O=   | org-insert-heading               |
-   | =M-o= | org-insert-heading+org-metaright |
-   |-------+----------------------------------|
+   |-------+-----------------------|
+   | key   | function              |
+   |-------+-----------------------|
+   | =O=   | org-insert-heading    |
+   | =M-o= | org-insert-subheading |
+   |-------+-----------------------|
 
 ** Commands without default binding
    These functions don't have any bindings by default. You can bind them under C-c or another leader key. These functions may have a few bugs. Improvements in the form of pull requests

@@ -14,12 +14,8 @@
    (evil-define-key 'normal evil-org-mode-map
      (kbd "-") 'org-ctrl-c-minus
      (kbd "|") 'org-table-goto-column
-     (kbd "M-o") (lambda (arg)
-                   (interactive "P")
-                   (evil-org-eol-call #'org-insert-heading arg))
-     (kbd "M-t") (lambda (arg)
-                   (interactive "P")
-                   (evil-org-eol-call #'org-insert-todo-heading arg)))
+     (kbd "M-o") (evil-org-define-eol-command org-insert-heading)
+     (kbd "M-t") (evil-org-define-eol-command org-insert-todo))
 
    ;; Configure leader key
    (evil-leader/set-key-for-mode 'org-mode

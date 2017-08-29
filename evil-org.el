@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.9.3
+;; Version: 0.9.4
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -117,6 +117,7 @@ By default, o and O are bound to ‘evil-org-open-above’ and ‘evil-org-open-
   "Go to end of line and call provided function.
 FUN function callback
 Optional argument ARGUMENTS arguments to pass to FUN."
+  (obsolete 'evil-org-define-bol-command "0.9.4")
   (end-of-visible-line)
   (apply fun arguments)
   (evil-insert nil))
@@ -125,7 +126,8 @@ Optional argument ARGUMENTS arguments to pass to FUN."
   "Go to beginning of line and call provided function.
 FUN function callback
 Optional argument ARGUMENTS arguments to pass to FUN."
-  (beginning-of-visual-line)
+  (obsolete 'evil-org-define-bol-command "0.9.4")
+  (beginning-of-line)
   (apply fun arguments)
   (evil-insert nil))
 
@@ -214,7 +216,8 @@ Optional argument ARGUMENTS arguments to pass to FUN."
 
 ;;; insertion commands
 (defun evil-org-insert-line (count)
-  "Insert at beginning of line, but if org-special-ctrl-a/e ignore heading and item markers.
+  "Insert at beginning of line.
+If ‘org-special-ctrl-a/e’ insertion will be done after heading and item markers.
 The insertion will be repeated COUNT times."
   (interactive "p")
   (if (org-at-heading-or-item-p)
@@ -225,7 +228,8 @@ The insertion will be repeated COUNT times."
     (evil-insert-line count)))
 
 (defun evil-org-append-line (count)
-  "Insert at beginning of line but if org-special-ctrl-a/e ignore tags and ellipses at end of the line.
+  "Append at end of line before ellipses if present.
+If ‘org-special-ctrl-a/e’ insert before tags on headlines.
 The insertion will be repeated COUNT times."
   (interactive "p")
   (if (org-at-heading-p)
@@ -267,23 +271,33 @@ Passing in any prefix argument, executes the command without special behavior."
       ((item) (beginning-of-line) (org-insert-item) (evil-insert nil))
       (otherwise (evil-open-above count)))))
 
-(defun evil-org-insert-subheading (&optional arg)
-  "Insert new subheading.
-Optional argument ARG If one prefix argument is given, insert at the end of current subtree."
-  (interactive "P")
-  (end-of-visible-line)
-  (org-insert-heading arg)
-  (org-metaright)
-  (evil-insert nil))
+(defmacro evil-org-define-eol-command (cmd)
+  "Return a function that executes CMD at eol and then enters insert state.
+eol stands for end of line.
+For many org functions such as `org-insert-heading', this creates a heading below the current line."
+  (let ((newcmd (intern (concat "evil-org-" (symbol-name cmd) "-below"))))
+    `(progn
+       (defun ,newcmd ()
+         ,(concat "Call `" (symbol-name cmd) "' at end of line and go to insert mode.")
+         (interactive)
+         (end-of-visible-line)
+         (call-interactively #',cmd)
+         (evil-insert nil))
+       #',newcmd)))
 
-(defun evil-org-insert-subtodo (&optional arg)
-  "Insert new todo subheading.
-Optional argument ARG If one prefix argument is given, insert at the end of current subtree."
-  (interactive "P")
-  (end-of-visible-line)
-  (org-insert-todo-heading arg)
-  (org-metaright)
-  (evil-insert nil))
+(defmacro evil-org-define-bol-command (cmd)
+  "Return a function that executes CMD at bol and then enters insert state.
+bol stands for beginning of line.
+For many org functions such as `org-insert-heading', this creates a heading above the current line."
+  (let ((newcmd (intern (concat "evil-org-" (symbol-name cmd) "-above"))))
+    `(progn
+       (defun ,newcmd ()
+         ,(concat "Call `" (symbol-name cmd) "' at beginning of line and go to insert mode.")
+         (interactive)
+         (beginning-of-line)
+         (call-interactively #',cmd)
+         (evil-insert nil))
+       #',newcmd)))
 
 ;;; operators
 (evil-define-operator evil-org-> (beg end count)
@@ -580,14 +594,10 @@ Includes tables, list items and subtrees."
     (kbd "O") 'evil-org-open-above
     (kbd "x") 'evil-org-delete-char
     (kbd "X") 'evil-org-delete-backward-char
-    (kbd "<C-return>") (lambda ()
-                         (interactive)
-                         (evil-org-eol-call
-                          #'org-insert-heading-respect-content))
-    (kbd "<C-S-return>") (lambda ()
-                           (interactive)
-                           (evil-org-eol-call
-                            #'org-insert-todo-heading-respect-content)))
+    (kbd "<C-return>") (evil-org-define-eol-command
+                        org-insert-heading-respect-content)
+    (kbd "<C-S-return>") (evil-org-define-eol-command
+                          org-insert-todo-heading-respect-content))
   (evil-define-key '(normal visual) evil-org-mode-map
     (kbd "<tab>") 'org-cycle
     (kbd "<S-tab>") 'org-shifttab
@@ -671,18 +681,14 @@ Includes tables, list items and subtrees."
   "Bindings for easy todo insertion."
   (evil-define-key 'normal evil-org-mode-map
     (kbd "t") 'org-todo
-    (kbd "T") (lambda (arg)
-                (interactive "P")
-                (evil-org-eol-call #'org-insert-todo-heading arg))
-    (kbd "M-t") 'evil-org-insert-subtodo))
+    (kbd "T") (evil-org-define-eol-command org-insert-todo-heading)
+    (kbd "M-t") (evil-org-define-eol-command org-insert-todo-subheading)))
 
 (defun evil-org--populate-heading-bindings ()
   "Bindings for easy heading insertion."
   (evil-define-key 'normal evil-org-mode-map
-    (kbd "O") (lambda (arg)
-                (interactive "P")
-                (evil-org-eol-call #'org-insert-heading arg))
-    (kbd "M-o") 'evil-org-insert-subheading))
+    (kbd "O") (evil-org-define-eol-command org-insert-heading)
+    (kbd "M-o") (evil-org-define-eol-command org-insert-subheading)))
 
 ;;;###autoload
 (defun evil-org-set-key-theme (&optional theme)
