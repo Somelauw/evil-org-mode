@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.9.4
+;; Version: 0.9.5
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -49,6 +49,23 @@
   :prefix "evil-org-")
 
 ;;; Customizations
+(defcustom evil-org-key-theme
+  (if (bound-and-true-p evil-disable-insert-state-bindings)
+      '(navigation textobjects additional)
+      '(navigation insert textobjects additional))
+  "Which key themes to enable.
+If you use this variable, you should call `evil-org-set-key-theme' with zero
+arguments."
+  :group 'evil-org
+  :type '(set (const navigation)
+              (const insert)
+              (const textobjects)
+              (const rsi)
+              (const additional)
+              (const shift)
+              (const todo)
+              (const heading)))
+
 (defcustom evil-org-movement-bindings
   '((up . "k")
     (down . "j")
@@ -65,29 +82,17 @@ This can be used by non-qwerty users who don't use hjkl."
   :group 'evil-org
   :type 'boolean)
 
-(defcustom evil-org-key-theme
-  (if (bound-and-true-p evil-disable-insert-state-bindings)
-      '(textobjects navigation additional)
-      '(textobjects navigation insert additional))
-  "Which key themes to enable.
-If you use this variable, you should call `evil-org-set-key-theme' with zero
-arguments."
-  :group 'evil-org
-  :type '(set (const navigation)
-              (const textobjects)
-              (const insert)
-              (const rsi)
-              (const additional)
-              (const shift)
-              (const todo)
-              (const heading)))
-
 (defcustom evil-org-special-o/O '(table-row item)
   "When o and O should be special.
 This makes them continue item lists and table rows.
 By default, o and O are bound to ‘evil-org-open-above’ and ‘evil-org-open-below’."
   :group 'evil-org
   :type '(set (const table-row) (const item)))
+
+(defcustom evil-org-retain-visual-state-on-shift nil
+  "Whether < and > should retain selection when used in visual state."
+  :group 'evil-org
+  :type 'boolean)
 
 ;; Constants
 (defconst evil-org-special-o/O-ignore
@@ -332,7 +337,10 @@ In tables, move column to the right."
     (when (and (not (region-active-p)) (org-at-table-p))
       (setq beg (min beg (org-table-begin)))
       (setq end (max end (org-table-end))))
-    (evil-shift-right beg end count))))
+    (evil-shift-right beg end count)))
+  (when (and evil-org-retain-visual-state-on-shift (evil-visual-state-p))
+    (evil-normal-state)
+    (evil-visual-restore)))
 
 (evil-define-operator evil-org-< (beg end count)
   "Promote, dedent, move column left.

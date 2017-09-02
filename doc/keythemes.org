@@ -45,6 +45,8 @@
     | =<= | evil-org-< | Promote all headings in marked area |
     | =>= | evil-org-< | Demote all headings in marked area  |
     |-----+------------+-------------------------------------|
+    
+    Variable =evil-org-retain-visual-state-on-shift= controls whether the selection should be restored after promoting / indenting, which is helpful if you want to promote / indent multiple times. By default this variable is set to =nil=.
 
     Examples:
     - =>>= to promote a heading
