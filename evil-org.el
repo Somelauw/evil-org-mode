@@ -402,21 +402,6 @@ If ARG < 0, move column END to BEG"
     (evil-yank beg end type register)
     (org-delete-char count)))
 
-(evil-define-operator evil-org-recompute-clocks (beg end type register yank-handler)
-  "Recompute clocks in visual selection.
-Deprecated, because org-mode already has org-resolve-clocks built-in."
-  :keep-visual t
-  :move-point nil
-  (interactive "<r>")
-  (obsolete 'org-resolve-clocks "0.8.5")
-  (progn
-    (message "start!")
-    (save-excursion
-      (while (< (point) end)
-        (org-evaluate-time-range)
-        (forward-line)
-        (message "at position %S" (point))))))
-
 (defun evil-org-generic-open-links (beg end incog)
   "Open org mode links in visual selection.
 Argument BEG beginning of region.
@@ -698,7 +683,6 @@ Includes tables, list items and subtrees."
     (kbd "O") (evil-org-define-eol-command org-insert-heading)
     (kbd "M-o") (evil-org-define-eol-command org-insert-subheading)))
 
-;;;###autoload
 (defun evil-org-set-key-theme (&optional theme)
   "Select what keythemes to enable.
 Optional argument THEME list of themes. See evil-org-keytheme for a list of values."

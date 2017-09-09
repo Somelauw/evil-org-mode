@@ -1,13 +1,15 @@
 * Version 0.9
   - Make =I= / =A= ignore ellipses on heading. Also make them respect =org-special-ctrl-a/e=.
   - Make it possible for =<= and =>= (renamed to evil-org-</>) to move table columns.
-  - Introduce variable =evil-org-retain-visual-state-on-shift=. This variable mimics =dotspacemacs-retain-visual-state= in Spacemacs.
+  - Introduce variable =evil-org-retain-visual-state-on-shift=. This variable mimics =dotspacemacs-retain-visual-state-on-shift= in Spacemacs.
+  - Remove =evil-org-recompute-clocks= function. Use =org-resolve-clocks= instead.
+  - Deprecate =rsi= key bindings.
 * Version 0.8
   - Make evil-org-a-greater-org-object (=ar=), evil-org-inner/a-subtree (=iR=, =aR=) text objects linewise. The other text objects remain characterwise.
   - Improvements to =o/O=
   - Bind =org-beginning-to-line= to =0=. Leave =^= mapped to =evil-first-non-blank=.
   - Improve interaction between evil and =org-special-ctrl-a/e=.
-  - Deprecate evil-org-recompute clocks, because org-resolve-clocks already does this.
+  - Deprecate =evil-org-recompute-clocks=, =org-resolve-clocks= can be used instead.
 * Version 0.7
   - A hook is no longer created automatically. The following line of code is from now on required in a user config:
   #+BEGIN_SRC emacs-lisp
