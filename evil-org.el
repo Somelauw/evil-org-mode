@@ -617,6 +617,7 @@ Includes tables, list items and subtrees."
 
 (defun evil-org--populate-rsi-bindings ()
   "Define key bindings to use in hybrid state."
+  (declare (obsolete "Please create a github issue if you want to keep RSI bindings." "0.9.1"))
   (define-key org-mode-map (kbd "C-d")
     (lambda (n)
       (interactive "p")
