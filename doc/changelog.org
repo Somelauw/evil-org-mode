@@ -4,6 +4,7 @@
   - Introduce variable =evil-org-retain-visual-state-on-shift=. This variable mimics =dotspacemacs-retain-visual-state-on-shift= in Spacemacs.
   - Remove =evil-org-recompute-clocks= function. Use =org-resolve-clocks= instead.
   - Deprecate =rsi= key bindings.
+  - =o= on a checkbox item creates a new checkbox item (before it created a normal item)
 * Version 0.8
   - Make evil-org-a-greater-org-object (=ar=), evil-org-inner/a-subtree (=iR=, =aR=) text objects linewise. The other text objects remain characterwise.
   - Improvements to =o/O=
