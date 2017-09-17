@@ -30,14 +30,14 @@
    |-------+-------------------------------+-----------------------------------------|
    
    * Set =org-special-ctrl-a/e= to =t= to make =org-beginning-of-line= and =org-end-of-line= ignore leading stars or tags on headings. Repeat to toggle. By default it's set to ~nil~.
-   * =evil=org-insert-line= and =evil-org-append-line= also respect the setting of =org-special-ctrl-a/e=.
+   * =evil-org-insert-line= and =evil-org-append-line= also respect the setting of =org-special-ctrl-a/e=.
    * The cases in which =o= and =O= should behave special can be controlled using =evil-org-special-o/O=. By default it's set to ~'(table-row item)~.
 
 *** Operators
     Context dependent dwim operators for:
-    - promoting/demoting on headings and items (=< <= and => >=)
-    - moving table columns (=< (= and => )=)
-    - changing indent in other contexts (such as org-bable-src-block's)
+    - promoting/demoting on headings and items
+    - moving table columns
+    - changing indent in other contexts (when editing source code)
 
     |-----+------------+-------------------------------------|
     | key | function   | explanation                         |
@@ -61,10 +61,10 @@
                      (kbd ">") 'org-meta-right
                      (kbd "<") 'org-meta-left)
     #+end_src
-    Or enable the additional key binding theme and use M-h and M-l.
+    Or enable the additional key binding theme and use =M-h= and =M-l.=
 
 ** Navigation
-   If you don't want to use hjkl, you can customize =evil-org-movement-bindings=.
+   If you don't want to use =h/j/k/l,= you can customize =evil-org-movement-bindings=.
 
    |------+----------------------+-------------------|
    | key  | function             | explanation       |
@@ -148,7 +148,7 @@
    |-------+-----------------------|
 
 ** Commands without default binding
-   These functions don't have any bindings by default and aren't well-maintained. You can bind them under C-c or another leader key.
+   These functions don't have any bindings by default and aren't well-maintained. You can bind them under =C-c= or another leader key.
 
    |----------------------------------------+----------------------------------------|
    | function                               | explanation                            |
