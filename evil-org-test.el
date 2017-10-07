@@ -2,6 +2,7 @@
 (require 'ert)
 
 (defmacro evil-org-with (in &rest body)
+  ;; TODO use evil-test-buffer instead
   `(with-temp-buffer
      ;; "hello"
      (evil-mode)
@@ -101,6 +102,25 @@
    (message |\"press o now\")
    #+END_SRC"
             (call-interactively 'evil-org-open-below)))))
+
+(ert-deftest evil-org-test-delete-list-item ()
+  (should (equal "
+                  1. emacs
+|                  2. evil_org"
+                 (evil-org-with "
+                  4. emacs
+                  5. |evil
+                  6. evil_org"
+                                (evil-org-delete (line-beginning-position)
+                                                 (line-beginning-position 2)
+                                                 'line)))))
+
+(ert-deftest evil-org-test-delete-tags ()
+  (should (equal "* |heading with some text                                           :testcase:"
+                 (evil-org-with
+                  "* |Funny heading with some text                                     :testcase:"
+                  (let ((w (evil-a-word)))
+                    (evil-org-delete (first w) (second w)))))))
 
 ;; TODO test x and X
 ;; TODO test < and >

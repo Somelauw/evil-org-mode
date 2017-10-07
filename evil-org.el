@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 0.9.6
+;; Version: 1.0.0
 ;; Package-Requires: ((emacs "24.4") (evil "1.0") (org "8.0.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -405,6 +405,17 @@ If ARG < 0, move column END to BEG"
     (evil-yank beg end type register)
     (org-delete-char count)))
 
+(evil-define-operator evil-org-delete (beg end type register yank-handler)
+  "Like evil-delete, but realigns tags and numbered lists."
+  (interactive "<R><x><y>")
+  (let ((renumber-lists-p (or (< beg (line-beginning-position))
+                              (> end (line-end-position)))))
+    (evil-delete beg end type register yank-handler)
+    (cond ((and renumber-lists-p (org-at-item-p))
+           (org-list-repair))
+          ((org-at-heading-p)
+           (org-fix-tags-on-the-fly)))))
+
 (defun evil-org-generic-open-links (beg end incog)
   "Open org mode links in visual selection.
 Argument BEG beginning of region.
@@ -588,6 +599,7 @@ Includes tables, list items and subtrees."
     (kbd "A") 'evil-org-append-line
     (kbd "o") 'evil-org-open-below
     (kbd "O") 'evil-org-open-above
+    (kbd "d") 'evil-org-delete
     (kbd "x") 'evil-org-delete-char
     (kbd "X") 'evil-org-delete-backward-char
     (kbd "<C-return>") (evil-org-define-eol-command

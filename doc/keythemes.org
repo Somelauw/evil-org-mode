@@ -11,24 +11,25 @@
 ** Basic
    These keys are always enabled
    
-   |-------+-------------------------------+-----------------------------------------|
-   | key   | function                      | explanation                             |
-   |-------+-------------------------------+-----------------------------------------|
-   | =TAB= | org-cycle                     | change folding level of current heading |
-   | =0=   | evil-org-beginning-of-line    | like 0 but can be special*              |
-   | =$=   | evil-org-end-of-line          | like $ but can be special*              |
-   | =I=   | evil-org-insert-line          | like I but can be special*              |
-   | =A=   | evil-org-append-line          | like A but can be special*              |
-   | =o=   | evil-org-open-below           | like o but continue tables and items*   |
-   | =O=   | evil-org-open-above           | like O but continue tables and items*   |
-   | =x=   | evil-org-delete-char          | like x but keep tables and tags aligned |
-   | =X=   | evil-org-delete-previous-char | like X but keep tables and tags aligned |
-   | =(=   | org-forward-sentence          | next cell in table                      |
-   | =)=   | org-backward-sentence         | previous cell in table                  |
-   | ={=   | org-backward-paragraph        | beginning of table                      |
-   | =}=   | org-forward-paragraph         | end of table                            |
-   |-------+-------------------------------+-----------------------------------------|
-   
+   |-------+-------------------------------+--------------------------------------------|
+   | key   | function                      | explanation                                |
+   |-------+-------------------------------+--------------------------------------------|
+   | =TAB= | org-cycle                     | change folding level of current heading    |
+   | =0=   | evil-org-beginning-of-line    | like 0 but can be special*                 |
+   | =$=   | evil-org-end-of-line          | like $ but can be special*                 |
+   | =I=   | evil-org-insert-line          | like I but can be special*                 |
+   | =A=   | evil-org-append-line          | like A but can be special*                 |
+   | =o=   | evil-org-open-below           | like o but continue tables and items*      |
+   | =O=   | evil-org-open-above           | like O but continue tables and items*      |
+   | =d=   | evil-org-delete               | like d but keep tags aligned and fix lists |
+   | =x=   | evil-org-delete-char          | like x but keep tables and tags aligned    |
+   | =X=   | evil-org-delete-previous-char | like X but keep tables and tags aligned    |
+   | =(=   | org-forward-sentence          | next cell in table                         |
+   | =)=   | org-backward-sentence         | previous cell in table                     |
+   | ={=   | org-backward-paragraph        | beginning of table                         |
+   | =}=   | org-forward-paragraph         | end of table                               |
+   |-------+-------------------------------+--------------------------------------------|
+
    * Set =org-special-ctrl-a/e= to =t= to make =org-beginning-of-line= and =org-end-of-line= ignore leading stars or tags on headings. Repeat to toggle. By default it's set to ~nil~.
    * =evil-org-insert-line= and =evil-org-append-line= also respect the setting of =org-special-ctrl-a/e=.
    * The cases in which =o= and =O= should behave special can be controlled using =evil-org-special-o/O=. By default it's set to ~'(table-row item)~.

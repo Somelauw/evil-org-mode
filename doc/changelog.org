@@ -1,3 +1,6 @@
+* Version 1.0
+  - Make =dw= realign tags. Make =dd= renumber lists.
+
 * Version 0.9
   - Make =I= / =A= ignore ellipses on heading. Also make them respect =org-special-ctrl-a/e=.
   - Make it possible for =<= and =>= (renamed to evil-org-</>) to move table columns.
