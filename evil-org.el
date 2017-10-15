@@ -95,11 +95,6 @@ By default, o and O are bound to ‘evil-org-open-above’ and ‘evil-org-open-
   :type 'boolean)
 
 ;; Constants
-(defconst evil-org-special-o/O-ignore
-  (append '(latex-environment drawer property-drawer)
-          (cl-remove-if-not (lambda (s) (string-suffix-p "block" (symbol-name s)))
-                            org-element-all-elements))
-  "Org elements on which o/O should not special.")
 
 ;;; Variable declarations
 (defvar browse-url-generic-program)
@@ -250,15 +245,13 @@ Argument COUNT number of lines to insert.
 The behavior in items and tables can be controlled using ‘evil-org-special-o/O’.
 Passing in any prefix argument, executes the command without special behavior."
   (interactive "P")
-  (end-of-visible-line)
-  (let* ((special (and (null count) evil-org-special-o/O))
-         (ignore (when (memq 'item special) evil-org-special-o/O-ignore))
-         (elements (append special ignore))
-         (e (org-element-lineage (org-element-at-point) elements t)))
-    (cl-case (org-element-type e)
-      ((table-row) (org-table-insert-row '(4)) (evil-insert nil))
-      ((item) (org-insert-item (org-at-item-checkbox-p)) (evil-insert nil))
-      (otherwise (evil-open-below count)))))
+  (end-of-visible-line)                 ; to make items be inserted at the end
+  (cond ((and (memq 'table-row evil-org-special-o/O) (org-at-table-p))
+         (org-table-insert-row '(4)))
+        ((and (memq 'item evil-org-special-o/O) (org-at-item-p)
+              (org-insert-item (org-at-item-checkbox-p))))
+        ((evil-open-below count)))
+  (evil-insert nil))
 
 (defun evil-org-open-above (count)
   "Clever insertion of org item.
@@ -266,18 +259,13 @@ Argument COUNT number of lines to insert.
 The behavior in items and tables can be controlled using ‘evil-org-special-o/O’.
 Passing in any prefix argument, executes the command without special behavior."
   (interactive "P")
-  (end-of-visible-line)
-  (let* ((special (and (null count) evil-org-special-o/O))
-         (ignore (when (memq 'item special) evil-org-special-o/O-ignore))
-         (elements (append special ignore))
-         (e (org-element-lineage (org-element-at-point) elements t)))
-    (cl-case (org-element-type e)
-      ((table-row) (org-table-insert-row) (evil-insert nil))
-      ((item)
-       (beginning-of-line)
-       (org-insert-item (org-at-item-checkbox-p))
-       (evil-insert nil))
-      (otherwise (evil-open-above count)))))
+  (beginning-of-line)               ; to make items be inserted at the beginning
+  (cond ((and (memq 'table-row evil-org-special-o/O) (org-at-table-p))
+         (org-table-insert-row))
+        ((and (memq 'item evil-org-special-o/O) (org-at-item-p)
+              (org-insert-item (org-at-item-checkbox-p))))
+        ((evil-open-above count)))
+  (evil-insert nil))
 
 (defmacro evil-org-define-eol-command (cmd)
   "Return a function that executes CMD at eol and then enters insert state.
