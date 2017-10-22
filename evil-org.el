@@ -245,13 +245,14 @@ Argument COUNT number of lines to insert.
 The behavior in items and tables can be controlled using ‘evil-org-special-o/O’.
 Passing in any prefix argument, executes the command without special behavior."
   (interactive "P")
-  (end-of-visible-line)                 ; to make items be inserted at the end
   (cond ((and (memq 'table-row evil-org-special-o/O) (org-at-table-p))
-         (org-table-insert-row '(4)))
+         (org-table-insert-row '(4))
+         (evil-insert nil))
         ((and (memq 'item evil-org-special-o/O) (org-at-item-p)
-              (org-insert-item (org-at-item-checkbox-p))))
-        ((evil-open-below count)))
-  (evil-insert nil))
+              (progn (end-of-visible-line)
+                     (org-insert-item (org-at-item-checkbox-p))))
+         (evil-insert nil))
+        ((evil-open-below count))))
 
 (defun evil-org-open-above (count)
   "Clever insertion of org item.
@@ -259,12 +260,15 @@ Argument COUNT number of lines to insert.
 The behavior in items and tables can be controlled using ‘evil-org-special-o/O’.
 Passing in any prefix argument, executes the command without special behavior."
   (interactive "P")
-  (beginning-of-line)               ; to make items be inserted at the beginning
   (cond ((and (memq 'table-row evil-org-special-o/O) (org-at-table-p))
-         (org-table-insert-row))
+         (org-table-insert-row)
+         (evil-insert nil))
         ((and (memq 'item evil-org-special-o/O) (org-at-item-p)
-              (org-insert-item (org-at-item-checkbox-p))))
-        ((evil-open-above count)))
+              (progn (beginning-of-line)
+                     (org-insert-item (org-at-item-checkbox-p))))
+         (evil-insert nil))
+        ((evil-open-above count))))
+
   (evil-insert nil))
 
 (defmacro evil-org-define-eol-command (cmd)
