@@ -64,7 +64,8 @@ arguments."
               (const additional)
               (const shift)
               (const todo)
-              (const heading)))
+              (const heading)
+              (const calendar)))
 
 (defcustom evil-org-movement-bindings
   '((up . "k")
@@ -686,6 +687,32 @@ Includes tables, list items and subtrees."
     (kbd "O") (evil-org-define-eol-command org-insert-heading)
     (kbd "M-o") (evil-org-define-eol-command org-insert-subheading)))
 
+(defun evil-org--populate-calendar-bindings ()
+  "Bindings for easy date selection."
+  (evil-define-key 'insert org-read-date-minibuffer-local-map
+    (kbd "C-f") (lambda () (interactive)
+                  (org-eval-in-calendar
+                   '(calendar-scroll-left-three-months 1)))
+    (kbd "C-b") (lambda () (interactive)
+                  (org-eval-in-calendar
+                   '(calendar-scroll-right-three-months 1)))
+    (kbd "M-S-h") (lambda () (interactive)
+                    (org-eval-in-calendar '(calendar-backward-month 1)))
+    (kbd "M-S-l") (lambda () (interactive)
+                    (org-eval-in-calendar '(calendar-forward-month 1)))
+    (kbd "M-S-k") (lambda () (interactive)
+                    (org-eval-in-calendar '(calendar-backward-year 1)))
+    (kbd "M-S-j") (lambda () (interactive)
+                    (org-eval-in-calendar '(calendar-forward-year 1)))
+    (kbd "M-k") (lambda () (interactive)
+                  (org-eval-in-calendar '(calendar-backward-week 1)))
+    (kbd "M-j") (lambda () (interactive)
+                  (org-eval-in-calendar '(calendar-forward-week 1)))
+    (kbd "M-h") (lambda () (interactive)
+                  (org-eval-in-calendar '(calendar-backward-day 1)))
+    (kbd "M-l") (lambda () (interactive)
+                  (org-eval-in-calendar '(calendar-forward-day 1)))))
+
 (defun evil-org-set-key-theme (&optional theme)
   "Select what keythemes to enable.
 Optional argument THEME list of themes. See evil-org-keytheme for a list of values."
@@ -700,6 +727,7 @@ Optional argument THEME list of themes. See evil-org-keytheme for a list of valu
     (when (memq 'shift theme) (evil-org--populate-shift-bindings))
     (when (memq 'todo theme) (evil-org--populate-todo-bindings))
     (when (memq 'heading theme) (evil-org--populate-heading-bindings))
+    (when (memq 'calendar theme) (evil-org--populate-calendar-bindings))
     (setcdr
      (assq 'evil-org-mode minor-mode-map-alist)
      evil-org-mode-map)))
