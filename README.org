@@ -15,6 +15,7 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
  - operators like > and < to work on headings
  - text objects
  - table support
+ - calendar (date selection) support
 
 ** Keybindings
 
@@ -80,7 +81,7 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
     (add-to-list 'load-path "~/.emacs.d/plugins/evil-org")
     (require 'evil-org)
     (add-hook 'org-mode-hook 'evil-org-mode)
-    (evil-org-set-key-theme '(navigation insert textobjects additional))
+    (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
     #+END_SRC
 
     Or you can customize =evil-org-key-theme= and replace the last line by:
