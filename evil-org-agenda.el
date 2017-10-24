@@ -36,6 +36,9 @@
 ;;
 ;;; Code:
 
+(require 'evil)
+(require 'org)
+
 (defun evil-org-agenda-set-keys ()
   "Set motion state keys for `org-agenda'."
   (evil-set-initial-state 'org-agenda-mode 'motion)
