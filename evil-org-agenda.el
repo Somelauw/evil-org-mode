@@ -27,7 +27,7 @@
 ;; along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ;; Minimal config
-;; (add-hook 'org-mode-hook 'evil-org-mode)
+;; (evil-org-agenda-set-keys)
 
 ;;; Commentary:
 ;;
