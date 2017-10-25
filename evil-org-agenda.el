@@ -81,7 +81,6 @@
 
     ;; Undo
     "u" 'org-agenda-undo
-    "U" 'org-agenda-redo-all
 
     ;; Actions
     "dd" 'org-agenda-kill
@@ -104,6 +103,7 @@
 
     ;; Refresh
     (kbd "gr") 'org-agenda-redo
+    (kbd "gR") 'org-agenda-redo-all
 
     ;; Quit
     "ZQ" 'org-agenda-exit
@@ -155,7 +155,7 @@
     ;; TODO: Work out the following.
     ;; 'org-agenda-date-prompt
     ;; 'org-agenda-show-the-flagging-note
-    ;; 'org-save-all-org-buffers
+    ;; 'org-save-all-org-buffers ; Original binding "C-x C-s"
 
     ;; Others
     "+" 'org-agenda-manipulate-query-add
