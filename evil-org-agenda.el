@@ -43,10 +43,10 @@
   "Set motion state keys for `org-agenda'."
   (evil-set-initial-state 'org-agenda-mode 'motion)
 
-  ;; Horizontal movements have little use, so we override "f" and "t".
+  ;; Horizontal movements have little use, thus we can override "f" and "t".
   ;; "w", "b", "e", "ge" and their upcase counterparts are preserved.
   (evil-define-key 'motion org-agenda-mode-map
-    ;; TODO: Unused keys: D, X, o, p, P
+    ;; Unused keys: D, X, o, p, P
 
     (kbd "<tab>") 'org-agenda-goto
     (kbd "<return>") 'org-agenda-switch-to
@@ -56,7 +56,7 @@
     (kbd "<delete>") 'org-agenda-show-scroll-down
     (kbd "<backspace>") 'org-agenda-show-scroll-down
 
-    ;; Motion
+    ;; motion
     "j" 'org-agenda-next-line
     "k" 'org-agenda-previous-line
     (kbd "C-j") 'org-agenda-next-item
@@ -64,7 +64,7 @@
     (kbd "[") 'org-agenda-earlier
     (kbd "]") 'org-agenda-later
 
-    ;; Manipulation
+    ;; manipulation
     ;; We follow standard org-mode bindings (not org-agenda bindings):
     ;; <HJKL> change todo items and priorities.
     ;; M-<jk> drag lines.
@@ -79,37 +79,37 @@
     (kbd "M-h") 'org-agenda-do-date-earlier
     (kbd "M-l") 'org-agenda-do-date-later
 
-    ;; Undo
+    ;; undo
     "u" 'org-agenda-undo
 
-    ;; Actions
+    ;; actions
     "dd" 'org-agenda-kill
     "dA" 'org-agenda-archive
     "da" 'org-agenda-archive-default-with-confirmation
-    "st" 'org-agenda-set-tags
-    "se" 'org-agenda-set-effort
-    "S" 'org-timer-set-timer
+    "zT" 'org-agenda-set-tags
+    "ze" 'org-agenda-set-effort
+    "zt" 'org-timer-set-timer
     "i" 'org-agenda-diary-entry
     "a" 'org-agenda-add-note
     "A" 'org-agenda-append-agenda
     "C" 'org-agenda-capture
 
-    ;; Marking
+    ;; mark
     "m" 'org-agenda-bulk-toggle
-    "*" 'org-agenda-bulk-toggle-all
+    "~" 'org-agenda-bulk-toggle-all
     "%" 'org-agenda-bulk-mark-regexp
     "M" 'org-agenda-bulk-remove-all-marks
     "x" 'org-agenda-bulk-action
 
-    ;; Refresh
+    ;; update
     (kbd "gr") 'org-agenda-redo
     (kbd "gR") 'org-agenda-redo-all
 
-    ;; Quit
+    ;; quit
     "ZQ" 'org-agenda-exit
     "ZZ" 'org-agenda-quit
 
-    ;; Display
+    ;; display
     ;; "Dispatch" can prefix the following:
     ;; 'org-agenda-toggle-deadlines
     ;; 'org-agenda-toggle-diary
@@ -123,26 +123,23 @@
     "z" 'org-agenda-view-mode-dispatch
     "ZD" 'org-agenda-dim-blocked-tasks
 
-    ;; Filter
-    ;; TODO: What's the common binding for filtering?
-    "fc" 'org-agenda-filter-by-category
-    "fr" 'org-agenda-filter-by-regexp
-    "fe" 'org-agenda-filter-by-effort
-    "ft" 'org-agenda-filter-by-tag
-    "fu" 'org-agenda-filter-remove-all
-    "f^" 'org-agenda-filter-by-top-headline
-    ;; TODO: Better used for toggle states.  What's the common binding for limiting?
-    ;; Same as for filtering?
-    "~" 'org-agenda-limit-interactively
+    ;; filter
+    "sc" 'org-agenda-filter-by-category
+    "sr" 'org-agenda-filter-by-regexp
+    "se" 'org-agenda-filter-by-effort
+    "st" 'org-agenda-filter-by-tag
+    "s^" 'org-agenda-filter-by-top-headline
+    "ss" 'org-agenda-limit-interactively
+    "S" 'org-agenda-filter-remove-all
 
-    ;; Clock
+    ;; clock
     "I" 'org-agenda-clock-in ; Original binding
     "O" 'org-agenda-clock-out ; Original binding
     "cg" 'org-agenda-clock-goto
     "cc" 'org-agenda-clock-cancel
     "cr" 'org-agenda-clockreport-mode
 
-    ;; Go and show
+    ;; go and show
     "." 'org-agenda-goto-today ; TODO: What about evil-repeat?
     "gc" 'org-agenda-goto-calendar
     "gC" 'org-agenda-convert-date
@@ -155,6 +152,7 @@
     ;; TODO: Work out the following.
     ;; 'org-agenda-date-prompt
     ;; 'org-agenda-show-the-flagging-note
+
     ;; 'org-save-all-org-buffers ; Original binding "C-x C-s"
 
     ;; Others
