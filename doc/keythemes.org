@@ -63,6 +63,29 @@
                      (kbd "<") 'org-meta-left)
     #+end_src
     Or enable the additional key binding theme and use =M-h= and =M-l.=
+    
+** Return
+   Experimental function bound to =RET=.
+   Disabled by default. If enabled, it's active in insert and emacs state.
+
+   Depending on context, it performs one of the following actions:
+   - When on an empty item or table row, abort or split the item list or table.
+   - When on a non-empty item or table row, continue the item list or table.
+   - Otherwise, insert a newline and indent.
+
+   This makes =RET= more consistent with =evil-org-open-above/below= (which are bound to =o= and =O= by default).
+   
+   |-------+-----------------|
+   | key   | function        |
+   |-------+-----------------|
+   | =RET= | evil-org-return |
+   |-------+-----------------|
+   
+   Based on the following earlier work:
+   - https://github.com/calvinwyoung/org-autolist
+   - http://kitchingroup.cheme.cmu.edu/blog/2017/04/09/A-better-return-in-org-mode/
+
+   * The cases in which =RET= should behave special can be controlled using =evil-org-special-o/O=. By default it's set to ~'(table-row item)~.
 
 ** Navigation
    If you don't want to use =h/j/k/l,= you can customize =evil-org-movement-bindings=.

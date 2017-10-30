@@ -59,6 +59,7 @@ arguments."
   :group 'evil-org
   :type '(set (const navigation)
               (const insert)
+              (const return)
               (const textobjects)
               (const rsi)
               (const additional)
@@ -93,8 +94,6 @@ By default, o and O are bound to ‘evil-org-open-above’ and ‘evil-org-open-
   "Whether < and > should retain selection when used in visual state."
   :group 'evil-org
   :type 'boolean)
-
-;; Constants
 
 ;;; Variable declarations
 (defvar browse-url-generic-program)
@@ -269,7 +268,30 @@ Passing in any prefix argument, executes the command without special behavior."
          (evil-insert nil))
         ((evil-open-above count))))
 
-  (evil-insert nil))
+(defun evil-org-return (arg)
+  "Like `org-return', but continues items and tables like `evil-open-below'.
+Pressing return twice cancels the continuation of the itemlist or table.
+If ARG is set it will not cancel the continuation.
+The behavior of this function can be controlled using `evil-org-special-o/O’."
+  (interactive "P")
+  (cond ((and (not arg) (evil-org--empty-element-p))
+         (delete-region (line-beginning-position) (line-end-position)))
+        ((eolp)
+         (call-interactively #'evil-org-open-below))
+        ('otherwise
+         (call-interactively #'org-return-indent))))
+
+(defun evil-org--empty-element-p ()
+  "Return if pointer is on an empty element."
+  (cond ((org-at-table-p)
+         (let* ((rows (cl-remove 'hline (org-table-to-lisp)))
+                (row (nth (1- (org-table-current-line)) rows)))
+           (cl-every 'string-empty-p row)))
+        ((org-at-item-p)
+         (let ((e (org-element-at-point)))
+           (or (not (org-element-property :contents-begin e))
+               (> (org-element-property :contents-begin e)
+                  (line-end-position)))))))
 
 (defmacro evil-org-define-eol-command (cmd)
   "Return a function that executes CMD at eol and then enters insert state.
@@ -698,6 +720,9 @@ Optional argument THEME list of themes. See evil-org-keytheme for a list of valu
     (evil-org--populate-base-bindings)
     (when (memq 'navigation theme) (evil-org--populate-navigation-bindings))
     (when (memq 'insert theme) (evil-org--populate-insert-bindings))
+    (when (memq 'return theme)
+      (evil-define-key 'insert evil-org-mode-map (kbd "RET") 'evil-org-return)
+      (define-key evil-org-mode-map (kbd "RET") 'evil-org-return))
     (when (memq 'textobjects theme) (evil-org--populate-textobjects-bindings))
     (when (memq 'rsi theme) (evil-org--populate-rsi-bindings))
     (when (memq 'additional theme) (evil-org--populate-additional-bindings))

@@ -2,6 +2,7 @@
   - Make =dw= realign tags. Make =dd= renumber lists.
   - Simplify implementation of `evil-org-open-above/below`.
     - Only continue item lists on first line.
+  - Add =return= keytheme.
 * Version 0.9
   - Make =I= / =A= ignore ellipses on heading. Also make them respect =org-special-ctrl-a/e=.
   - Make it possible for =<= and =>= (renamed to evil-org-</>) to move table columns.
