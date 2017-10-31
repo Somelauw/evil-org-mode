@@ -71,13 +71,13 @@
     ;; M-<hl> cannot demote/promote, we use it for "do-date".
     "J" 'org-agenda-priority-down
     "K" 'org-agenda-priority-up
-    "H" 'evil-org-agenda-previous-todo-keyword
-    "L" 'evil-org-agenda-next-todo-keyword
+    "H" 'org-agenda-do-date-earlier
+    "L" 'org-agenda-do-date-later
     "t" 'org-agenda-todo
     (kbd "M-j") 'org-agenda-drag-line-forward
     (kbd "M-k") 'org-agenda-drag-line-backward
-    (kbd "M-h") 'org-agenda-do-date-earlier
-    (kbd "M-l") 'org-agenda-do-date-later
+    (kbd "M-h") 'org-agenda-todo-previousset
+    (kbd "M-l") 'org-agenda-todo-nextset
 
     ;; undo
     "u" 'org-agenda-undo
