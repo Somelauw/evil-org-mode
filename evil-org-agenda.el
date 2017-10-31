@@ -46,7 +46,7 @@
   ;; Horizontal movements have little use, thus we can override "f" and "t".
   ;; "w", "b", "e", "ge" and their upcase counterparts are preserved.
   (evil-define-key 'motion org-agenda-mode-map
-    ;; Unused keys: D, X, o, p, P
+    ;; Unused keys: D, X, P
 
     (kbd "<tab>") 'org-agenda-goto
     (kbd "<return>") 'org-agenda-switch-to
@@ -86,9 +86,9 @@
     "dd" 'org-agenda-kill
     "dA" 'org-agenda-archive
     "da" 'org-agenda-archive-default-with-confirmation
-    "zT" 'org-agenda-set-tags
-    "ze" 'org-agenda-set-effort
-    "zt" 'org-timer-set-timer
+    "pt" 'org-agenda-set-tags
+    "pe" 'org-agenda-set-effort
+    "o" 'org-timer-set-timer
     "i" 'org-agenda-diary-entry
     "a" 'org-agenda-add-note
     "A" 'org-agenda-append-agenda

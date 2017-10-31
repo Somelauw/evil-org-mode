@@ -85,9 +85,9 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
      | dd                      | C-k                     | delete item                                                                       |
      | da                      | a                       | ask and archive item                                                              |
      | dA                      | $                       | archive item                                                                      |
-     |                         | :                       | set tags                                                                          |
-     |                         | e                       | set effort                                                                        |
-     |                         | ;                       | set timer                                                                         |
+     | pt                      | :                       | set tags                                                                          |
+     | pe                      | e                       | set effort                                                                        |
+     | o                       | ;                       | set timer                                                                         |
      | i                       | i                       | insert entry in diary                                                             |
      | a                       | z                       | add note                                                                          |
      | A                       | A                       | append to agenda                                                                  |
