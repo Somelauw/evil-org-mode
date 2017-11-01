@@ -689,27 +689,36 @@ Includes tables, list items and subtrees."
 
 (defun evil-org--populate-calendar-bindings ()
   "Bindings for easy date selection."
-  (evil-define-key 'insert org-read-date-minibuffer-local-map
+  (define-key org-read-date-minibuffer-local-map
     (kbd "C-f") (lambda () (interactive)
                   (org-eval-in-calendar
-                   '(calendar-scroll-left-three-months 1)))
+                   '(calendar-scroll-left-three-months 1))))
+  (define-key org-read-date-minibuffer-local-map
     (kbd "C-b") (lambda () (interactive)
                   (org-eval-in-calendar
-                   '(calendar-scroll-right-three-months 1)))
+                   '(calendar-scroll-right-three-months 1))))
+  (define-key org-read-date-minibuffer-local-map
     (kbd "M-S-h") (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-backward-month 1)))
+                    (org-eval-in-calendar '(calendar-backward-month 1))))
+  (define-key org-read-date-minibuffer-local-map
     (kbd "M-S-l") (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-forward-month 1)))
+                    (org-eval-in-calendar '(calendar-forward-month 1))))
+  (define-key org-read-date-minibuffer-local-map
     (kbd "M-S-k") (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-backward-year 1)))
+                    (org-eval-in-calendar '(calendar-backward-year 1))))
+  (define-key org-read-date-minibuffer-local-map
     (kbd "M-S-j") (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-forward-year 1)))
+                    (org-eval-in-calendar '(calendar-forward-year 1))))
+  (define-key org-read-date-minibuffer-local-map
     (kbd "M-k") (lambda () (interactive)
-                  (org-eval-in-calendar '(calendar-backward-week 1)))
+                  (org-eval-in-calendar '(calendar-backward-week 1))))
+  (define-key org-read-date-minibuffer-local-map
     (kbd "M-j") (lambda () (interactive)
-                  (org-eval-in-calendar '(calendar-forward-week 1)))
+                  (org-eval-in-calendar '(calendar-forward-week 1))))
+  (define-key org-read-date-minibuffer-local-map
     (kbd "M-h") (lambda () (interactive)
-                  (org-eval-in-calendar '(calendar-backward-day 1)))
+                  (org-eval-in-calendar '(calendar-backward-day 1))))
+  (define-key org-read-date-minibuffer-local-map
     (kbd "M-l") (lambda () (interactive)
                   (org-eval-in-calendar '(calendar-forward-day 1)))))
 
