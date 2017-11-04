@@ -120,6 +120,20 @@
    - =daR= to delete a subtree
    - =yiR= to yank the contents of a subtree
 
+** Calendar
+   Disabled by default.
+   When enabled, these bindings are available in org-calendar in both Evil and Emacs mode.
+
+   |-------------------+--------------------------+-----------------------|
+   | evil-org key      | emacs key                | explanation           |
+   |-------------------+--------------------------+-----------------------|
+   | =M-h= / =M-l=     | =S-left= / =S-right=     | next / previous day   |
+   | =M-j= / =M-k=     | =S-down= / =S-up=        | next / previous week  |
+   | =M-S-h= / =M-S-l= | =M-S-left= / =M-S-right= | next / previous month |
+   | =M-S-j= / =M-S-k= | =M-S-down= / =M-S-up=    | next / previous year  |
+   | =C-f= / =C-b=     | =M-v= / =C-v=            | scroll down /up       |
+   |-------------------+--------------------------+-----------------------|
+
 ** Additional
    If you don't want to use hjkl, you can customize =evil-org-movement-bindings=.
    If you want to use these bindings even in insert mode, you can customize =evil-org-use-additional-insert=.
