@@ -87,9 +87,9 @@
     "dd" 'org-agenda-kill
     "dA" 'org-agenda-archive
     "da" 'org-agenda-archive-default-with-confirmation
-    "pt" 'org-agenda-set-tags
-    "pe" 'org-agenda-set-effort
-    "o" 'org-timer-set-timer
+    "ct" 'org-agenda-set-tags
+    "ce" 'org-agenda-set-effort
+    "cT" 'org-timer-set-timer
     "i" 'org-agenda-diary-entry
     "a" 'org-agenda-add-note
     "A" 'org-agenda-append-agenda
