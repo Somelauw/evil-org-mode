@@ -51,8 +51,8 @@
 ;;; Customizations
 (defcustom evil-org-key-theme
   (if (bound-and-true-p evil-disable-insert-state-bindings)
-      '(navigation textobjects additional)
-      '(navigation insert textobjects additional))
+      '(navigation textobjects additional calendar)
+    '(navigation insert textobjects additional calendar))
   "Which key themes to enable.
 If you use this variable, you should call `evil-org-set-key-theme' with zero
 arguments."
@@ -723,30 +723,31 @@ Includes tables, list items and subtrees."
     (kbd "C-b") (lambda () (interactive)
                   (org-eval-in-calendar
                    '(calendar-scroll-right-three-months 1))))
-  (define-key org-read-date-minibuffer-local-map
-    (kbd "M-S-h") (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-backward-month 1))))
-  (define-key org-read-date-minibuffer-local-map
-    (kbd "M-S-l") (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-forward-month 1))))
-  (define-key org-read-date-minibuffer-local-map
-    (kbd "M-S-k") (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-backward-year 1))))
-  (define-key org-read-date-minibuffer-local-map
-    (kbd "M-S-j") (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-forward-year 1))))
-  (define-key org-read-date-minibuffer-local-map
-    (kbd "M-k") (lambda () (interactive)
-                  (org-eval-in-calendar '(calendar-backward-week 1))))
-  (define-key org-read-date-minibuffer-local-map
-    (kbd "M-j") (lambda () (interactive)
-                  (org-eval-in-calendar '(calendar-forward-week 1))))
-  (define-key org-read-date-minibuffer-local-map
-    (kbd "M-h") (lambda () (interactive)
-                  (org-eval-in-calendar '(calendar-backward-day 1))))
-  (define-key org-read-date-minibuffer-local-map
-    (kbd "M-l") (lambda () (interactive)
-                  (org-eval-in-calendar '(calendar-forward-day 1)))))
+  (let-alist evil-org-movement-bindings
+    (define-key org-read-date-minibuffer-local-map
+      (kbd (concat "M-" .left)) (lambda () (interactive)
+                    (org-eval-in-calendar '(calendar-backward-day 1))))
+    (define-key org-read-date-minibuffer-local-map
+      (kbd (concat "M-" .right)) (lambda () (interactive)
+                    (org-eval-in-calendar '(calendar-forward-day 1))))
+    (define-key org-read-date-minibuffer-local-map
+      (kbd (concat "M-" .up)) (lambda () (interactive)
+                    (org-eval-in-calendar '(calendar-backward-week 1))))
+    (define-key org-read-date-minibuffer-local-map
+      (kbd (concat "M-" .down)) (lambda () (interactive)
+                    (org-eval-in-calendar '(calendar-forward-week 1))))
+    (define-key org-read-date-minibuffer-local-map
+      (kbd (concat "M-" (capitalize .left))) (lambda () (interactive)
+                      (org-eval-in-calendar '(calendar-backward-month 1))))
+    (define-key org-read-date-minibuffer-local-map
+      (kbd (concat "M-" (capitalize .right))) (lambda () (interactive)
+                      (org-eval-in-calendar '(calendar-forward-month 1))))
+    (define-key org-read-date-minibuffer-local-map
+      (kbd (concat "M-" (capitalize .up))) (lambda () (interactive)
+                      (org-eval-in-calendar '(calendar-backward-year 1))))
+    (define-key org-read-date-minibuffer-local-map
+      (kbd (concat "M-" (capitalize .down))) (lambda () (interactive)
+                      (org-eval-in-calendar '(calendar-forward-year 1))))))
 
 (defun evil-org-set-key-theme (&optional theme)
   "Select what keythemes to enable.
