@@ -61,7 +61,6 @@ arguments."
               (const insert)
               (const return)
               (const textobjects)
-              (const rsi)
               (const additional)
               (const shift)
               (const todo)
@@ -645,22 +644,6 @@ Includes tables, list items and subtrees."
     (kbd "C-t") 'org-metaright
     (kbd "C-d") 'org-metaleft))
 
-(defun evil-org--populate-rsi-bindings ()
-  "Define key bindings to use in hybrid state."
-  (declare (obsolete "Please create a github issue if you want to keep RSI bindings." "0.9.1"))
-  (define-key org-mode-map (kbd "C-d")
-    (lambda (n)
-      (interactive "p")
-      (if (and (org-at-heading-or-item-p) (eolp))
-          (org-metaleft)
-        (org-delete-char n))))
-  (define-key org-mode-map (kbd "C-f")
-    (lambda (n)
-      (interactive "p")
-      (if (and (org-at-heading-or-item-p) (eolp))
-          (org-metaright)
-        (forward-char n)))))
-
 (defun evil-org--populate-navigation-bindings ()
   "Configures gj/gk/gh/gl for navigation."
   (let-alist evil-org-movement-bindings
@@ -761,7 +744,6 @@ Optional argument THEME list of themes. See evil-org-keytheme for a list of valu
       (evil-define-key 'insert evil-org-mode-map (kbd "RET") 'evil-org-return)
       (define-key evil-org-mode-map (kbd "RET") 'evil-org-return))
     (when (memq 'textobjects theme) (evil-org--populate-textobjects-bindings))
-    (when (memq 'rsi theme) (evil-org--populate-rsi-bindings))
     (when (memq 'additional theme) (evil-org--populate-additional-bindings))
     (when (memq 'shift theme) (evil-org--populate-shift-bindings))
     (when (memq 'todo theme) (evil-org--populate-todo-bindings))
