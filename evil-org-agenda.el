@@ -46,7 +46,7 @@
   ;; Horizontal movements have little use, thus we can override "f" and "t".
   ;; "w", "b", "e", "ge" and their upcase counterparts are preserved.
   (evil-define-key 'motion org-agenda-mode-map
-    ;; Unused keys: D, X, P
+    ;; Unused keys: D, X
 
     (kbd "<tab>") 'org-agenda-goto
     (kbd "<return>") 'org-agenda-switch-to
@@ -151,9 +151,8 @@
     "gs" 'org-agenda-sunrise-sunset
     "gt" 'org-agenda-show-tags
 
-    ;; TODO: Work out the following.
-    ;; 'org-agenda-date-prompt
-    ;; 'org-agenda-show-the-flagging-note
+    "o" 'org-agenda-date-prompt
+    "P" 'org-agenda-show-the-flagging-note
 
     ;; 'org-save-all-org-buffers ; Original binding "C-x C-s"
 
