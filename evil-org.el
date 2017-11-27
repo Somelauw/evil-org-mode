@@ -112,6 +112,9 @@ By default, o and O are bound to ‘evil-org-open-above’ and ‘evil-org-open-
   :group 'evil-org
   )
 
+(with-eval-after-load 'evil-surround
+  (add-to-list 'evil-surround-operator-alist '(evil-org-delete . delete)))
+
 (defun evil-org-eol-call (fun &rest arguments)
   "Go to end of line and call provided function.
 FUN function callback
