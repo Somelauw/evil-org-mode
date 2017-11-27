@@ -48,9 +48,11 @@
   (evil-define-key 'motion org-agenda-mode-map
     ;; Unused keys: D, X
 
+    ;; open
     (kbd "<tab>") 'org-agenda-goto
     (kbd "<return>") 'org-agenda-switch-to
-    (kbd "S-<return>") 'org-agenda-recenter
+    (kbd "S-<return>") 'org-agenda-goto
+    (kbd "M-<return>") 'org-agenda-recenter
 
     (kbd "SPC") 'org-agenda-show-and-scroll-up
     (kbd "<delete>") 'org-agenda-show-scroll-down
@@ -59,6 +61,8 @@
     ;; motion
     "j" 'org-agenda-next-line
     "k" 'org-agenda-previous-line
+    "gj" 'org-agenda-next-item
+    "gk" 'org-agenda-previous-item
     (kbd "C-j") 'org-agenda-next-item
     (kbd "C-k") 'org-agenda-previous-item
     (kbd "[") 'org-agenda-earlier
@@ -151,7 +155,7 @@
     "gs" 'org-agenda-sunrise-sunset
     "gt" 'org-agenda-show-tags
 
-    "o" 'org-agenda-date-prompt
+    "p" 'org-agenda-date-prompt
     "P" 'org-agenda-show-the-flagging-note
 
     ;; 'org-save-all-org-buffers ; Original binding "C-x C-s"
