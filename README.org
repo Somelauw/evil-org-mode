@@ -68,26 +68,26 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
      |-------------------------+-------------------------+-----------------------------------------------------------------------------------|
      | Evil key                | Emacs key               | explanation                                                                       |
      |-------------------------+-------------------------+-----------------------------------------------------------------------------------|
-     | <tab>                   | <tab>                   | go to the corresponding entry at point                                            |
+     | <tab>, S-<return>       | <tab>                   | go to the corresponding entry at point                                            |
      | <return>                | <return>                | go to the Org mode file which contains the item at point                          |
-     | S-<return>              | L                       | Display Org file and center around the item                                       |
+     | M-<return>              | L                       | Display Org file and center around the item                                       |
      | <space>                 | <space>                 | scroll up                                                                         |
      | <delete> or <backspace> | <delete> or <backspace> | scroll down                                                                       |
      | j, k                    | n, p                    | next, previous line                                                               |
-     | C-j, C-k                | N, P                    | next, previous item                                                               |
+     | gj, gk, C-j, C-k        | N, P                    | next, previous item                                                               |
      | [, ]                    | b, f                    | previous, next week                                                               |
      | J, K                    | -, +, S-down, S-up      | down, up priority                                                                 |
      | H, L                    | S-left, S-right         | modify date to earlier, later                                                     |
      | t                       | t                       | cycle TODO keywords                                                               |
      | M-j, M-k                | M-down, M-up            | drag line forward, backward                                                       |
-     | M-h, M-l                | C-S-left, C-S-right     | previous, next keyword                                                            |
+     | C-S-h, C-S-l            | C-S-left, C-S-right     | previous, next keyword                                                            |
      | u                       | C-_, C-/                | undo                                                                              |
      | dd                      | C-k                     | delete item                                                                       |
      | da                      | a                       | ask and archive item                                                              |
      | dA                      | $                       | archive item                                                                      |
-     | pt                      | :                       | set tags                                                                          |
-     | pe                      | e                       | set effort                                                                        |
-     | o                       | ;                       | set timer                                                                         |
+     | ct                      | :                       | set tags                                                                          |
+     | ce                      | e                       | set effort                                                                        |
+     | cT                      | ;                       | set timer                                                                         |
      | i                       | i                       | insert entry in diary                                                             |
      | a                       | z                       | add note                                                                          |
      | A                       | A                       | append to agenda                                                                  |
@@ -102,10 +102,10 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
      | ZQ                      | x                       | exit agenda                                                                       |
      | ZZ                      | Q                       | quit agenda                                                                       |
      | z                       | v                       | tweak display (deadlines, diary, follow/log-mode, entry text, grid, day/week/year |
-     | zD                      | #                       | dim blocked tasks                                                                 |
+     | ZD                      | #                       | dim blocked tasks                                                                 |
      | sc, sr, se, st, s^      | <, =, _, /, ^           | filter by category, regexp, effort, tag, top headline                             |
      | su                      | \vert                   | remove all filters                                                                |
-     | ss                      | ~                       | limit interactively                                                               |
+     | ss                      | ~                       | filter/limit interactively                                                        |
      | I                       | I                       | clock in                                                                          |
      | O                       | O                       | clock out                                                                         |
      | cg                      | J                       | jump to the currently clocked in task within the agenda                           |
@@ -114,7 +114,7 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
      | .                       | .                       | go to today's date                                                                |
      | gc                      | c                       | pop up calendar                                                                   |
      | gC                      | C                       | pop up date converter                                                             |
-     | gd                      | >                       | pop up date selector                                                              |
+     | p                       | >                       | pop up date selector                                                              |
      | gh                      | H                       | pop up holiday calendar                                                           |
      | gm                      | M                       | pop up phases of the moon                                                         |
      | gs                      | S                       | pop up sunrise/sunset times                                                       |
