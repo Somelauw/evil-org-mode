@@ -80,9 +80,8 @@
     "t" 'org-agenda-todo
     (kbd "M-j") 'org-agenda-drag-line-forward
     (kbd "M-k") 'org-agenda-drag-line-backward
-    ;; TODO: Leave the todo-*set functions to C-S-<hl>?
-    ;; (kbd "M-h") 'org-agenda-todo-previousset
-    ;; (kbd "M-l") 'org-agenda-todo-nextset
+    (kbd "C-H") 'org-agenda-todo-previousset ; Original binding "C-S-<left>"
+    (kbd "C-L") 'org-agenda-todo-nextset ; Original binding "C-S-<right>"
 
     ;; undo
     "u" 'org-agenda-undo
