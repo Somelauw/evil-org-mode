@@ -16,6 +16,7 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
  - text objects
  - table support
  - calendar (date selection) support
+ - agenda support
 
 ** Keybindings
 
@@ -62,6 +63,65 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
      | var       | select whole table             |
      |-----------+--------------------------------|
 
+**** Agenda
+
+     |-------------------------+-------------------------+-----------------------------------------------------------------------------------|
+     | Evil key                | Emacs key               | explanation                                                                       |
+     |-------------------------+-------------------------+-----------------------------------------------------------------------------------|
+     | <tab>, S-<return>       | <tab>                   | go to the corresponding entry at point                                            |
+     | <return>                | <return>                | go to the Org mode file which contains the item at point                          |
+     | M-<return>              | L                       | Display Org file and center around the item                                       |
+     | <space>                 | <space>                 | scroll up                                                                         |
+     | <delete> or <backspace> | <delete> or <backspace> | scroll down                                                                       |
+     | j, k                    | n, p                    | next, previous line                                                               |
+     | gj, gk, C-j, C-k        | N, P                    | next, previous item                                                               |
+     | [, ]                    | b, f                    | previous, next week                                                               |
+     | J, K                    | -, +, S-down, S-up      | down, up priority                                                                 |
+     | H, L                    | S-left, S-right         | modify date to earlier, later                                                     |
+     | t                       | t                       | cycle TODO keywords                                                               |
+     | M-j, M-k                | M-down, M-up            | drag line forward, backward                                                       |
+     | C-S-h, C-S-l            | C-S-left, C-S-right     | previous, next keyword                                                            |
+     | u                       | C-_, C-/                | undo                                                                              |
+     | dd                      | C-k                     | delete item                                                                       |
+     | da                      | a                       | ask and archive item                                                              |
+     | dA                      | $                       | archive item                                                                      |
+     | ct                      | :                       | set tags                                                                          |
+     | ce                      | e                       | set effort                                                                        |
+     | cT                      | ;                       | set timer                                                                         |
+     | i                       | i                       | insert entry in diary                                                             |
+     | a                       | z                       | add note                                                                          |
+     | A                       | A                       | append to agenda                                                                  |
+     | C                       | k                       | capture                                                                           |
+     | m                       | m                       | mark                                                                              |
+     | *                       | *                       | toggle all marks                                                                  |
+     | %                       | %                       | mark regexp                                                                       |
+     | M                       | U                       | remove all marks                                                                  |
+     | x                       | B                       | execute action on marks                                                           |
+     | gr                      | r                       | refresh agenda                                                                    |
+     | gR                      | g                       | refresh all agendas                                                               |
+     | ZQ                      | x                       | exit agenda                                                                       |
+     | ZZ                      | Q                       | quit agenda                                                                       |
+     | z                       | v                       | tweak display (deadlines, diary, follow/log-mode, entry text, grid, day/week/year |
+     | ZD                      | #                       | dim blocked tasks                                                                 |
+     | sc, sr, se, st, s^      | <, =, _, /, ^           | filter by category, regexp, effort, tag, top headline                             |
+     | su                      | \vert                   | remove all filters                                                                |
+     | ss                      | ~                       | filter/limit interactively                                                        |
+     | I                       | I                       | clock in                                                                          |
+     | O                       | O                       | clock out                                                                         |
+     | cg                      | J                       | jump to the currently clocked in task within the agenda                           |
+     | cc                      | X                       | cancel the current running clock                                                  |
+     | cr                      | R                       | toggle clocktable mode in an agenda buffer                                        |
+     | .                       | .                       | go to today's date                                                                |
+     | gc                      | c                       | pop up calendar                                                                   |
+     | gC                      | C                       | pop up date converter                                                             |
+     | p                       | >                       | pop up date selector                                                              |
+     | gh                      | H                       | pop up holiday calendar                                                           |
+     | gm                      | M                       | pop up phases of the moon                                                         |
+     | gs                      | S                       | pop up sunrise/sunset times                                                       |
+     | gt                      | T                       | pop up tag list                                                                   |
+     | +, -                    | [, ]                    | manipulate the query by adding a search term with positive or negative selection  |
+     |-------------------------+-------------------------+-----------------------------------------------------------------------------------|
+
 ** Requirements
 
    - org-mode, git://orgmode.org/org-mode.git
@@ -82,6 +142,8 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
     (require 'evil-org)
     (add-hook 'org-mode-hook 'evil-org-mode)
     (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys)
     #+END_SRC
 
     Or you can customize =evil-org-key-theme= and replace the last line by:

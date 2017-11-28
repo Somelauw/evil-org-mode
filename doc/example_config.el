@@ -1,10 +1,12 @@
 (add-to-list 'load-path "~/.emacs.d/plugins/evil-org")
 (require 'evil-org)
+(require 'evil-org-agenda)
 (require 'leader)
 (require 'hydra)
 
 (setf evil-org-key-theme '(navigation insert textobjects additional))
 (setf org-special-ctrl-a/e t)
+(evil-org-agenda-set-keys)
 
 (add-hook 'org-mode-hook
  (lambda ()
