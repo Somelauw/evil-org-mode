@@ -80,8 +80,8 @@
     "t" 'org-agenda-todo
     (kbd "M-j") 'org-agenda-drag-line-forward
     (kbd "M-k") 'org-agenda-drag-line-backward
-    (kbd "C-H") 'org-agenda-todo-previousset ; Original binding "C-S-<left>"
-    (kbd "C-L") 'org-agenda-todo-nextset ; Original binding "C-S-<right>"
+    (kbd "C-S-h") 'org-agenda-todo-previousset ; Original binding "C-S-<left>"
+    (kbd "C-S-l") 'org-agenda-todo-nextset ; Original binding "C-S-<right>"
 
     ;; undo
     "u" 'org-agenda-undo
@@ -106,9 +106,9 @@
     "M" 'org-agenda-bulk-remove-all-marks
     "x" 'org-agenda-bulk-action
 
-    ;; update
-    (kbd "gr") 'org-agenda-redo
-    (kbd "gR") 'org-agenda-redo-all
+    ;; refresh
+    "gr" 'org-agenda-redo
+    "gR" 'org-agenda-redo-all
 
     ;; quit
     "ZQ" 'org-agenda-exit
