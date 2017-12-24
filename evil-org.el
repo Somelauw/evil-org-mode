@@ -7,7 +7,7 @@
 ;; Git-Repository: git://github.com/Somelauw/evil-org-mode.git
 ;; Created: 2012-06-14
 ;; Forked-since: 2017-02-12
-;; Version: 1.0.0
+;; Version: 1.0.2
 ;; Package-Requires: ((emacs "24.4") (evil "1.0"))
 ;; Keywords: evil vim-emulation org-mode key-bindings presets
 
@@ -280,7 +280,9 @@ The behavior of this function can be controlled using `evil-org-special-o/O’."
   (cond ((and (not arg) (evil-org--empty-element-p))
          (delete-region (line-beginning-position) (line-end-position)))
         ((eolp)
-         (call-interactively #'evil-org-open-below))
+         (if (bolp)
+             (call-interactively #'org-return)
+           (call-interactively #'evil-org-open-below)))
         ('otherwise
          (call-interactively #'org-return-indent))))
 
@@ -291,10 +293,8 @@ The behavior of this function can be controlled using `evil-org-special-o/O’."
                 (row (nth (1- (org-table-current-line)) rows)))
            (cl-every 'string-empty-p row)))
         ((org-at-item-p)
-         (let ((e (org-element-at-point)))
-           (or (not (org-element-property :contents-begin e))
-               (> (org-element-property :contents-begin e)
-                  (line-end-position)))))))
+         (string-match-p "^[[:space:]]*-[[:space:]]*\\(::[[:space:]]*\\)?$"
+                         (thing-at-point 'line)))))
 
 (defmacro evil-org-define-eol-command (cmd)
   "Return a function that executes CMD at eol and then enters insert state.
