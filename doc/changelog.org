@@ -1,3 +1,5 @@
+* Version 1.1
+  - Implement hybrid shift keys
 * Version 1.0
   - Make =dw= realign tags. Make =dd= renumber lists.
   - Simplify implementation of `evil-org-open-above/below`.
@@ -5,6 +7,7 @@
   - Add =return= keytheme.
   - Add =calendar= keytheme.
   - Remove =rsi= keytheme
+  - Add org-agenda bindings (thanks to Ambrevar)
 * Version 0.9
   - Make =I= / =A= ignore ellipses on heading. Also make them respect =org-special-ctrl-a/e=.
   - Make it possible for =<= and =>= (renamed to evil-org-</>) to move table columns.

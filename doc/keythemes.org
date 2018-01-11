@@ -164,6 +164,8 @@
    | =K= | org-shiftup    | increase priority  |
    |-----+----------------+--------------------|
 
+   When point is not at a heading or item, these keys fall back on their binding in non-org modes. For example, you can still use =J= to join lines when not at a heading. This behaviour can be configured using =evil-org-want-hybrid-shift=. By default this option is set to ~t~.
+
 ** Todo
    Disabled by default.
 
