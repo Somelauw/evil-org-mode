@@ -95,6 +95,13 @@ By default, o and O are bound to ‘evil-org-open-above’ and ‘evil-org-open-
   :group 'evil-org
   :type 'boolean)
 
+(defcustom evil-org-want-hybrid-shift t
+  "Whether HJKL should fall back on default bindings if not on heading/item.
+This variable only takes effect when shift keytheme is enabled and should be set
+before calling `evil-org-set-keytheme'."
+  :group 'evil-org
+  :type 'boolean)
+
 ;;; Variable declarations
 (defvar browse-url-generic-program)
 (defvar browse-url-generic-args)
@@ -295,6 +302,17 @@ The behavior of this function can be controlled using `evil-org-special-o/O’."
         ((org-at-item-p)
          (string-match-p "^[[:space:]]*-[[:space:]]*\\(::[[:space:]]*\\)?$"
                          (thing-at-point 'line)))))
+
+;; other
+(defun evil-org-shift-fallback-command ()
+  "Call the default evil command that is bound the currently pressed key."
+  (when (and evil-mode evil-org-mode evil-org-want-hybrid-shift)
+    (let ((key (this-command-keys)))
+      (when-let ((command (or (lookup-key evil-normal-state-map key)
+                              (lookup-key evil-motion-state-map key))))
+        (when (commandp command)
+          (call-interactively command)
+          t)))))
 
 (defmacro evil-org-define-eol-command (cmd)
   "Return a function that executes CMD at eol and then enters insert state.
@@ -684,7 +702,16 @@ Includes tables, list items and subtrees."
       (capitalize .left) 'org-shiftleft
       (capitalize .right) 'org-shiftright
       (capitalize .down) 'org-shiftdown
-      (capitalize .up) 'org-shiftup)))
+      (capitalize .up) 'org-shiftup)
+
+    ;; Make shift keys fall back on the keys they have replaced
+    (when evil-org-want-hybrid-shift
+      (dolist (hook '(org-shiftleft-final-hook
+                      org-shiftright-final-hook
+                      org-shiftdown-final-hook
+                      org-shiftup-final-hook))
+        (add-hook hook #'evil-org-shift-fallback-command 'append)))))
+
 
 (defun evil-org--populate-todo-bindings ()
   "Bindings for easy todo insertion."
