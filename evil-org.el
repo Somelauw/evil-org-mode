@@ -507,16 +507,31 @@ If a prefix argument is given, links are opened in incognito mode."
 
 (defun evil-org-select-inner-element (element)
   "Select inner org ELEMENT."
-  (list (or (org-element-property :contents-begin element)
-            (org-element-property :begin element))
-        (or (org-element-property :contents-end element)
-            ;; Prune post-blank lines from :end element
+  (if-let ((value (org-element-property :value element))
+           (lines (remove "" (split-string value "[\n\r]"))))
+
+      ;; If org-element exposes "value", select "value"
+      (list (save-excursion
+              (goto-char (or (org-element-property :post-affiliated element)
+                             (org-element-property :begin element)))
+              (search-forward (first lines))
+              (match-beginning 0))
             (save-excursion
               (goto-char (org-element-property :end element))
-              (let ((post-blank (org-element-property :post-blank element)))
-                (unless (zerop post-blank)
-                  (forward-line (- post-blank))))
-              (point)))))
+              (search-backward (car (last lines)))
+              (match-end 0)))
+
+    ;; If org-element exposes contents-begin/end, select those
+    (list (or (org-element-property :contents-begin element)
+              (org-element-property :post-affiliated element)
+              (org-element-property :begin element))
+          (or (org-element-property :contents-end element)
+              (save-excursion
+                (goto-char (org-element-property :end element))
+                (let ((post-blank (org-element-property :post-blank element)))
+                  (unless (zerop post-blank)
+                    (forward-line (- post-blank))))
+                (point))))))
 
 (defun evil-org-parent (element)
   "Find a parent or nearest heading of ELEMENT."
