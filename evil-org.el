@@ -508,14 +508,18 @@ If a prefix argument is given, links are opened in incognito mode."
 (defun evil-org-select-inner-element (element)
   "Select inner org ELEMENT."
   (list (or (org-element-property :contents-begin element)
+            (org-element-property :post-affiliated element)
             (org-element-property :begin element))
         (or (org-element-property :contents-end element)
             ;; Prune post-blank lines from :end element
             (save-excursion
               (goto-char (org-element-property :end element))
               (let ((post-blank (org-element-property :post-blank element)))
+                ;; post-blank is charwise for objects and linewise for elements
                 (unless (zerop post-blank)
-                  (forward-line (- post-blank))))
+                  (if (memq (org-element-type element) org-element-all-objects)
+                      (forward-char (- post-blank))
+                    (forward-line (- post-blank)))))
               (point)))))
 
 (defun evil-org-parent (element)
@@ -711,7 +715,6 @@ Includes tables, list items and subtrees."
                       org-shiftdown-final-hook
                       org-shiftup-final-hook))
         (add-hook hook #'evil-org-shift-fallback-command 'append)))))
-
 
 (defun evil-org--populate-todo-bindings ()
   "Bindings for easy todo insertion."
