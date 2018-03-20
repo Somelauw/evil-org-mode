@@ -507,20 +507,30 @@ If a prefix argument is given, links are opened in incognito mode."
 
 (defun evil-org-select-inner-element (element)
   "Select inner org ELEMENT."
-  (list (or (org-element-property :contents-begin element)
-            (org-element-property :post-affiliated element)
-            (org-element-property :begin element))
-        (or (org-element-property :contents-end element)
-            ;; Prune post-blank lines from :end element
-            (save-excursion
-              (goto-char (org-element-property :end element))
-              (let ((post-blank (org-element-property :post-blank element)))
-                ;; post-blank is charwise for objects and linewise for elements
-                (unless (zerop post-blank)
-                  (if (memq (org-element-type element) org-element-all-objects)
-                      (forward-char (- post-blank))
-                    (forward-line (- post-blank)))))
-              (point)))))
+  (let ((type (org-element-type element))
+        (begin (org-element-property :begin element))
+        (end (org-element-property :end element))
+        (contents-begin (org-element-property :contents-begin element))
+        (contents-end (org-element-property :contents-end element))
+        (post-affiliated (org-element-property :post-affiliated element))
+        (post-blank (org-element-property :post-blank element)))
+    (cond ((or (s-ends-with? "-block" (symbol-name type))
+               (memq type '(latex-environment)))
+           ;; Special case on block types (thanks Nicolas Goaziou)
+           (list (org-with-point-at post-affiliated (line-beginning-position 2))
+                 (org-with-point-at end (line-beginning-position (- post-blank)))))
+          ((memq type '(verbatim code))
+           (list (1+ begin) (- end post-blank 1)))
+          ('otherwise
+           (list (or contents-begin post-affiliated begin)
+                 (or contents-end
+                     ;; Prune post-blank lines from :end element
+                     (org-with-point-at end
+                       ;; post-blank is charwise for objects and linewise for elements
+                       (if (memq type org-element-all-objects)
+                           (- end post-blank)
+                         (line-end-position (- post-blank))))))))))
+
 
 (defun evil-org-parent (element)
   "Find a parent or nearest heading of ELEMENT."
