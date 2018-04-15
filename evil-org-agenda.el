@@ -135,7 +135,7 @@
     "st" 'org-agenda-filter-by-tag
     "s^" 'org-agenda-filter-by-top-headline
     "ss" 'org-agenda-limit-interactively
-    "S" 'org-agenda-filter-remove-all
+    "su" 'org-agenda-filter-remove-all
 
     ;; clock
     "I" 'org-agenda-clock-in ; Original binding
