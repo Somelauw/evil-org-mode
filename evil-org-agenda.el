@@ -158,6 +158,7 @@
     "P" 'org-agenda-show-the-flagging-note
 
     ;; 'org-save-all-org-buffers ; Original binding "C-x C-s"
+    "S" 'org-save-all-org-buffers
 
     ;; Others
     "+" 'org-agenda-manipulate-query-add

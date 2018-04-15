@@ -99,6 +99,7 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
      | x                       | B                       | execute action on marks                                                           |
      | gr                      | r                       | refresh agenda                                                                    |
      | gR                      | g                       | refresh all agendas                                                               |
+     | S                       | s                       | save all org buffers                                                             |
      | ZQ                      | x                       | exit agenda                                                                       |
      | ZZ                      | Q                       | quit agenda                                                                       |
      | z                       | v                       | tweak display (deadlines, diary, follow/log-mode, entry text, grid, day/week/year |
