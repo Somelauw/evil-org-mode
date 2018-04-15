@@ -135,7 +135,7 @@
     "st" 'org-agenda-filter-by-tag
     "s^" 'org-agenda-filter-by-top-headline
     "ss" 'org-agenda-limit-interactively
-    "S" 'org-agenda-filter-remove-all
+    "su" 'org-agenda-filter-remove-all
 
     ;; clock
     "I" 'org-agenda-clock-in ; Original binding
@@ -158,6 +158,7 @@
     "P" 'org-agenda-show-the-flagging-note
 
     ;; 'org-save-all-org-buffers ; Original binding "C-x C-s"
+    "S" 'org-save-all-org-buffers
 
     ;; Others
     "+" 'org-agenda-manipulate-query-add
