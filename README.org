@@ -28,6 +28,7 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
     | key            | explanation               |
     |----------------+---------------------------|
     | gh, gj, gk, gl | navigate between elements |
+    | gx             | open a link               |
     | vae            | select an element         |
     |----------------+---------------------------|
 
@@ -138,12 +139,12 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
 **** Configuration emacs.el
 
     #+BEGIN_SRC emacs-lisp
-    (add-to-list 'load-path "~/.emacs.d/plugins/evil-org")
-    (require 'evil-org)
-    (add-hook 'org-mode-hook 'evil-org-mode)
-    (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys)
+      (add-to-list 'load-path "~/.emacs.d/plugins/evil-org")
+      (require 'evil-org)
+      (add-hook 'org-mode-hook 'evil-org-mode)
+      (evil-org-set-key-theme '(navigation insert link textobjects additional calendar))
+      (require 'evil-org-agenda)
+      (evil-org-agenda-set-keys)
     #+END_SRC
 
     Or you can customize =evil-org-key-theme= and replace the last line by:
