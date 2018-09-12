@@ -120,7 +120,7 @@
                  (evil-org-with
                   "* |Funny heading with some text                                     :testcase:"
                   (let ((w (evil-a-word)))
-                    (evil-org-delete (first w) (second w)))))))
+                    (evil-org-delete (car w) (cadr w)))))))
 
 ;; TODO test x and X
 ;; TODO test < and >
