@@ -51,14 +51,15 @@
 ;;; Customizations
 (defcustom evil-org-key-theme
   (if (bound-and-true-p evil-disable-insert-state-bindings)
-      '(navigation textobjects additional calendar)
-    '(navigation insert textobjects additional calendar))
+      '(navigation link textobjects additional calendar)
+    '(navigation insert link textobjects additional calendar))
   "Which key themes to enable.
 If you use this variable, you should call `evil-org-set-key-theme' with zero
 arguments."
   :group 'evil-org
   :type '(set (const navigation)
               (const insert)
+              (const link)
               (const return)
               (const textobjects)
               (const additional)
@@ -679,6 +680,11 @@ Includes tables, list items and subtrees."
     (kbd "C-t") 'org-metaright
     (kbd "C-d") 'org-metaleft))
 
+(defun evil-org--populate-link-bindings ()
+  "Define link bindings."
+  (let ((state '(visual normal)))
+    (evil-define-key state evil-org-mode-map "gx" 'org-open-at-point)))
+
 (defun evil-org--populate-navigation-bindings ()
   "Configures gj/gk/gh/gl for navigation."
   (let-alist evil-org-movement-bindings
@@ -752,28 +758,28 @@ Includes tables, list items and subtrees."
   (let-alist evil-org-movement-bindings
     (define-key org-read-date-minibuffer-local-map
       (kbd (concat "M-" .left)) (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-backward-day 1))))
+                                  (org-eval-in-calendar '(calendar-backward-day 1))))
     (define-key org-read-date-minibuffer-local-map
       (kbd (concat "M-" .right)) (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-forward-day 1))))
+                                   (org-eval-in-calendar '(calendar-forward-day 1))))
     (define-key org-read-date-minibuffer-local-map
       (kbd (concat "M-" .up)) (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-backward-week 1))))
+                                (org-eval-in-calendar '(calendar-backward-week 1))))
     (define-key org-read-date-minibuffer-local-map
       (kbd (concat "M-" .down)) (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-forward-week 1))))
+                                  (org-eval-in-calendar '(calendar-forward-week 1))))
     (define-key org-read-date-minibuffer-local-map
       (kbd (concat "M-" (capitalize .left))) (lambda () (interactive)
-                      (org-eval-in-calendar '(calendar-backward-month 1))))
+                                               (org-eval-in-calendar '(calendar-backward-month 1))))
     (define-key org-read-date-minibuffer-local-map
       (kbd (concat "M-" (capitalize .right))) (lambda () (interactive)
-                      (org-eval-in-calendar '(calendar-forward-month 1))))
+                                                (org-eval-in-calendar '(calendar-forward-month 1))))
     (define-key org-read-date-minibuffer-local-map
       (kbd (concat "M-" (capitalize .up))) (lambda () (interactive)
-                      (org-eval-in-calendar '(calendar-backward-year 1))))
+                                             (org-eval-in-calendar '(calendar-backward-year 1))))
     (define-key org-read-date-minibuffer-local-map
       (kbd (concat "M-" (capitalize .down))) (lambda () (interactive)
-                      (org-eval-in-calendar '(calendar-forward-year 1))))))
+                                               (org-eval-in-calendar '(calendar-forward-year 1))))))
 
 (defun evil-org-set-key-theme (&optional theme)
   "Select what keythemes to enable.
@@ -783,6 +789,7 @@ Optional argument THEME list of themes. See evil-org-keytheme for a list of valu
     (evil-org--populate-base-bindings)
     (when (memq 'navigation theme) (evil-org--populate-navigation-bindings))
     (when (memq 'insert theme) (evil-org--populate-insert-bindings))
+    (when (memq 'link evil-org-key-theme) (evil-org--populate-link-bindings))
     (when (memq 'return theme)
       (evil-define-key 'insert evil-org-mode-map (kbd "RET") 'evil-org-return)
       (define-key evil-org-mode-map (kbd "RET") 'evil-org-return))
