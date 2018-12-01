@@ -300,7 +300,7 @@ The behavior of this function can be controlled using `evil-org-special-o/O’."
                 (row (nth (1- (org-table-current-line)) rows)))
            (cl-every 'string-empty-p row)))
         ((org-at-item-p)
-         (string-match-p "^[[:space:]]*-[[:space:]]*\\(::[[:space:]]*\\)?$"
+         (string-match-p "^[[:space:]]*\\([+-]\\|[1-9]+\\.\\)[[:space:]]*\\(::[[:space:]]*\\)?$"
                          (thing-at-point 'line)))))
 
 ;; other
