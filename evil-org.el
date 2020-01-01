@@ -514,7 +514,7 @@ If a prefix argument is given, links are opened in incognito mode."
         (contents-end (org-element-property :contents-end element))
         (post-affiliated (org-element-property :post-affiliated element))
         (post-blank (org-element-property :post-blank element)))
-    (cond ((or (s-ends-with? "-block" (symbol-name type))
+    (cond ((or (string-suffix-p "-block" (symbol-name type))
                (memq type '(latex-environment)))
            ;; Special case on block types (thanks Nicolas Goaziou)
            (list (org-with-point-at post-affiliated (line-beginning-position 2))
