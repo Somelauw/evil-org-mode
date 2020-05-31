@@ -777,7 +777,7 @@ Includes tables, list items and subtrees."
 
 (defun evil-org-set-key-theme (&optional theme)
   "Select what keythemes to enable.
-Optional argument THEME list of themes. See evil-org-keytheme for a list of values."
+Optional argument THEME list of themes. See evil-org-key-theme for a list of values."
   (let ((theme (or theme evil-org-key-theme)))
     (setq evil-org-mode-map (make-sparse-keymap))
     (evil-org--populate-base-bindings)
