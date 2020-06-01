@@ -50,9 +50,10 @@
 
     ;; open
     (kbd "<tab>") 'org-agenda-goto
-    (kbd "<return>") 'org-agenda-switch-to
     (kbd "S-<return>") 'org-agenda-goto
-    (kbd "M-<return>") 'org-agenda-recenter
+    (kbd "g TAB") 'org-agenda-goto
+    (kbd "RET") 'org-agenda-switch-to
+    (kbd "M-RET") 'org-agenda-recenter
 
     (kbd "SPC") 'org-agenda-show-and-scroll-up
     (kbd "<delete>") 'org-agenda-show-scroll-down

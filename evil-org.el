@@ -657,7 +657,8 @@ Includes tables, list items and subtrees."
                           org-insert-todo-heading-respect-content))
   (evil-define-key '(normal visual) evil-org-mode-map
     (kbd "<tab>") 'org-cycle
-    (kbd "<S-tab>") 'org-shifttab
+    (kbd "g TAB") 'org-cycle
+    (kbd "<backtab>") 'org-shifttab
     (kbd "<") 'evil-org-<
     (kbd ">") 'evil-org->))
 
