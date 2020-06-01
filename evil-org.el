@@ -414,7 +414,7 @@ Argument END, second column
 If ARG > 0, move column BEG to END.
 If ARG < 0, move column END to BEG"
   (let* ((text (buffer-substring beg end))
-         (n-cells-selected (max 1 (count ?| text)))
+         (n-cells-selected (max 1 (cl-count ?| text)))
          (n-columns-to-move (* n-cells-selected (abs arg)))
          (move-left-p (< arg 0)))
     (goto-char (if move-left-p end beg))
@@ -591,7 +591,7 @@ Includes tables, list items and subtrees."
   (save-excursion
     (when beg (goto-char beg))
     (let ((element (org-element-at-point)))
-      (when (or (not (memq (first element) org-element-greater-elements))
+      (when (or (not (memq (cl-first element) org-element-greater-elements))
                 (and end (>= end (org-element-property :end element))))
         (setq element (evil-org-parent element)))
       (dotimes (_ (1- count))
@@ -605,7 +605,7 @@ Includes tables, list items and subtrees."
   (save-excursion
     (when beg (goto-char beg))
     (let ((element (org-element-at-point)))
-      (unless (memq (first element) org-element-greater-elements)
+      (unless (memq (cl-first element) org-element-greater-elements)
         (setq element (evil-org-parent element)))
       (dotimes (_ (1- count))
         (setq element (evil-org-parent element)))
