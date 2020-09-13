@@ -64,6 +64,9 @@
     "k" 'org-agenda-previous-line
     "gj" 'org-agenda-next-item
     "gk" 'org-agenda-previous-item
+    "gH" 'evil-window-top
+    "gM" 'evil-window-middle
+    "gL" 'evil-window-bottom
     (kbd "C-j") 'org-agenda-next-item
     (kbd "C-k") 'org-agenda-previous-item
     (kbd "[") 'org-agenda-earlier
@@ -126,7 +129,7 @@
     ;; 'org-agenda-day-view
     ;; 'org-agenda-week-view
     ;; 'org-agenda-year-view
-    "z" 'org-agenda-view-mode-dispatch
+    "gD" 'org-agenda-view-mode-dispatch
     "ZD" 'org-agenda-dim-blocked-tasks
 
     ;; filter
