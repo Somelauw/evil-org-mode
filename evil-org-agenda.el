@@ -50,9 +50,10 @@
 
     ;; open
     (kbd "<tab>") 'org-agenda-goto
-    (kbd "<return>") 'org-agenda-switch-to
     (kbd "S-<return>") 'org-agenda-goto
-    (kbd "M-<return>") 'org-agenda-recenter
+    (kbd "g TAB") 'org-agenda-goto
+    (kbd "RET") 'org-agenda-switch-to
+    (kbd "M-RET") 'org-agenda-recenter
 
     (kbd "SPC") 'org-agenda-show-and-scroll-up
     (kbd "<delete>") 'org-agenda-show-scroll-down
@@ -63,6 +64,9 @@
     "k" 'org-agenda-previous-line
     "gj" 'org-agenda-next-item
     "gk" 'org-agenda-previous-item
+    "gH" 'evil-window-top
+    "gM" 'evil-window-middle
+    "gL" 'evil-window-bottom
     (kbd "C-j") 'org-agenda-next-item
     (kbd "C-k") 'org-agenda-previous-item
     (kbd "[") 'org-agenda-earlier
@@ -125,7 +129,7 @@
     ;; 'org-agenda-day-view
     ;; 'org-agenda-week-view
     ;; 'org-agenda-year-view
-    "z" 'org-agenda-view-mode-dispatch
+    "gD" 'org-agenda-view-mode-dispatch
     "ZD" 'org-agenda-dim-blocked-tasks
 
     ;; filter
