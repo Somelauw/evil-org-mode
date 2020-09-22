@@ -108,14 +108,11 @@ before calling `evil-org-set-keytheme'."
 (defvar evil-disable-insert-state-bindings)
 (defvar org-capture-mode-map)
 
-(defvar evil-org-mode-map (make-sparse-keymap))
-
 ;;;###autoload
 (define-minor-mode evil-org-mode
   "Buffer local minor mode for evil-org"
   :init-value nil
   :lighter " EvilOrg"
-  :keymap evil-org-mode-map
   :group 'evil-org
   )
 
@@ -635,15 +632,15 @@ Includes tables, list items and subtrees."
 ;;; Keythemes
 (defun evil-org--populate-base-bindings ()
   "Bindings that are always available."
-  (let ((motion-map (evil-get-auxiliary-keymap evil-org-mode-map 'motion t)))
+  (let ((motion-map (evil-get-minor-mode-keymap 'motion 'evil-org-mode)))
     (evil-redirect-digit-argument motion-map "0" 'evil-org-beginning-of-line))
-  (evil-define-key 'motion evil-org-mode-map
+  (evil-define-key 'motion 'evil-org-mode
     (kbd "$") 'evil-org-end-of-line
     (kbd ")") 'evil-org-forward-sentence
     (kbd "(") 'evil-org-backward-sentence
     (kbd "}") 'org-forward-paragraph
     (kbd "{") 'org-backward-paragraph)
-  (evil-define-key 'normal evil-org-mode-map
+  (evil-define-key 'normal 'evil-org-mode
     (kbd "I") 'evil-org-insert-line
     (kbd "A") 'evil-org-append-line
     (kbd "o") 'evil-org-open-below
@@ -655,7 +652,7 @@ Includes tables, list items and subtrees."
                         org-insert-heading-respect-content)
     (kbd "<C-S-return>") (evil-org-define-eol-command
                           org-insert-todo-heading-respect-content))
-  (evil-define-key '(normal visual) evil-org-mode-map
+  (evil-define-key '(normal visual) 'evil-org-mode
     (kbd "<tab>") 'org-cycle
     (kbd "g TAB") 'org-cycle
     (kbd "<backtab>") 'org-shifttab
@@ -664,26 +661,28 @@ Includes tables, list items and subtrees."
 
 (defun evil-org--populate-textobjects-bindings ()
   "Text objects."
-  (let ((state '(visual operator)))
-    (evil-define-key state evil-org-mode-map "ae" 'evil-org-an-object)
-    (evil-define-key state evil-org-mode-map "ie" 'evil-org-inner-object)
-    (evil-define-key state evil-org-mode-map "aE" 'evil-org-an-element)
-    (evil-define-key state evil-org-mode-map "iE" 'evil-org-inner-element)
-    (evil-define-key state evil-org-mode-map "ir" 'evil-org-inner-greater-element)
-    (evil-define-key state evil-org-mode-map "ar" 'evil-org-a-greater-element)
-    (evil-define-key state evil-org-mode-map "aR" 'evil-org-a-subtree)
-    (evil-define-key state evil-org-mode-map "iR" 'evil-org-inner-subtree)))
+  (evil-define-key '(visual operator) 'evil-org-mode
+    "ae" 'evil-org-an-object
+    "ie" 'evil-org-inner-object
+    "aE" 'evil-org-an-element
+    "iE" 'evil-org-inner-element
+    "ir" 'evil-org-inner-greater-element
+    "ar" 'evil-org-a-greater-element
+    "aR" 'evil-org-a-subtree
+    "iR" 'evil-org-inner-subtree))
 
 (defun evil-org--populate-insert-bindings ()
   "Define insert mode bindings."
-  (evil-define-key 'insert evil-org-mode-map
+  (evil-define-key 'insert 'evil-org-mode
     (kbd "C-t") 'org-metaright
     (kbd "C-d") 'org-metaleft))
 
 (defun evil-org--populate-navigation-bindings ()
   "Configures gj/gk/gh/gl for navigation."
   (let-alist evil-org-movement-bindings
-    (evil-define-key 'motion evil-org-mode-map
+    ;; Other evil packages can override normal state and visual state bindings.
+    ;; Thus, it is necessary to bind keys on motion, normal, and visual states.
+    (evil-define-key '(motion normal visual) 'evil-org-mode
       (kbd (concat "g" .left)) 'org-up-element
       (kbd (concat "g" .right)) 'org-down-element
       (kbd (concat "g" .up)) 'org-backward-element
@@ -696,7 +695,7 @@ Includes tables, list items and subtrees."
     (let ((state (if evil-org-use-additional-insert
                      '(normal visual insert)
                    '(normal visual))))
-      (evil-define-key state evil-org-mode-map
+      (evil-define-key state 'evil-org-mode
         (kbd (concat "M-" .left)) 'org-metaleft
         (kbd (concat "M-" .right)) 'org-metaright
         (kbd (concat "M-" .up)) 'org-metaup
@@ -713,7 +712,7 @@ Includes tables, list items and subtrees."
 (defun evil-org--populate-shift-bindings ()
   "Shift bindings that conflict with evil bindings."
   (let-alist evil-org-movement-bindings
-    (evil-define-key 'normal evil-org-mode-map
+    (evil-define-key 'normal 'evil-org-mode
       (capitalize .left) 'org-shiftleft
       (capitalize .right) 'org-shiftright
       (capitalize .down) 'org-shiftdown
@@ -729,14 +728,14 @@ Includes tables, list items and subtrees."
 
 (defun evil-org--populate-todo-bindings ()
   "Bindings for easy todo insertion."
-  (evil-define-key 'normal evil-org-mode-map
+  (evil-define-key 'normal 'evil-org-mode
     (kbd "t") 'org-todo
     (kbd "T") (evil-org-define-eol-command org-insert-todo-heading)
     (kbd "M-t") (evil-org-define-eol-command org-insert-todo-subheading)))
 
 (defun evil-org--populate-heading-bindings ()
   "Bindings for easy heading insertion."
-  (evil-define-key 'normal evil-org-mode-map
+  (evil-define-key 'normal 'evil-org-mode
     (kbd "O") (evil-org-define-eol-command org-insert-heading)
     (kbd "M-o") (evil-org-define-eol-command org-insert-subheading)))
 
@@ -779,23 +778,22 @@ Includes tables, list items and subtrees."
 (defun evil-org-set-key-theme (&optional theme)
   "Select what keythemes to enable.
 Optional argument THEME list of themes. See evil-org-key-theme for a list of values."
+  (dolist (state evil-minor-mode-keymaps-alist)
+    ;; Remove evil-org-mode keymaps in evil minor-mode keymaps
+    (setcdr state (assq-delete-all 'evil-org-mode (cdr state))))
+  (evil-org--populate-base-bindings)
   (let ((theme (or theme evil-org-key-theme)))
-    (setq evil-org-mode-map (make-sparse-keymap))
-    (evil-org--populate-base-bindings)
     (when (memq 'navigation theme) (evil-org--populate-navigation-bindings))
     (when (memq 'insert theme) (evil-org--populate-insert-bindings))
     (when (memq 'return theme)
-      (evil-define-key 'insert evil-org-mode-map (kbd "RET") 'evil-org-return)
-      (define-key evil-org-mode-map (kbd "RET") 'evil-org-return))
+      (evil-define-key '(insert emacs) 'evil-org-mode
+        (kbd "RET") 'evil-org-return))
     (when (memq 'textobjects theme) (evil-org--populate-textobjects-bindings))
     (when (memq 'additional theme) (evil-org--populate-additional-bindings))
     (when (memq 'shift theme) (evil-org--populate-shift-bindings))
     (when (memq 'todo theme) (evil-org--populate-todo-bindings))
     (when (memq 'heading theme) (evil-org--populate-heading-bindings))
-    (when (memq 'calendar theme) (evil-org--populate-calendar-bindings))
-    (setcdr
-     (assq 'evil-org-mode minor-mode-map-alist)
-     evil-org-mode-map)))
+    (when (memq 'calendar theme) (evil-org--populate-calendar-bindings))))
 
 ;;; vim-like confirm/abort for capture and src
 ;;; Taken from mwillsey (Max Willsey) on https://github.com/syl20bnr/spacemacs/pull/7400
