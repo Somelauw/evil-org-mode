@@ -37,7 +37,7 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
      | key          | explanation            |
      |--------------+------------------------|
      | M-ret        | insert heading         |
-     | TAB          | fold / unfold headings |
+     | <tab>, g TAB | fold / unfold headings |
      | M-h or <<    | promote a heading      |
      | M-l or >>    | demote a heading       |
      | M-k          | move subtree up        |
@@ -68,7 +68,11 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
      |-------------------------+-------------------------+-----------------------------------------------------------------------------------|
      | Evil key                | Emacs key               | explanation                                                                       |
      |-------------------------+-------------------------+-----------------------------------------------------------------------------------|
+     | gH                      |                         | Move cursor to the top of window                                                  |
+     | gM                      |                         | Move cursor to the middle of window                                               |
+     | gL                      |                         | Move cursor to the bottom of window                                               |
      | <tab>, S-<return>       | <tab>                   | go to the corresponding entry at point                                            |
+     | g TAB                   | <tab>                   | go to the corresponding entry at point                                            |
      | <return>                | <return>                | go to the Org mode file which contains the item at point                          |
      | M-<return>              | L                       | Display Org file and center around the item                                       |
      | <space>                 | <space>                 | scroll up                                                                         |
@@ -101,7 +105,7 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
      | gR                      | g                       | refresh all agendas                                                               |
      | ZQ                      | x                       | exit agenda                                                                       |
      | ZZ                      | Q                       | quit agenda                                                                       |
-     | z                       | v                       | tweak display (deadlines, diary, follow/log-mode, entry text, grid, day/week/year |
+     | gD                      | v                       | tweak display (deadlines, diary, follow/log-mode, entry text, grid, day/week/year |
      | ZD                      | #                       | dim blocked tasks                                                                 |
      | sc, sr, se, st, s^      | <, =, _, /, ^           | filter by category, regexp, effort, tag, top headline                             |
      | su                      | \vert                   | remove all filters                                                                |
