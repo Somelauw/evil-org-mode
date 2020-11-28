@@ -69,8 +69,8 @@
     "gL" 'evil-window-bottom
     (kbd "C-j") 'org-agenda-next-item
     (kbd "C-k") 'org-agenda-previous-item
-    (kbd "[") 'org-agenda-earlier
-    (kbd "]") 'org-agenda-later
+    (kbd "[[") 'org-agenda-earlier
+    (kbd "]]") 'org-agenda-later
 
     ;; manipulation
     ;; We follow standard org-mode bindings (not org-agenda bindings):
