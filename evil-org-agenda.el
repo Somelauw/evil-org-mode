@@ -107,7 +107,7 @@
     "~" 'org-agenda-bulk-toggle-all
     "*" 'org-agenda-bulk-mark-all
     "%" 'org-agenda-bulk-mark-regexp
-    "M" 'org-agenda-bulk-remove-all-marks
+    "M" 'org-agenda-bulk-unmark-all
     "x" 'org-agenda-bulk-action
 
     ;; refresh
