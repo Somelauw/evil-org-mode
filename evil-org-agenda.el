@@ -163,6 +163,9 @@
 
     ;; 'org-save-all-org-buffers ; Original binding "C-x C-s"
 
+    ;; clear search
+    (kbd "<escape>") 'evil-force-normal-state
+
     ;; Others
     "+" 'org-agenda-manipulate-query-add
     "-" 'org-agenda-manipulate-query-subtract))
