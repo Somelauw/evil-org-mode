@@ -632,9 +632,9 @@ Includes tables, list items and subtrees."
 ;;; Keythemes
 (defun evil-org--populate-base-bindings ()
   "Bindings that are always available."
-  (let ((motion-map (evil-get-minor-mode-keymap 'motion 'evil-org-mode)))
-    (evil-redirect-digit-argument motion-map "0" 'evil-org-beginning-of-line))
+  (add-to-list 'evil-digit-bound-motions 'evil-org-beginning-of-line)
   (evil-define-key 'motion 'evil-org-mode
+    (kbd "0") 'evil-org-beginning-of-line
     (kbd "$") 'evil-org-end-of-line
     (kbd ")") 'evil-org-forward-sentence
     (kbd "(") 'evil-org-backward-sentence
