@@ -108,7 +108,7 @@ See [[file:doc/changelog.org][changelog]] for a history of changes.
      | gD                      | v                       | tweak display (deadlines, diary, follow/log-mode, entry text, grid, day/week/year |
      | ZD                      | #                       | dim blocked tasks                                                                 |
      | sc, sr, se, st, s^      | <, =, _, /, ^           | filter by category, regexp, effort, tag, top headline                             |
-     | su                      | \vert                   | remove all filters                                                                |
+     | S                       | \vert                   | remove all filters                                                                |
      | ss                      | ~                       | filter/limit interactively                                                        |
      | I                       | I                       | clock in                                                                          |
      | O                       | O                       | clock out                                                                         |
