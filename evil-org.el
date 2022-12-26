@@ -516,6 +516,27 @@ If a prefix argument is given, links are opened in incognito mode."
            ;; Special case on block types (thanks Nicolas Goaziou)
            (list (org-with-point-at post-affiliated (line-beginning-position 2))
                  (org-with-point-at end (line-beginning-position (- post-blank)))))
+          ((memq type '(link))
+           (let*
+               ((link-type (org-element-property :type element))
+                (link-type-len (length link-type))
+                (link-path (org-element-property :path element))
+                (inner-begin
+                 (save-excursion
+                   (goto-char begin)
+                   (re-search-forward "\\w" end)
+                   (point)))
+                (path-begin
+                 (cond
+                  ((member link-type '("fuzzy"))
+                   (- inner-begin 1))
+                  ((member link-type '("http" "https" "ftp"))
+                   (setq link-path (concat link-type ":" link-path))
+                   (- inner-begin 1))
+                  (t (+ inner-begin link-type-len))))
+                (link-path-len (length link-path))
+                (path-end (+ path-begin link-path-len)))
+             (list path-begin path-end)))
           ((memq type '(verbatim code))
            (list (1+ begin) (- end post-blank 1)))
           ('otherwise
