@@ -528,6 +528,8 @@ If a prefix argument is given, links are opened in incognito mode."
                    (point)))
                 (path-begin
                  (cond
+                  ((member link-type '("fuzzy"))
+                   (- inner-begin 1))
                   ((member link-type '("http" "https" "ftp"))
                    (setq link-path (concat link-type ":" link-path))
                    (- inner-begin 1))
