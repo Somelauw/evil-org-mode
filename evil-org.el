@@ -795,15 +795,26 @@ Optional argument THEME list of themes. See evil-org-key-theme for a list of val
     (when (memq 'calendar theme) (evil-org--populate-calendar-bindings))))
 
 ;;; vim-like confirm/abort for capture and src
-;;; Taken from mwillsey (Max Willsey) on https://github.com/syl20bnr/spacemacs/pull/7400
+(defmacro evil-org-save-and-closer (close-cmd)
+  "Create a command to save and close from a special org buffer."
+  (let ((newcmd (intern (concat "evil-org-save-and-" (symbol-name close-cmd)))))
+    `(progn
+       (defun ,newcmd ()
+         ,(concat "Call `evil-write' followed by `" (symbol-name close-cmd) "'.")
+         (interactive)
+         (call-interactively #'evil-write)
+         (call-interactively #',close-cmd))
+       #',newcmd)))
+
+;; Taken from mwillsey (Max Willsey) on https://github.com/syl20bnr/spacemacs/pull/7400
 (with-eval-after-load 'org-capture
   (define-key org-capture-mode-map [remap evil-save-and-close]          'org-capture-finalize)
   (define-key org-capture-mode-map [remap evil-save-modified-and-close] 'org-capture-finalize)
   (define-key org-capture-mode-map [remap evil-quit]                    'org-capture-kill))
 
 (with-eval-after-load 'org-src
-  (define-key org-src-mode-map [remap evil-save-and-close]          'org-edit-src-exit)
-  (define-key org-src-mode-map [remap evil-save-modified-and-close] 'org-edit-src-exit)
+  (define-key org-src-mode-map [remap evil-save-and-close]          (evil-org-save-and-closer org-edit-src-exit))
+  (define-key org-src-mode-map [remap evil-save-modified-and-close] (evil-org-save-and-closer org-edit-src-exit))
   (define-key org-src-mode-map [remap evil-quit]                    'org-edit-src-abort))
 
 (with-eval-after-load 'org-table
