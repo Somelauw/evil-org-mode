@@ -254,7 +254,7 @@ Passing in any prefix argument, executes the command without special behavior."
   (cond ((and (memq 'table-row evil-org-special-o/O) (org-at-table-p))
          (org-table-insert-row '(4))
          (evil-insert nil))
-        ((and (memq 'item evil-org-special-o/O) (org-at-item-p)
+        ((and (memq 'item evil-org-special-o/O) (org-in-item-p)
               (progn (end-of-visible-line)
                      (org-insert-item (org-at-item-checkbox-p))))
          (evil-insert nil))
