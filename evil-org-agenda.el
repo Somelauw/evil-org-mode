@@ -1,4 +1,4 @@
-;;; evil-org-agenda.el --- evil keybindings for org-agenda-mode
+;;; evil-org-agenda.el --- evil keybindings for org-agenda-mode -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2012-2017 by Somelauw
 ;; Maintainer: Somelauw

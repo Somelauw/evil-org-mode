@@ -1,3 +1,5 @@
+;;; evil-org-tests.el --- Tests for Evil Org -*- lexical-binding: t
+
 (require 'evil-org)
 (require 'ert)
 

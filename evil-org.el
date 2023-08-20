@@ -1,4 +1,4 @@
-;;; evil-org.el --- evil keybindings for org-mode
+;;; evil-org.el --- evil keybindings for org-mode -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2012-2017 by Somelauw
 ;; Maintainer: Somelauw
