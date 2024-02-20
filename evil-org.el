@@ -499,7 +499,7 @@ If a prefix argument is given, links are opened in incognito mode."
 ;;; text-objects
 (defun evil-org-select-an-element (element)
   "Select an org ELEMENT."
-  (list (min (region-beginning) (org-element-property :begin element))
+  (list (min (point) (org-element-property :begin element))
         (org-element-property :end element)))
 
 (defun evil-org-select-inner-element (element)
