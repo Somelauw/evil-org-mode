@@ -53,9 +53,7 @@
   (if (bound-and-true-p evil-disable-insert-state-bindings)
       '(navigation textobjects additional calendar)
     '(navigation insert textobjects additional calendar))
-  "Which key themes to enable.
-If you use this variable, you should call `evil-org-set-key-theme' with zero
-arguments."
+  "Which key themes to enable."
   :group 'evil-org
   :type '(set (const navigation)
               (const insert)
@@ -65,7 +63,11 @@ arguments."
               (const shift)
               (const todo)
               (const heading)
-              (const calendar)))
+              (const calendar))
+  :set (lambda (var val)
+         (set-default-toplevel-value var val)
+         (evil-org-set-key-theme val))
+  :initialize #'custom-initialize-after-file-load)
 
 (defcustom evil-org-movement-bindings
   '((up . "k")
@@ -739,42 +741,43 @@ Includes tables, list items and subtrees."
 (defun evil-org--populate-calendar-bindings ()
   "Bindings for easy date selection."
   (define-key org-read-date-minibuffer-local-map
-    (kbd "C-f") (lambda () (interactive)
-                  (org-eval-in-calendar
-                   '(calendar-scroll-left-three-months 1))))
+              (kbd "C-f") (lambda () (interactive)
+                            (org-eval-in-calendar
+                             '(calendar-scroll-left-three-months 1))))
   (define-key org-read-date-minibuffer-local-map
-    (kbd "C-b") (lambda () (interactive)
-                  (org-eval-in-calendar
-                   '(calendar-scroll-right-three-months 1))))
+              (kbd "C-b") (lambda () (interactive)
+                            (org-eval-in-calendar
+                             '(calendar-scroll-right-three-months 1))))
   (let-alist evil-org-movement-bindings
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" .left)) (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-backward-day 1))))
+                (kbd (concat "M-" .left)) (lambda () (interactive)
+                                            (org-eval-in-calendar '(calendar-backward-day 1))))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" .right)) (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-forward-day 1))))
+                (kbd (concat "M-" .right)) (lambda () (interactive)
+                                             (org-eval-in-calendar '(calendar-forward-day 1))))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" .up)) (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-backward-week 1))))
+                (kbd (concat "M-" .up)) (lambda () (interactive)
+                                          (org-eval-in-calendar '(calendar-backward-week 1))))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" .down)) (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-forward-week 1))))
+                (kbd (concat "M-" .down)) (lambda () (interactive)
+                                            (org-eval-in-calendar '(calendar-forward-week 1))))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" (capitalize .left))) (lambda () (interactive)
-                      (org-eval-in-calendar '(calendar-backward-month 1))))
+                (kbd (concat "M-" (capitalize .left))) (lambda () (interactive)
+                                                         (org-eval-in-calendar '(calendar-backward-month 1))))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" (capitalize .right))) (lambda () (interactive)
-                      (org-eval-in-calendar '(calendar-forward-month 1))))
+                (kbd (concat "M-" (capitalize .right))) (lambda () (interactive)
+                                                          (org-eval-in-calendar '(calendar-forward-month 1))))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" (capitalize .up))) (lambda () (interactive)
-                      (org-eval-in-calendar '(calendar-backward-year 1))))
+                (kbd (concat "M-" (capitalize .up))) (lambda () (interactive)
+                                                       (org-eval-in-calendar '(calendar-backward-year 1))))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" (capitalize .down))) (lambda () (interactive)
-                      (org-eval-in-calendar '(calendar-forward-year 1))))))
+                (kbd (concat "M-" (capitalize .down))) (lambda () (interactive)
+                                                         (org-eval-in-calendar '(calendar-forward-year 1))))))
 
 (defun evil-org-set-key-theme (&optional theme)
   "Select what keythemes to enable.
-Optional argument THEME list of themes. See evil-org-key-theme for a list of values."
+Optional argument THEME list of themes.
+See `evil-org-key-theme' for a list of values."
   (dolist (state evil-minor-mode-keymaps-alist)
     ;; Remove evil-org-mode keymaps in evil minor-mode keymaps
     (setcdr state (assq-delete-all 'evil-org-mode (cdr state))))
@@ -808,9 +811,6 @@ Optional argument THEME list of themes. See evil-org-key-theme for a list of val
   (define-key org-table-fedit-map [remap evil-save-and-close]          'org-table-fedit-finish)
   (define-key org-table-fedit-map [remap evil-save-modified-and-close] 'org-table-fedit-finish)
   (define-key org-table-fedit-map [remap evil-quit]                    'org-table-fedit-abort))
-
-;; Set customizable theme
-(evil-org-set-key-theme evil-org-key-theme)
 
 (provide 'evil-org)
 ;;; evil-org.el ends here
