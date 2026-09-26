@@ -305,8 +305,8 @@ The behavior of this function can be controlled using `evil-org-special-o/O’."
   "Call the default evil command that is bound the currently pressed key."
   (when (and evil-mode evil-org-mode evil-org-want-hybrid-shift)
     (let ((key (this-command-keys)))
-      (when-let ((command (or (lookup-key evil-normal-state-map key)
-                              (lookup-key evil-motion-state-map key))))
+      (when-let* ((command (or (lookup-key evil-normal-state-map key)
+                               (lookup-key evil-motion-state-map key))))
         (when (commandp command)
           (call-interactively command)
           t)))))
