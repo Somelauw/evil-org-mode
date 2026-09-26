@@ -738,41 +738,46 @@ Includes tables, list items and subtrees."
     (kbd "O") (evil-org-define-eol-command org-insert-heading)
     (kbd "M-o") (evil-org-define-eol-command org-insert-subheading)))
 
+(defmacro evil-org-define-in-calendar-command (cmd)
+  "Define a command that invokes CMD interactively in the calendar buffer.
+
+Return its symbol."
+  (let ((new-cmd (intern (format "evil-org-in-calendar-%s" cmd))))
+    `(defun ,new-cmd ()
+       (interactive)
+       (org-funcall-in-calendar (lambda () (call-interactively #',cmd))))))
+
 (defun evil-org--populate-calendar-bindings ()
   "Bindings for easy date selection."
   (define-key org-read-date-minibuffer-local-map
-              (kbd "C-f") (lambda () (interactive)
-                            (org-eval-in-calendar
-                             '(calendar-scroll-left-three-months 1))))
+              (kbd "C-f") (evil-org-define-in-calendar-command calendar-scroll-left-three-months))
   (define-key org-read-date-minibuffer-local-map
-              (kbd "C-b") (lambda () (interactive)
-                            (org-eval-in-calendar
-                             '(calendar-scroll-right-three-months 1))))
+              (kbd "C-b") (evil-org-define-in-calendar-command calendar-scroll-right-three-months))
   (let-alist evil-org-movement-bindings
     (define-key org-read-date-minibuffer-local-map
-                (kbd (concat "M-" .left)) (lambda () (interactive)
-                                            (org-eval-in-calendar '(calendar-backward-day 1))))
+                (kbd (concat "M-" .left))
+                (evil-org-define-in-calendar-command calendar-backward-day))
     (define-key org-read-date-minibuffer-local-map
-                (kbd (concat "M-" .right)) (lambda () (interactive)
-                                             (org-eval-in-calendar '(calendar-forward-day 1))))
+                (kbd (concat "M-" .right))
+                (evil-org-define-in-calendar-command calendar-forward-day))
     (define-key org-read-date-minibuffer-local-map
-                (kbd (concat "M-" .up)) (lambda () (interactive)
-                                          (org-eval-in-calendar '(calendar-backward-week 1))))
+                (kbd (concat "M-" .up))
+                (evil-org-define-in-calendar-command calendar-backward-week))
     (define-key org-read-date-minibuffer-local-map
-                (kbd (concat "M-" .down)) (lambda () (interactive)
-                                            (org-eval-in-calendar '(calendar-forward-week 1))))
+                (kbd (concat "M-" .down))
+                (evil-org-define-in-calendar-command calendar-forward-week))
     (define-key org-read-date-minibuffer-local-map
-                (kbd (concat "M-" (capitalize .left))) (lambda () (interactive)
-                                                         (org-eval-in-calendar '(calendar-backward-month 1))))
+                (kbd (concat "M-" (capitalize .left)))
+                (evil-org-define-in-calendar-command calendar-backward-month))
     (define-key org-read-date-minibuffer-local-map
-                (kbd (concat "M-" (capitalize .right))) (lambda () (interactive)
-                                                          (org-eval-in-calendar '(calendar-forward-month 1))))
+                (kbd (concat "M-" (capitalize .right)))
+                (evil-org-define-in-calendar-command calendar-forward-month))
     (define-key org-read-date-minibuffer-local-map
-                (kbd (concat "M-" (capitalize .up))) (lambda () (interactive)
-                                                       (org-eval-in-calendar '(calendar-backward-year 1))))
+                (kbd (concat "M-" (capitalize .up)))
+                (evil-org-define-in-calendar-command calendar-backward-year))
     (define-key org-read-date-minibuffer-local-map
-                (kbd (concat "M-" (capitalize .down))) (lambda () (interactive)
-                                                         (org-eval-in-calendar '(calendar-forward-year 1))))))
+                (kbd (concat "M-" (capitalize .down)))
+                (evil-org-define-in-calendar-command calendar-forward-year))))
 
 (defun evil-org-set-key-theme (&optional theme)
   "Select what keythemes to enable.
