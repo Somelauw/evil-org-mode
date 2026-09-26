@@ -1,3 +1,5 @@
+;;; evil-org-tests.el --- Tests for Evil Org -*- lexical-binding: t
+
 (require 'evil-org)
 (require 'ert)
 
@@ -124,3 +126,6 @@
 
 ;; TODO test x and X
 ;; TODO test < and >
+
+(provide 'evil-org-test)
+;;; evil-org-test.el ends here
