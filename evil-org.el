@@ -397,7 +397,7 @@ Argument COUNT if negative, items are dedented instead."
          (region-p (region-active-p)))
     ;; special case: indenting all items
     (if (and struct org-list-automatic-rules (not region-p)
-             (= (point-at-bol) (org-list-get-top-point struct)))
+             (= (line-beginning-position) (org-list-get-top-point struct)))
         (org-list-indent-item-generic count nil struct)
       ;; indenting selected items
       (save-excursion
