@@ -288,7 +288,7 @@ The behavior of this function can be controlled using `evil-org-special-o/O’."
              (call-interactively #'org-return)
            (call-interactively #'evil-org-open-below)))
         ('otherwise
-         (call-interactively #'org-return-indent))))
+         (org-return t))))
 
 (defun evil-org--empty-element-p ()
   "Return if pointer is on an empty element."
