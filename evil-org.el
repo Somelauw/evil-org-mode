@@ -44,7 +44,7 @@
 (require 'org-table)
 
 (defgroup evil-org nil
-  "Provides integration of org-mode and evil."
+  "Provides integration of `org-mode' and `evil-mode'."
   :group 'org
   :prefix "evil-org-")
 
@@ -110,7 +110,7 @@ before calling `evil-org-set-keytheme'."
 
 ;;;###autoload
 (define-minor-mode evil-org-mode
-  "Buffer local minor mode for evil-org"
+  "Buffer local minor mode for evil-org."
   :init-value nil
   :lighter " EvilOrg"
   :group 'evil-org
@@ -208,7 +208,7 @@ Optional argument ARGUMENTS arguments to pass to FUN."
   (while (org-up-heading-safe)))
 
 (evil-define-motion evil-org-end-of-line (&optional n)
-  "Like evil-org-end-of-line but makes org-special-ctrl-a work in evil."
+  "Like `evil-org-end-of-line' but makes `org-special-ctrl-a' work in evil."
   (when (and org-special-ctrl-a/e
              evil-move-cursor-back
              (not evil-move-beyond-eol)
@@ -418,7 +418,7 @@ If ARG < 0, move column END to BEG"
     (dotimes (_ n-columns-to-move) (org-table-move-column move-left-p))))
 
 (evil-define-operator evil-org-delete-char (count beg end type register)
-  "Combine evil-delete-char with org-delete-char"
+  "Combine `evil-delete-char' with `org-delete-char'."
   :motion evil-forward-char
   (interactive "p<R><x>")
   (if (evil-visual-state-p)             ; No special support for visual state
@@ -428,7 +428,7 @@ If ARG < 0, move column END to BEG"
     (org-delete-char count)))
 
 (evil-define-operator evil-org-delete-backward-char (count beg end type register)
-  "Combine evil-delete-backward-char with org-delete-backward-char"
+  "Combine `evil-delete-backward-char' with `org-delete-backward-char'."
   :motion evil-backward-char
   (interactive "p<R><x>")
   (if (evil-visual-state-p)             ; No special support for visual state
@@ -438,7 +438,7 @@ If ARG < 0, move column END to BEG"
     (org-delete-char count)))
 
 (evil-define-operator evil-org-delete (beg end type register yank-handler)
-  "Like evil-delete, but realigns tags and numbered lists."
+  "Like `evil-delete', but realigns tags and numbered lists."
   (interactive "<R><x><y>")
   (let ((renumber-lists-p (or (< beg (line-beginning-position))
                               (> end (line-end-position)))))
@@ -562,8 +562,7 @@ Matches urls and table cells."
 
 (evil-define-text-object evil-org-an-element (count &optional beg end type)
   "An org element.
-Includes paragraphs, table rows and code blocks.
-"
+Includes paragraphs, table rows and code blocks."
   (let* ((first (org-element-at-point))
          (element first))
     (when (and end (>= end (org-element-property :end element)))
@@ -576,8 +575,7 @@ Includes paragraphs, table rows and code blocks.
 
 (evil-define-text-object evil-org-inner-element (count &optional beg end type)
   "Inner org element.
-Includes paragraphs, table rows and code blocks.
-"
+Includes paragraphs, table rows and code blocks."
   (evil-org-select-inner-element (org-element-at-point)))
 
 (evil-define-text-object evil-org-a-greater-element (count &optional beg end type)
