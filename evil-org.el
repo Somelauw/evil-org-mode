@@ -182,6 +182,10 @@ Optional argument ARGUMENTS arguments to pass to FUN."
 (evil-declare-change-repeat 'org-shifttab)
 (evil-declare-change-repeat 'org-table-end-of-field)
 
+;;; jumps
+(evil-set-command-property 'org-clock-goto :jump t)
+(evil-set-command-property 'org-goto :jump t)
+
 ;;; new motions
 (evil-define-motion evil-org-forward-sentence (count)
   "In a table go to next cell, otherwise go to next sentence."
