@@ -1,4 +1,4 @@
-;;; evil-org.el --- evil keybindings for org-mode
+;;; evil-org.el --- evil keybindings for org-mode  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2012-2017 by Somelauw
 ;; Maintainer: Somelauw
@@ -44,7 +44,7 @@
 (require 'org-table)
 
 (defgroup evil-org nil
-  "Provides integration of org-mode and evil."
+  "Provides integration of `org-mode' and `evil-mode'."
   :group 'org
   :prefix "evil-org-")
 
@@ -53,9 +53,7 @@
   (if (bound-and-true-p evil-disable-insert-state-bindings)
       '(navigation textobjects additional calendar)
     '(navigation insert textobjects additional calendar))
-  "Which key themes to enable.
-If you use this variable, you should call `evil-org-set-key-theme' with zero
-arguments."
+  "Which key themes to enable."
   :group 'evil-org
   :type '(set (const navigation)
               (const insert)
@@ -65,7 +63,11 @@ arguments."
               (const shift)
               (const todo)
               (const heading)
-              (const calendar)))
+              (const calendar))
+  :set (lambda (var val)
+         (set-default-toplevel-value var val)
+         (evil-org-set-key-theme val))
+  :initialize #'custom-initialize-after-file-load)
 
 (defcustom evil-org-movement-bindings
   '((up . "k")
@@ -110,7 +112,7 @@ before calling `evil-org-set-keytheme'."
 
 ;;;###autoload
 (define-minor-mode evil-org-mode
-  "Buffer local minor mode for evil-org"
+  "Buffer local minor mode for evil-org."
   :init-value nil
   :lighter " EvilOrg"
   :group 'evil-org
@@ -212,7 +214,7 @@ Optional argument ARGUMENTS arguments to pass to FUN."
   (while (org-up-heading-safe)))
 
 (evil-define-motion evil-org-end-of-line (&optional n)
-  "Like evil-org-end-of-line but makes org-special-ctrl-a work in evil."
+  "Like `evil-org-end-of-line' but makes `org-special-ctrl-a' work in evil."
   (when (and org-special-ctrl-a/e
              evil-move-cursor-back
              (not evil-move-beyond-eol)
@@ -292,7 +294,7 @@ The behavior of this function can be controlled using `evil-org-special-o/O’."
              (call-interactively #'org-return)
            (call-interactively #'evil-org-open-below)))
         ('otherwise
-         (call-interactively #'org-return-indent))))
+         (org-return t))))
 
 (defun evil-org--empty-element-p ()
   "Return if pointer is on an empty element."
@@ -309,8 +311,8 @@ The behavior of this function can be controlled using `evil-org-special-o/O’."
   "Call the default evil command that is bound the currently pressed key."
   (when (and evil-mode evil-org-mode evil-org-want-hybrid-shift)
     (let ((key (this-command-keys)))
-      (when-let ((command (or (lookup-key evil-normal-state-map key)
-                              (lookup-key evil-motion-state-map key))))
+      (when-let* ((command (or (lookup-key evil-normal-state-map key)
+                               (lookup-key evil-motion-state-map key))))
         (when (commandp command)
           (call-interactively command)
           t)))))
@@ -399,7 +401,7 @@ Argument COUNT if negative, items are dedented instead."
          (region-p (region-active-p)))
     ;; special case: indenting all items
     (if (and struct org-list-automatic-rules (not region-p)
-             (= (point-at-bol) (org-list-get-top-point struct)))
+             (= (line-beginning-position) (org-list-get-top-point struct)))
         (org-list-indent-item-generic count nil struct)
       ;; indenting selected items
       (save-excursion
@@ -422,7 +424,7 @@ If ARG < 0, move column END to BEG"
     (dotimes (_ n-columns-to-move) (org-table-move-column move-left-p))))
 
 (evil-define-operator evil-org-delete-char (count beg end type register)
-  "Combine evil-delete-char with org-delete-char"
+  "Combine `evil-delete-char' with `org-delete-char'."
   :motion evil-forward-char
   (interactive "p<R><x>")
   (if (evil-visual-state-p)             ; No special support for visual state
@@ -432,7 +434,7 @@ If ARG < 0, move column END to BEG"
     (org-delete-char count)))
 
 (evil-define-operator evil-org-delete-backward-char (count beg end type register)
-  "Combine evil-delete-backward-char with org-delete-backward-char"
+  "Combine `evil-delete-backward-char' with `org-delete-backward-char'."
   :motion evil-backward-char
   (interactive "p<R><x>")
   (if (evil-visual-state-p)             ; No special support for visual state
@@ -442,7 +444,7 @@ If ARG < 0, move column END to BEG"
     (org-delete-char count)))
 
 (evil-define-operator evil-org-delete (beg end type register yank-handler)
-  "Like evil-delete, but realigns tags and numbered lists."
+  "Like `evil-delete', but realigns tags and numbered lists."
   (interactive "<R><x><y>")
   (let ((renumber-lists-p (or (< beg (line-beginning-position))
                               (> end (line-end-position)))))
@@ -566,8 +568,7 @@ Matches urls and table cells."
 
 (evil-define-text-object evil-org-an-element (count &optional beg end type)
   "An org element.
-Includes paragraphs, table rows and code blocks.
-"
+Includes paragraphs, table rows and code blocks."
   (let* ((first (org-element-at-point))
          (element first))
     (when (and end (>= end (org-element-property :end element)))
@@ -580,8 +581,7 @@ Includes paragraphs, table rows and code blocks.
 
 (evil-define-text-object evil-org-inner-element (count &optional beg end type)
   "Inner org element.
-Includes paragraphs, table rows and code blocks.
-"
+Includes paragraphs, table rows and code blocks."
   (evil-org-select-inner-element (org-element-at-point)))
 
 (evil-define-text-object evil-org-a-greater-element (count &optional beg end type)
@@ -742,45 +742,51 @@ Includes tables, list items and subtrees."
     (kbd "O") (evil-org-define-eol-command org-insert-heading)
     (kbd "M-o") (evil-org-define-eol-command org-insert-subheading)))
 
+(defmacro evil-org-define-in-calendar-command (cmd)
+  "Define a command that invokes CMD interactively in the calendar buffer.
+
+Return its symbol."
+  (let ((new-cmd (intern (format "evil-org-in-calendar-%s" cmd))))
+    `(defun ,new-cmd ()
+       (interactive)
+       (org-funcall-in-calendar (lambda () (call-interactively #',cmd))))))
+
 (defun evil-org--populate-calendar-bindings ()
   "Bindings for easy date selection."
   (define-key org-read-date-minibuffer-local-map
-    (kbd "C-f") (lambda () (interactive)
-                  (org-eval-in-calendar
-                   '(calendar-scroll-left-three-months 1))))
+              (kbd "C-f") (evil-org-define-in-calendar-command calendar-scroll-left-three-months))
   (define-key org-read-date-minibuffer-local-map
-    (kbd "C-b") (lambda () (interactive)
-                  (org-eval-in-calendar
-                   '(calendar-scroll-right-three-months 1))))
+              (kbd "C-b") (evil-org-define-in-calendar-command calendar-scroll-right-three-months))
   (let-alist evil-org-movement-bindings
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" .left)) (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-backward-day 1))))
+                (kbd (concat "M-" .left))
+                (evil-org-define-in-calendar-command calendar-backward-day))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" .right)) (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-forward-day 1))))
+                (kbd (concat "M-" .right))
+                (evil-org-define-in-calendar-command calendar-forward-day))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" .up)) (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-backward-week 1))))
+                (kbd (concat "M-" .up))
+                (evil-org-define-in-calendar-command calendar-backward-week))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" .down)) (lambda () (interactive)
-                    (org-eval-in-calendar '(calendar-forward-week 1))))
+                (kbd (concat "M-" .down))
+                (evil-org-define-in-calendar-command calendar-forward-week))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" (capitalize .left))) (lambda () (interactive)
-                      (org-eval-in-calendar '(calendar-backward-month 1))))
+                (kbd (concat "M-" (capitalize .left)))
+                (evil-org-define-in-calendar-command calendar-backward-month))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" (capitalize .right))) (lambda () (interactive)
-                      (org-eval-in-calendar '(calendar-forward-month 1))))
+                (kbd (concat "M-" (capitalize .right)))
+                (evil-org-define-in-calendar-command calendar-forward-month))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" (capitalize .up))) (lambda () (interactive)
-                      (org-eval-in-calendar '(calendar-backward-year 1))))
+                (kbd (concat "M-" (capitalize .up)))
+                (evil-org-define-in-calendar-command calendar-backward-year))
     (define-key org-read-date-minibuffer-local-map
-      (kbd (concat "M-" (capitalize .down))) (lambda () (interactive)
-                      (org-eval-in-calendar '(calendar-forward-year 1))))))
+                (kbd (concat "M-" (capitalize .down)))
+                (evil-org-define-in-calendar-command calendar-forward-year))))
 
 (defun evil-org-set-key-theme (&optional theme)
   "Select what keythemes to enable.
-Optional argument THEME list of themes. See evil-org-key-theme for a list of values."
+Optional argument THEME list of themes.
+See `evil-org-key-theme' for a list of values."
   (dolist (state evil-minor-mode-keymaps-alist)
     ;; Remove evil-org-mode keymaps in evil minor-mode keymaps
     (setcdr state (assq-delete-all 'evil-org-mode (cdr state))))
@@ -814,9 +820,6 @@ Optional argument THEME list of themes. See evil-org-key-theme for a list of val
   (define-key org-table-fedit-map [remap evil-save-and-close]          'org-table-fedit-finish)
   (define-key org-table-fedit-map [remap evil-save-modified-and-close] 'org-table-fedit-finish)
   (define-key org-table-fedit-map [remap evil-quit]                    'org-table-fedit-abort))
-
-;; Set customizable theme
-(evil-org-set-key-theme evil-org-key-theme)
 
 (provide 'evil-org)
 ;;; evil-org.el ends here
