@@ -404,7 +404,7 @@ Argument COUNT if negative, items are dedented instead."
              (= (line-beginning-position) (org-list-get-top-point struct)))
         (org-list-indent-item-generic count nil struct)
       ;; indenting selected items
-      (save-excursion
+      (save-mark-and-excursion
         (when region-p (deactivate-mark))
         (set-mark beg)
         (goto-char end)
