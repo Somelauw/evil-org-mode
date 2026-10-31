@@ -49,25 +49,8 @@
   :prefix "evil-org-")
 
 ;;; Customizations
-(defcustom evil-org-key-theme
-  (if (bound-and-true-p evil-disable-insert-state-bindings)
-      '(navigation textobjects additional calendar)
-    '(navigation insert textobjects additional calendar))
-  "Which key themes to enable."
-  :group 'evil-org
-  :type '(set (const navigation)
-              (const insert)
-              (const return)
-              (const textobjects)
-              (const additional)
-              (const shift)
-              (const todo)
-              (const heading)
-              (const calendar))
-  :set (lambda (var val)
-         (set-default-toplevel-value var val)
-         (evil-org-set-key-theme val))
-  :initialize #'custom-initialize-after-file-load)
+;; Defined after `evil-org-set-key-theme', which its :set function calls.
+(defvar evil-org-key-theme)
 
 (defcustom evil-org-movement-bindings
   '((up . "k")
@@ -803,6 +786,25 @@ See `evil-org-key-theme' for a list of values."
     (when (memq 'todo theme) (evil-org--populate-todo-bindings))
     (when (memq 'heading theme) (evil-org--populate-heading-bindings))
     (when (memq 'calendar theme) (evil-org--populate-calendar-bindings))))
+
+(defcustom evil-org-key-theme
+  (if (bound-and-true-p evil-disable-insert-state-bindings)
+      '(navigation textobjects additional calendar)
+    '(navigation insert textobjects additional calendar))
+  "Which key themes to enable."
+  :group 'evil-org
+  :type '(set (const navigation)
+              (const insert)
+              (const return)
+              (const textobjects)
+              (const additional)
+              (const shift)
+              (const todo)
+              (const heading)
+              (const calendar))
+  :set (lambda (var val)
+         (set-default-toplevel-value var val)
+         (evil-org-set-key-theme val)))
 
 ;;; vim-like confirm/abort for capture and src
 ;;; Taken from mwillsey (Max Willsey) on https://github.com/syl20bnr/spacemacs/pull/7400
